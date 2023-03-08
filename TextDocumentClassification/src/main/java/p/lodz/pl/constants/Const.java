@@ -1,6 +1,7 @@
 package p.lodz.pl.constants;
 
 public enum Const {
+    CONFIG("src/main/resources/config/config.json"),
     ARTICLES("src/main/resources/articles"),
     CURRENCY_DICTIONARY("src/main/resources/dictionaries/currency.csv"),
     SPACE(" "),

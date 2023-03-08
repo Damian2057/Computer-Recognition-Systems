@@ -1,15 +1,15 @@
 package p.lodz.pl.model;
 
 import lombok.Data;
-import p.lodz.pl.enums.FeatureType;
+import p.lodz.pl.enums.Type;
 
 @Data
 public class Feature<T> {
 
-    private final FeatureType type;
+    private final Type type;
     private T feature;
 
-    public Feature(FeatureType type, T feature) {
+    public Feature(Type type, T feature) {
         this.type = type;
         this.feature = feature;
     }
