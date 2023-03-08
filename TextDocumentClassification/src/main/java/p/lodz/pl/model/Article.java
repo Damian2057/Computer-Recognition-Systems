@@ -8,12 +8,9 @@ import java.util.List;
 @Data
 @Builder
 public class Article {
-
-    private final String date;
     private final List<String> topics;
-    private final List<String> places;
     private final List<String> peoples;
+    private final String place;
     private final String title;
     private final String body;
-
 }

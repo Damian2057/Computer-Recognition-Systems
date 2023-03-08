@@ -1,8 +1,11 @@
 package p.lodz.pl;
 
 import p.lodz.pl.dao.ArticleLoader;
+import p.lodz.pl.model.Feature;
+import p.lodz.pl.model.Vector;
 
 import java.io.IOException;
+import java.util.List;
 
 import static p.lodz.pl.constants.Const.ARTICLES;
 
