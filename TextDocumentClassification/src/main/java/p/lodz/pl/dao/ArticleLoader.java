@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 
 import static p.lodz.pl.constants.Const.*;
 
-public class ArticleLoader implements Loader {
+public class ArticleLoader implements Loader<Article> {
 
     private static final Logger LOGGER = LogManager.getLogManager().getLogger(Logger.GLOBAL_LOGGER_NAME);
     private static final String REGEX = "(?i)west-germany|usa|france|uk|canada|japan";
@@ -44,17 +44,14 @@ public class ArticleLoader implements Loader {
             for (Element element : elements) {
                 Article.ArticleBuilder builder = Article.builder();
 
-                String date = element.select(DATE.name()).text();
-                builder.date(date);
-
                 String[] topics = element.select(TOPICS.name()).select(D.name()).text().split(SPACE.name());
                 builder.topics(List.of(topics));
 
-                String[] places = element.select(PLACES.name()).select(D.name()).text().split(SPACE.name());
-                if (places.length == 0 || Arrays.stream(places).anyMatch(country -> country.matches(REGEX))) {
+                String[] place = element.select(PLACES.name()).select(D.name()).text().split(SPACE.name());
+                if (place.length != 1 || Arrays.stream(place).anyMatch(country -> country.matches(REGEX))) {
                     continue;
                 } else {
-                    builder.places(List.of(places));
+                    builder.place(place[0]);
                 }
 
                 String[] peoples = element.select(PEOPLE.name()).select(D.name()).text().split(SPACE.name());
