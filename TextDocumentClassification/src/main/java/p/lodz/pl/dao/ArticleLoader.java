@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 
 import static p.lodz.pl.constants.Const.*;
 
-public class ArticleLoader<T> implements Loader<T> {
+public class ArticleLoader implements Loader {
 
     private static final Logger LOGGER = LogManager.getLogManager().getLogger(Logger.GLOBAL_LOGGER_NAME);
     private static final String REGEX = "(?i)west-germany|usa|france|uk|canada|japan";
@@ -37,8 +37,8 @@ public class ArticleLoader<T> implements Loader<T> {
     }
 
     @Override
-    public List<T> read() throws FileNotFoundException {
-        List<T> articles = new ArrayList<>();
+    public List<Article> read() throws FileNotFoundException {
+        List<Article> articles = new ArrayList<>();
         for (Document document : documents) {
             Elements elements = document.select(REUTERS.name());
             for (Element element : elements) {
@@ -70,7 +70,7 @@ public class ArticleLoader<T> implements Loader<T> {
                     builder.body(body);
                 }
 
-                articles.add((T) builder.build());
+                articles.add(builder.build());
             }
         }
         LOGGER.info(String.format("%s data loaded", articles.size()));
