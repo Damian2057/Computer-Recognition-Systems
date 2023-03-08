@@ -24,7 +24,7 @@ public class ArticleLoader implements Loader<Article> {
     private final String path;
     private final List<Document> documents;
 
-    public ArticleLoader(String path) throws IOException {
+    public ArticleLoader(String path) {
         this.path = path;
 //        this.documents = Arrays.stream(Objects.requireNonNull(new File(path).listFiles())).map(file -> {
 //            try {
@@ -33,7 +33,11 @@ public class ArticleLoader implements Loader<Article> {
 //                throw new RuntimeException(e);
 //            }
 //        }).toList();
-        this.documents = List.of(Jsoup.parse(new File("src/main/resources/articles/reut2-000.sgm"), "UTF-8", ""));
+        try {
+            this.documents = List.of(Jsoup.parse(new File("src/main/resources/articles/reut2-000.sgm"), "UTF-8", ""));
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
     }
 
     @Override
