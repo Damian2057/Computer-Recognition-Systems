@@ -1,5 +1,5 @@
 {
-  "Features": {
+  "features": {
     "currency": true,
     "numberOfSentences": true
   }

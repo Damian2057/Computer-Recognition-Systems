@@ -41,7 +41,7 @@ public class ArticleLoader implements Loader<Article> {
     }
 
     @Override
-    public List<Article> read() throws FileNotFoundException {
+    public List<Article> read() {
         List<Article> articles = new ArrayList<>();
         for (Document document : documents) {
             Elements elements = document.select(REUTERS.name());

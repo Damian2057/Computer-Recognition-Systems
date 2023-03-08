@@ -1,8 +1,20 @@
 package p.lodz.pl.config;
 
-import lombok.Data;
+import com.google.gson.Gson;
 
-@Data
+import java.nio.file.Files;
+import java.nio.file.Path;
+
+import static p.lodz.pl.constants.Const.CONFIG;
+
 public class Config {
-    private final Features features;
+    public static Properties getProperties() {
+        try {
+            Path filePath = Path.of(CONFIG.getName());
+            Gson gson = new Gson();
+            return gson.fromJson(Files.readString(filePath), Properties.class);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
