@@ -31,4 +31,13 @@ public class CommonWords {
 
         return splitted;
     }
+
+    public static List<String> simpleRemove(Article article) {
+        String text = article.getBody();
+        text = text.replaceAll(LETTER_REGEX, "");
+        List<String> splitted = List.of(text.split(" "));
+        splitted = splitted.stream().filter(x -> !x.isEmpty()).collect(Collectors.toList());
+
+        return splitted;
+    }
 }

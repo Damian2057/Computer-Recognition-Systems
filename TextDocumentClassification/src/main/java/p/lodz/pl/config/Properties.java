@@ -28,8 +28,8 @@ public class Properties {
         return features.isCountryExtractor();
     }
 
-    public boolean isUniquenessWordsExtractor() {
-        return features.isUniquenessWordsExtractor();
+    public boolean isFrequencyUniquenessWordsExtractor() {
+        return features.isFrequencyUniquenessWordsExtractor();
     }
 
     public boolean isNumberOfLongWordsExtractor() {

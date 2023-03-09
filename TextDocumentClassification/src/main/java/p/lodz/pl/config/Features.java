@@ -9,7 +9,7 @@ public class Features {
     private final boolean historicalFigureExtractor;
     private final boolean placesExtractor;
     private final boolean countryExtractor;
-    private final boolean uniquenessWordsExtractor;
+    private final boolean frequencyUniquenessWordsExtractor;
     private final boolean numberOfLongWordsExtractor;
     private final boolean averageWordLengthExtractor;
     private final boolean keyWordExtractor;
