@@ -27,8 +27,6 @@ public class CurrencyExtractor implements SpecificExtractor {
                 .max(Map.Entry.comparingByValue())
                 .map(Map.Entry::getKey);
 
-        System.out.println(greatestCurrency);
-
         return new Feature<String>(Type.CURRENCY, greatestCurrency.orElse("undefined"));
     }
 }
