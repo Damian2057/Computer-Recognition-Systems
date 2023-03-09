@@ -10,7 +10,7 @@ import java.util.List;
 public class DocumentLengthExtractor implements SpecificExtractor {
     @Override
     public Feature<?> extract(Article article) {
-        List<String> words = CommonWords.remove(article);
+        List<String> words = CommonWords.removeCommonWords(article);
         return new Feature<Double>(Type.DOCUMENT_LENGTH, (double) words.size());
     }
 }

@@ -5,7 +5,7 @@
     "historicalFigureExtractor": true,
     "placesExtractor": true,
     "countryExtractor": true,
-    "uniquenessWordsExtractor": true,
+    "frequencyUniquenessWordsExtractor": true,
     "numberOfLongWordsExtractor": true,
     "averageWordLengthExtractor": true,
     "keyWordExtractor": true,

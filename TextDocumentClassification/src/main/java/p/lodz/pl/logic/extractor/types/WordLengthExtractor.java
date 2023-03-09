@@ -17,7 +17,7 @@ public class WordLengthExtractor implements SpecificExtractor {
 
     @Override
     public Feature<?> extract(Article article) {
-        List<String> words = CommonWords.remove(article);
+        List<String> words = CommonWords.removeCommonWords(article);
         double count = 0;
         for (String word : words) {
             if (word.length() >= wordLength) {
