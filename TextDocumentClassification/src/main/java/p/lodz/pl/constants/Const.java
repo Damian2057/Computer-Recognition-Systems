@@ -8,6 +8,7 @@ public enum Const {
     GEOGRAPHICAL_PLACES_DICTIONARY("src/main/resources/dictionaries/geographicalPlaces.txt"),
     HISTORICAL_FIGURES_DICTIONARY("src/main/resources/dictionaries/historicalFigures.txt"),
     KEY_WORDS_DICTIONARY("src/main/resources/dictionaries/keyWords.txt"),
+    COUNTRY_DICTIONARY("src/main/resources/dictionaries/country.txt"),
     SPACE(" "),
     PLACES("PLACES"),
     D("D"),
