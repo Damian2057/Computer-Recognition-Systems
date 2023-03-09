@@ -7,6 +7,6 @@ import p.lodz.pl.model.Feature;
 public class CurrencyExtractor implements SpecificExtractor {
     @Override
     public Feature<?> extract(Article article) {
-        return new Feature<>(Type.CURRENCY, "usa");
+        return null;
     }
 }
