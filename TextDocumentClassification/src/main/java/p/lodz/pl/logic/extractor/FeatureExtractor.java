@@ -43,8 +43,8 @@ public class FeatureExtractor implements Extractor {
             if (prop.isCountryExtractor()) {
                 vector.addFeature(Type.COUNTRY.getExtractor().extract(article));
             }
-            if (prop.isUniquenessWordsExtractor()) {
-                vector.addFeature(Type.NUMBER_OF_UNIQUENESS_WORDS.getExtractor().extract(article));
+            if (prop.isFrequencyUniquenessWordsExtractor()) {
+                vector.addFeature(Type.FREQUENCY_NUMBER_OF_UNIQUENESS_WORDS.getExtractor().extract(article));
             }
             if (prop.isNumberOfLongWordsExtractor()) {
                 vector.addFeature(Type.NUMBER_OF_WORD_LENGTH.getExtractor().extract(article));

@@ -9,7 +9,7 @@ public enum Type {
     HISTORICAL_FIGURES(new HistoricalFiguresExtractor()),
     PLACES(new PlacesExtractor()),
     COUNTRY(new CountryExtractor()),
-    NUMBER_OF_UNIQUENESS_WORDS(new UniquenessWordsExtractor()),
+    FREQUENCY_NUMBER_OF_UNIQUENESS_WORDS(new FrequencyUniquenessWordsExtractor()),
     NUMBER_OF_WORD_LENGTH(new WordLengthExtractor(Config.getProperties().getLongWordLength())),
     AVERAGE_WORD_LENGTH(new AverageWordLengthExtractor()),
     KEY_WORD(new KeyWordExtractor()),
