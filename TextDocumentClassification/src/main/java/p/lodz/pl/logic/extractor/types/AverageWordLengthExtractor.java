@@ -17,6 +17,7 @@ public class AverageWordLengthExtractor extends Extractor implements SpecificExt
         }
         avg /= words.size();
 
+        System.out.println(avg);
         return new Feature<>(Type.AVERAGE_WORD_LENGTH, avg);
     }
 }

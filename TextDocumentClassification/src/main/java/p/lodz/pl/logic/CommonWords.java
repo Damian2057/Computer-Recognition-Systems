@@ -5,6 +5,8 @@ import p.lodz.pl.dao.DictionaryReader;
 import p.lodz.pl.model.Article;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static p.lodz.pl.constants.Const.COMMON_WORDS_DICTIONARY;
@@ -16,9 +18,14 @@ public class CommonWords {
 
     public static List<String> remove(Article article) {
         String text = article.getBody();
-        String regex = "\\b(" + String.join("|", DICTIONARY.read(COMMON_WORDS_DICTIONARY)) + ")\\b";
         text = text.replaceAll(LETTER_REGEX, "");
-        text = text.toLowerCase().replaceAll(regex, "");
+
+        Pattern pattern = Pattern.compile("\\b(" + String.join("|",
+                DICTIONARY.read(COMMON_WORDS_DICTIONARY)) + ")\\b",
+                Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(text);
+        text = matcher.replaceAll("");
+
         List<String> splitted = List.of(text.split(" "));
         splitted = splitted.stream().filter(x -> !x.isEmpty()).collect(Collectors.toList());
 
