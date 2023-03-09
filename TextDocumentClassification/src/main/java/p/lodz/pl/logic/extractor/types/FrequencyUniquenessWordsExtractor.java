@@ -9,11 +9,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static p.lodz.pl.constants.Const.COMMON_WORDS_DICTIONARY;
+
 public class FrequencyUniquenessWordsExtractor implements SpecificExtractor {
     @Override
     public Feature<?> extract(Article article) {
         Map<String, Integer> map = new HashMap<>();
-        List<String> words = CommonWords.removeCommonWords(article);
+        List<String> words = CommonWords.removeByDictionary(article, COMMON_WORDS_DICTIONARY);
         for (String word : words) {
             map.merge(word, 1, Integer::sum);
         }
@@ -22,7 +24,7 @@ public class FrequencyUniquenessWordsExtractor implements SpecificExtractor {
                 .stream()
                 .filter(entry -> entry.getValue() == 1)
                 .count();
-        count /= CommonWords.keepOnlyLetters(article).size();
+        count /= CommonWords.removeSpecialSymbols(article).size();
 
         return new Feature<Double>(Type.FREQUENCY_NUMBER_OF_UNIQUENESS_WORDS, count);
     }

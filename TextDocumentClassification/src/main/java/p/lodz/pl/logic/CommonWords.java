@@ -18,9 +18,9 @@ public class CommonWords {
     private static final Dictionary DICTIONARY = new DictionaryReader();
     private static final String LETTER_REGEX = "[^a-zA-Z ]";
 
-    public static List<String> removeCommonWords(Article article) {
+    public static List<String> removeByDictionary(Article article, Const path) {
         String text = simpleFilter(article);
-        text = dictionaryFilter(text, COMMON_WORDS_DICTIONARY);
+        text = dictionaryFilter(text, path);
 
         List<String> splitted = List.of(text.split(" "));
         splitted = splitted.stream().filter(x -> !x.isEmpty()).collect(Collectors.toList());
@@ -28,9 +28,9 @@ public class CommonWords {
         return splitted;
     }
 
-    public static List<String> removeByDictionary(Article article, Const path) {
-        String text = simpleFilter(article);
-        text = dictionaryFilter(text, path);
+    public static List<String> removeOnlyByDictionary(Article article, Const path) {
+        String body = article.getBody();
+        String text = dictionaryFilter(body, path);
 
         List<String> splitted = List.of(text.split(" "));
         splitted = splitted.stream().filter(x -> !x.isEmpty()).collect(Collectors.toList());
@@ -52,8 +52,7 @@ public class CommonWords {
         return splitted;
     }
 
-
-    public static List<String> keepOnlyLetters(Article article) {
+    public static List<String> removeSpecialSymbols(Article article) {
         String text = simpleFilter(article);
         List<String> splitted = List.of(text.split(" "));
         splitted = splitted.stream().filter(x -> !x.isEmpty()).collect(Collectors.toList());
