@@ -10,7 +10,7 @@ import java.util.List;
 public class AverageWordLengthExtractor extends Extractor implements SpecificExtractor {
     @Override
     public Feature<?> extract(Article article) {
-        List<String> words = CommonWords.remove(article);
+        List<String> words = CommonWords.removeCommonWords(article);
         double avg = 0;
         for (String word : words) {
             avg += word.length();

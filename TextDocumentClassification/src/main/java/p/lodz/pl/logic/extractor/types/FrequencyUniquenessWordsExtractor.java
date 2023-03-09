@@ -13,7 +13,7 @@ public class FrequencyUniquenessWordsExtractor implements SpecificExtractor {
     @Override
     public Feature<?> extract(Article article) {
         Map<String, Integer> map = new HashMap<>();
-        List<String> words = CommonWords.remove(article);
+        List<String> words = CommonWords.removeCommonWords(article);
         for (String word : words) {
             map.merge(word, 1, Integer::sum);
         }
@@ -22,7 +22,7 @@ public class FrequencyUniquenessWordsExtractor implements SpecificExtractor {
                 .stream()
                 .filter(entry -> entry.getValue() == 1)
                 .count();
-        count /= CommonWords.simpleRemove(article).size();
+        count /= CommonWords.keepOnlyLetters(article).size();
 
         return new Feature<Double>(Type.FREQUENCY_NUMBER_OF_UNIQUENESS_WORDS, count);
     }
