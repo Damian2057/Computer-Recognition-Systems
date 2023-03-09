@@ -10,8 +10,10 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 
 import static p.lodz.pl.constants.Const.*;
 
@@ -46,17 +48,17 @@ public class ArticleLoader implements Loader<Article> {
             for (Element element : elements) {
                 Article.ArticleBuilder builder = Article.builder();
 
-                String[] topics = element.select(TOPICS.name()).select(D.name()).text().split(SPACE.name());
+                String[] topics = element.select(TOPICS.name()).select(D.name()).text().split(SPACE.getName());
                 builder.topics(List.of(topics));
 
-                String[] place = element.select(PLACES.name()).select(D.name()).text().split(SPACE.name());
-                if (place.length != 1 || Arrays.stream(place).anyMatch(country -> country.matches(REGEX))) {
+                String[] place = element.select(PLACES.name()).select(D.name()).text().split(SPACE.getName());
+                Optional<String> elem = Arrays.stream(place).filter(country -> country.matches(REGEX)).findAny();
+                if (elem.isEmpty()) {
                     continue;
-                } else {
-                    builder.place(place[0]);
                 }
+                elem.ifPresent(builder::place);
 
-                String[] peoples = element.select(PEOPLE.name()).select(D.name()).text().split(SPACE.name());
+                String[] peoples = element.select(PEOPLE.name()).select(D.name()).text().split(SPACE.getName());
                 builder.peoples(List.of(peoples));
 
                 String title = element.select(TITLE.name()).text();
