@@ -1,0 +1,28 @@
+package p.lodz.pl.dao;
+
+import p.lodz.pl.constants.Const;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+public class DictionaryReader implements Dictionary {
+    @Override
+    public List<String> read(Const path) {
+        List<String> words = new ArrayList<>();
+        try(BufferedReader reader = new BufferedReader(new FileReader(path.getName()))) {
+            String line = reader.readLine();
+
+            while (line != null) {
+                words.add(line);
+                line = reader.readLine();
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return words;
+    }
+}
