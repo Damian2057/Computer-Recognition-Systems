@@ -14,7 +14,7 @@ public enum Type {
     AVERAGE_WORD_LENGTH(new AverageWordLengthExtractor()),
     KEY_WORD(new KeyWordExtractor()),
     EXCEPT_KEY_WORD(new ExceptKeyWordExtractor()),
-    MOST_COMMON_WORD(new MostCommonWordExtractor()),
+    FREQUENCY_OF_MOST_COMMON_WORD(new FrequencyMostCommonWordExtractor(Config.getProperties().getNumberOfOccurrences())),
     CAPITAL_WORD(new CapitalWordExtractor()),
     DOCUMENT_LENGTH(new DocumentLengthExtractor());
 

@@ -14,7 +14,7 @@ public class Features {
     private final boolean averageWordLengthExtractor;
     private final boolean keyWordExtractor;
     private final boolean exceptKeyWordExtractor;
-    private final boolean commonWordExtractor;
+    private final boolean frequencyCommonWordExtractor;
     private final boolean capitalWordExtractor;
     private final boolean documentLengthExtractor;
 }

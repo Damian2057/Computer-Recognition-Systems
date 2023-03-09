@@ -58,8 +58,8 @@ public class FeatureExtractor implements Extractor {
             if (prop.isExceptKeyWordExtractor()) {
                 vector.addFeature(Type.EXCEPT_KEY_WORD.getExtractor().extract(article));
             }
-            if (prop.isCommonWordExtractor()) {
-                vector.addFeature(Type.MOST_COMMON_WORD.getExtractor().extract(article));
+            if (prop.isFrequencyCommonWordExtractor()) {
+                vector.addFeature(Type.FREQUENCY_OF_MOST_COMMON_WORD.getExtractor().extract(article));
             }
             if (prop.isCapitalWordExtractor()) {
                 vector.addFeature(Type.CAPITAL_WORD.getExtractor().extract(article));

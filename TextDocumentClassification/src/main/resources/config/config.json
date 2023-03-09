@@ -10,9 +10,10 @@
     "averageWordLengthExtractor": true,
     "keyWordExtractor": true,
     "exceptKeyWordExtractor": true,
-    "commonWordExtractor": true,
+    "frequencyCommonWordExtractor": true,
     "capitalWordExtractor": true,
     "documentLengthExtractor": true
   },
-  "longWordLength": 7
+  "longWordLength": 7,
+  "numberOfOccurrences": 4
 }

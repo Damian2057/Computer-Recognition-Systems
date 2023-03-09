@@ -6,6 +6,7 @@ import lombok.Data;
 public class Properties {
     private final Features features;
     private final int longWordLength;
+    private final int numberOfOccurrences;
 
     public boolean isCurrencyExtractor() {
         return features.isCurrencyExtractor();
@@ -47,8 +48,8 @@ public class Properties {
         return features.isExceptKeyWordExtractor();
     }
 
-    public boolean isCommonWordExtractor() {
-        return features.isCommonWordExtractor();
+    public boolean isFrequencyCommonWordExtractor() {
+        return features.isFrequencyCommonWordExtractor();
     }
 
     public boolean isCapitalWordExtractor() {
