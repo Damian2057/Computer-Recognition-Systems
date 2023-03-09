@@ -7,8 +7,6 @@ import org.jsoup.select.Elements;
 import p.lodz.pl.model.Article;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
