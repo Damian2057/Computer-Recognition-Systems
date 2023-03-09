@@ -9,7 +9,7 @@ import java.util.List;
 
 import static p.lodz.pl.constants.Const.COMMON_WORDS_DICTIONARY;
 
-public class AverageWordLengthExtractor extends Extractor implements SpecificExtractor {
+public class AverageWordLengthExtractor implements SpecificExtractor {
     @Override
     public Feature<?> extract(Article article) {
         List<String> words = CommonWords.removeByDictionary(article, COMMON_WORDS_DICTIONARY);
