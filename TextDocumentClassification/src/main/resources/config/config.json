@@ -1,7 +1,18 @@
 {
   "features": {
-    "currency": true,
-    "numberOfSentences": true
+    "currencyExtractor": true,
+    "numberOfSentencesExtractor": true,
+    "historicalFigureExtractor": true,
+    "placesExtractor": true,
+    "countryExtractor": true,
+    "uniquenessWordsExtractor": true,
+    "numberOfLongWordsExtractor": true,
+    "averageWordLengthExtractor": true,
+    "keyWordExtractor": true,
+    "exceptKeyWordExtractor": true,
+    "commonWordExtractor": true,
+    "capitalWordExtractor": true,
+    "documentLengthExtractor": true
   },
   "longWordLength": 7
 }

@@ -7,11 +7,55 @@ public class Properties {
     private final Features features;
     private final int longWordLength;
 
-    public boolean isCurrency() {
-        return features.isCurrency();
+    public boolean isCurrencyExtractor() {
+        return features.isCurrencyExtractor();
     }
 
-    public boolean isNumberOfSentences() {
-        return features.isNumberOfSentences();
+    public boolean isNumberOfSentencesExtractor() {
+        return features.isNumberOfSentencesExtractor();
+    }
+
+    public boolean isHistoricalFigureExtractor() {
+        return features.isHistoricalFigureExtractor();
+    }
+
+    public boolean isPlacesExtractor() {
+        return features.isPlacesExtractor();
+    }
+
+    public boolean isCountryExtractor() {
+        return features.isCountryExtractor();
+    }
+
+    public boolean isUniquenessWordsExtractor() {
+        return features.isUniquenessWordsExtractor();
+    }
+
+    public boolean isNumberOfLongWordsExtractor() {
+        return features.isNumberOfLongWordsExtractor();
+    }
+
+    public boolean isAverageWordLengthExtractor() {
+        return features.isAverageWordLengthExtractor();
+    }
+
+    public boolean isKeyWordExtractor() {
+        return features.isKeyWordExtractor();
+    }
+
+    public boolean isExceptKeyWordExtractor() {
+        return features.isExceptKeyWordExtractor();
+    }
+
+    public boolean isCommonWordExtractor() {
+        return features.isCommonWordExtractor();
+    }
+
+    public boolean isCapitalWordExtractor() {
+        return features.isCapitalWordExtractor();
+    }
+
+    public boolean isDocumentLengthExtractor() {
+        return features.isDocumentLengthExtractor();
     }
 }

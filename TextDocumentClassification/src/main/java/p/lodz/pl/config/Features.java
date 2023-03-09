@@ -4,6 +4,17 @@ import lombok.Data;
 
 @Data
 public class Features {
-    private boolean currency;
-    private boolean numberOfSentences;
+    private final boolean currencyExtractor;
+    private final boolean numberOfSentencesExtractor;
+    private final boolean historicalFigureExtractor;
+    private final boolean placesExtractor;
+    private final boolean countryExtractor;
+    private final boolean uniquenessWordsExtractor;
+    private final boolean numberOfLongWordsExtractor;
+    private final boolean averageWordLengthExtractor;
+    private final boolean keyWordExtractor;
+    private final boolean exceptKeyWordExtractor;
+    private final boolean commonWordExtractor;
+    private final boolean capitalWordExtractor;
+    private final boolean documentLengthExtractor;
 }

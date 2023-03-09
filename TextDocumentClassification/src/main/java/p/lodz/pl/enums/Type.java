@@ -15,7 +15,7 @@ public enum Type {
     KEY_WORD(new KeyWordExtractor()),
     EXCEPT_KEY_WORD(new ExceptKeyWordExtractor()),
     MOST_COMMON_WORD(new MostCommonWordExtractor()),
-    CAPITAL_LETTER_WORD(new CapitalWordExtractor()),
+    CAPITAL_WORD(new CapitalWordExtractor()),
     DOCUMENT_LENGTH(new DocumentLengthExtractor());
 
     private final SpecificExtractor extractor;
