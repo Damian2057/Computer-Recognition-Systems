@@ -10,7 +10,7 @@ public enum Type {
     PLACES(new PlacesExtractor()),
     COUNTRY(new CountryExtractor()),
     FREQUENCY_NUMBER_OF_UNIQUENESS_WORDS(new FrequencyUniquenessWordsExtractor()),
-    NUMBER_OF_WORD_LENGTH(new WordLengthExtractor(Config.getProperties().getLongWordLength())),
+    NUMBER_OF_WORD_N_LENGTH(new WordLengthExtractor(Config.getProperties().getLongWordLength())),
     AVERAGE_WORD_LENGTH(new AverageWordLengthExtractor()),
     KEY_WORD(new KeyWordExtractor()),
     EXCEPT_KEY_WORD(new ExceptKeyWordExtractor()),
