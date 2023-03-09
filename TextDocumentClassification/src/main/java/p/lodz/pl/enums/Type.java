@@ -1,5 +1,6 @@
 package p.lodz.pl.enums;
 
+import p.lodz.pl.config.Config;
 import p.lodz.pl.logic.extractor.types.*;
 
 public enum Type {
@@ -9,7 +10,7 @@ public enum Type {
     PLACES(new PlacesExtractor()),
     COUNTRY(new CountryExtractor()),
     NUMBER_OF_UNIQUENESS_WORDS(new UniquenessWordsExtractor()),
-    NUMBER_OF_WORD_LENGTH(new WordLengthExtractor(7)),
+    NUMBER_OF_WORD_LENGTH(new WordLengthExtractor(Config.getProperties().getLongWordLength())),
     AVERAGE_WORD_LENGTH(new AverageWordLengthExtractor()),
     KEY_WORD(new KeyWordExtractor()),
     EXCEPT_KEY_WORD(new ExceptKeyWordExtractor()),

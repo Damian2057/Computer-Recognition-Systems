@@ -2,5 +2,6 @@
   "features": {
     "currency": true,
     "numberOfSentences": true
-  }
+  },
+  "longWordLength": 7
 }

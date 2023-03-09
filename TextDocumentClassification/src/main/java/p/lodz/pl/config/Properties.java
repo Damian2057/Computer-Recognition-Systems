@@ -5,6 +5,7 @@ import lombok.Data;
 @Data
 public class Properties {
     private final Features features;
+    private final int longWordLength;
 
     public boolean isCurrency() {
         return features.isCurrency();
