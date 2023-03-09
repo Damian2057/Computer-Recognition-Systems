@@ -25,6 +25,6 @@ public class WordLengthExtractor implements SpecificExtractor {
             }
         }
 
-        return new Feature<Double>(Type.AVERAGE_WORD_LENGTH, count);
+        return new Feature<Double>(Type.NUMBER_OF_WORD_LENGTH, count);
     }
 }
