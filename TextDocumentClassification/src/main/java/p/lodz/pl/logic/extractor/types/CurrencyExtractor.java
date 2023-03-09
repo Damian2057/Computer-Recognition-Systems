@@ -17,16 +17,14 @@ public class CurrencyExtractor implements SpecificExtractor {
     public Feature<?> extract(Article article) {
         Map<String, Integer> map = new LinkedHashMap<>();
         List<String> words = CommonWords.applyDictionary(article, CURRENCY_DICTIONARY);
-
         for (String word : words) {
             map.merge(word, 1, Integer::sum);
         }
-
-        Optional<String> greatestCurrency = map.entrySet()
+        Optional<String> commonCurrency = map.entrySet()
                 .stream()
                 .max(Map.Entry.comparingByValue())
                 .map(Map.Entry::getKey);
 
-        return new Feature<String>(Type.CURRENCY, greatestCurrency.orElse("undefined"));
+        return new Feature<String>(Type.CURRENCY, commonCurrency.orElse("undefined"));
     }
 }

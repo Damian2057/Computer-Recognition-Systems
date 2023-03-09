@@ -41,6 +41,7 @@ public class CommonWords {
     public static List<String> applyDictionary(Article article, Const path) {
         String text = simpleFilter(article);
         List<String> keyWords = DICTIONARY.read(path);
+        keyWords = keyWords.stream().map(String::toLowerCase).collect(Collectors.toList());
 
         String filteredText = Arrays.stream(text.toLowerCase().split("\\s+"))
                 .filter(keyWords::contains)

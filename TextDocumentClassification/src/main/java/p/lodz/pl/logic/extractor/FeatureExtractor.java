@@ -47,7 +47,7 @@ public class FeatureExtractor implements Extractor {
                 vector.addFeature(Type.FREQUENCY_NUMBER_OF_UNIQUENESS_WORDS.getExtractor().extract(article));
             }
             if (prop.isNumberOfLongWordsExtractor()) {
-                vector.addFeature(Type.NUMBER_OF_WORD_LENGTH.getExtractor().extract(article));
+                vector.addFeature(Type.NUMBER_OF_WORD_N_LENGTH.getExtractor().extract(article));
             }
             if (prop.isAverageWordLengthExtractor()) {
                 vector.addFeature(Type.AVERAGE_WORD_LENGTH.getExtractor().extract(article));
