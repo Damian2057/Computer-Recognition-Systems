@@ -1,4 +1,6 @@
-dollar,jen,
-$,endaka,
-dlrs,,
-doll,,
+dollar
+$
+dlrs
+doll
+jen
+endaka
