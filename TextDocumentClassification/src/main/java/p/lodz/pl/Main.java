@@ -1,14 +1,9 @@
 package p.lodz.pl;
 
-import p.lodz.pl.config.Config;
-import p.lodz.pl.config.Properties;
-import p.lodz.pl.dao.ArticleLoader;
 import p.lodz.pl.logic.extractor.Extractor;
 import p.lodz.pl.logic.extractor.FeatureExtractor;
 
 import java.io.IOException;
-
-import static p.lodz.pl.constants.Const.ARTICLES;
 
 public class Main {
     public static void main(String[] args) throws IOException {

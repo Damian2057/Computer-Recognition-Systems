@@ -5,9 +5,6 @@ import p.lodz.pl.config.Properties;
 import p.lodz.pl.dao.ArticleLoader;
 import p.lodz.pl.dao.Loader;
 import p.lodz.pl.enums.Type;
-import p.lodz.pl.logic.extractor.types.CurrencyExtractor;
-import p.lodz.pl.logic.extractor.types.NumberOfSentencesExtractor;
-import p.lodz.pl.logic.extractor.types.SpecificExtractor;
 import p.lodz.pl.model.Article;
 import p.lodz.pl.model.Vector;
 
