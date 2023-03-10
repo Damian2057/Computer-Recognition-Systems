@@ -21,13 +21,14 @@ public class FeatureExtractor implements Extractor {
 
     public FeatureExtractor() {
         this.articles = loader.read();
+        var xd = prop.getProportionOfDataSets();
     }
 
     @Override
     public List<Vector> extract() {
         List<Vector> vectors = new ArrayList<>();
         for (Article article : articles) {
-            Vector vector = new Vector();
+            Vector vector = new Vector(article.getPlace());
             if (prop.isCurrencyExtractor()) {
                 vector.addFeature(Type.CURRENCY.getExtractor().extract(article));
             }
@@ -70,5 +71,12 @@ public class FeatureExtractor implements Extractor {
             vectors.add(vector);
         }
         return vectors;
+    }
+
+
+    private List<Vector> normalizeVector(List<Vector> vectors) {
+
+
+        return null;
     }
 }

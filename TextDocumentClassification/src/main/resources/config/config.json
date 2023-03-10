@@ -15,5 +15,6 @@
     "documentLengthExtractor": true
   },
   "longWordLength": 7,
-  "numberOfOccurrences": 4
+  "numberOfOccurrences": 4,
+  "proportionOfDataSets": [60, 40]
 }

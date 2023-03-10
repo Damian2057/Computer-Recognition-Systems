@@ -7,6 +7,7 @@ public class Properties {
     private final Features features;
     private final int longWordLength;
     private final int numberOfOccurrences;
+    private final double[] proportionOfDataSets;
 
     public boolean isCurrencyExtractor() {
         return features.isCurrencyExtractor();
