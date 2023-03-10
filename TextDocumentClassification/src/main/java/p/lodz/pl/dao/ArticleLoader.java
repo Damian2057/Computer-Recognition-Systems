@@ -4,6 +4,8 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import p.lodz.pl.config.Config;
+import p.lodz.pl.config.Properties;
 import p.lodz.pl.model.Article;
 
 import java.io.File;
@@ -17,21 +19,26 @@ import static p.lodz.pl.constants.Const.*;
 public class ArticleLoader implements Loader<Article> {
 
     private static final Logger LOGGER = LogManager.getLogManager().getLogger(Logger.GLOBAL_LOGGER_NAME);
-    private static final String REGEX = "(?i)west-germany|usa|france|uk|canada|japan";
+    private static final Properties prop = Config.getProperties();
+    private final String regex;
     private final List<Document> documents;
 
     public ArticleLoader(String path) {
-//        this.documents = Arrays.stream(Objects.requireNonNull(new File(path).listFiles())).map(file -> {
-//            try {
-//                return Jsoup.parse(file, "UTF-8", "");
-//            } catch (IOException e) {
-//                throw new RuntimeException(e);
-//            }
-//        }).toList();
-        try {
-            this.documents = List.of(Jsoup.parse(new File("src/main/resources/articles/reut2-000.sgm"), "UTF-8", ""));
-        } catch (Exception e) {
-            throw new RuntimeException();
+        this.regex = prop.getRegex();
+        if (prop.isTestMode()) {
+            try {
+                this.documents = List.of(Jsoup.parse(new File("src/main/resources/articles/reut2-000.sgm"), "UTF-8", ""));
+            } catch (Exception e) {
+                throw new RuntimeException();
+            }
+        } else {
+            this.documents = Arrays.stream(Objects.requireNonNull(new File(path).listFiles())).map(file -> {
+                try {
+                    return Jsoup.parse(file, "UTF-8", "");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }).toList();
         }
     }
 
@@ -47,7 +54,7 @@ public class ArticleLoader implements Loader<Article> {
                 builder.topics(List.of(topics));
 
                 String[] place = element.select(PLACES.name()).select(D.name()).text().split(SPACE.getName());
-                Optional<String> elem = Arrays.stream(place).filter(country -> country.matches(REGEX)).findAny();
+                Optional<String> elem = Arrays.stream(place).filter(country -> country.matches(regex)).findAny();
                 if (elem.isEmpty()) {
                     continue;
                 }

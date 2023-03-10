@@ -8,6 +8,8 @@ public class Properties {
     private final int longWordLength;
     private final int numberOfOccurrences;
     private final double[] proportionOfDataSets;
+    private final String regex;
+    private final boolean testMode;
 
     public boolean isCurrencyExtractor() {
         return features.isCurrencyExtractor();
