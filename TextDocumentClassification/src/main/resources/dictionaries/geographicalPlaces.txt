@@ -9,6 +9,13 @@ North Sea
 Baltic Sea
 Dortmund
 Aachen
+Hanover
+Augsburg
+Stuttgart
+Bremen
+Duisburg
+Mannheim
+Nuremberg
 Dusseldorf
 Essen
 Koblenz
@@ -18,6 +25,17 @@ Vancouver
 Montreal
 Calgary
 Ottawa
+Edmonton
+Quebec City
+Quebec
+Hamilton
+Halifax
+Victoria
+Saskatoon
+St. John's
+Windsor
+Kitchener
+Niagara Falls
 The Great Lakes
 Great Lakes
 The St. Lawrence Seaway
@@ -29,11 +47,35 @@ Paris
 Marseille
 Lyon
 Nice
+Nantes
+Toulouse
+Strasbourg
+Rennes
+Le Mans
+Versailles
 Bordeaux
+Normandy
 Brittany
 Midi-Pyrenees
 Pyrenees
 London
+Birmingham
+Glasgow
+Bristol
+Leeds
+Newcastle
+Oxford
+Cambridge
+Brighton
+Southampton
+Plymouth
+York
+Aberdeen
+Dover
+River Thames
+Norfolk
+channel
+anglo-french channel
 Edinburgh
 Manchester
 Liverpool
@@ -43,9 +85,17 @@ Tokyo
 Kyoto
 Osaka
 Hiroshima
+Yokohama
+Nagoya
+Fukuoka
+Sendai
+Kobe
+Nikko
 Sapporo
 Hokkaido
 New York City
+The New York
+New York
 Los Angeles
 Chicago
 Miami

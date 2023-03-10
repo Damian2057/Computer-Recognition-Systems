@@ -10,6 +10,7 @@ france
 japan
 jpn
 uk
+U.K.
 united kingdom
 great britain
 england
