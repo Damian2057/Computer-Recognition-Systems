@@ -18,6 +18,10 @@ public class Feature<T> {
         this.feature = (T) feature;
     }
 
+    public void setFeature(String feature) {
+        this.feature = (T) feature;
+    }
+
     public Type getType() {
         return type;
     }
