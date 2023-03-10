@@ -16,5 +16,8 @@
   },
   "longWordLength": 7,
   "numberOfOccurrences": 4,
-  "proportionOfDataSets": [60, 40]
+  "proportionOfDataSets": [60, 40],
+
+  "regex": "(?i)west-germany|usa|france|uk|canada|japan",
+  "testMode": false
 }
