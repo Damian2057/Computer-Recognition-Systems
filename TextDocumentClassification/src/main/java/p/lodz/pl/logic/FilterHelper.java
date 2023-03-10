@@ -13,12 +13,12 @@ import java.util.stream.Collectors;
 
 import static p.lodz.pl.constants.Const.COMMON_WORDS_DICTIONARY;
 
-public class CommonWords {
+public final class FilterHelper {
 
     private static final Dictionary DICTIONARY = new DictionaryReader();
     private static final String LETTER_REGEX = "[^a-zA-Z ]";
 
-    public static List<String> removeByDictionary(Article article, Const path) {
+    public static List<String> removeWordsFromDictionary(Article article, Const path) {
         String text = simpleFilter(article);
         text = dictionaryFilter(text, path);
 
@@ -28,9 +28,10 @@ public class CommonWords {
         return splitted;
     }
 
-    public static List<String> removeOnlyByDictionary(Article article, Const path) {
-        String body = article.getBody();
-        String text = dictionaryFilter(body, path);
+    public static List<String> removeWordsFromDictionaryWithCommonWords(Article article, Const path) {
+        String text = simpleFilter(article);
+        text = dictionaryFilter(text, path);
+        text = dictionaryFilter(text, COMMON_WORDS_DICTIONARY);
 
         List<String> splitted = List.of(text.split(" "));
         splitted = splitted.stream().filter(x -> !x.isEmpty()).collect(Collectors.toList());
@@ -38,7 +39,7 @@ public class CommonWords {
         return splitted;
     }
 
-    public static List<String> applyDictionary(Article article, Const path) {
+    public static List<String> keepWordsFromDictionary(Article article, Const path) {
         String text = simpleFilter(article);
         List<String> keyWords = DICTIONARY.read(path);
         keyWords = keyWords.stream().map(String::toLowerCase).collect(Collectors.toList());
@@ -60,6 +61,7 @@ public class CommonWords {
 
         return splitted;
     }
+
     private static String simpleFilter(Article article) {
         String text = article.getBody();
         text = text.replaceAll(LETTER_REGEX, "");

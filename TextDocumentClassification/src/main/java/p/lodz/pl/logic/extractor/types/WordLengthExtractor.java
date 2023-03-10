@@ -1,7 +1,8 @@
 package p.lodz.pl.logic.extractor.types;
 
 import p.lodz.pl.enums.Type;
-import p.lodz.pl.logic.CommonWords;
+import p.lodz.pl.logic.FilterHelper;
+import p.lodz.pl.logic.extractor.types.base.SpecificExtractor;
 import p.lodz.pl.model.Article;
 import p.lodz.pl.model.Feature;
 
@@ -18,8 +19,8 @@ public class WordLengthExtractor implements SpecificExtractor {
     }
 
     @Override
-    public Feature<?> extract(Article article) {
-        List<String> words = CommonWords.removeByDictionary(article, COMMON_WORDS_DICTIONARY);
+    public Feature<Double> extract(Article article) {
+        List<String> words = FilterHelper.removeWordsFromDictionary(article, COMMON_WORDS_DICTIONARY);
         double count = 0;
         for (String word : words) {
             if (word.length() >= wordLength) {
@@ -27,6 +28,6 @@ public class WordLengthExtractor implements SpecificExtractor {
             }
         }
 
-        return new Feature<Double>(Type.NUMBER_OF_WORD_N_LENGTH, count);
+        return new Feature<>(Type.NUMBER_OF_WORD_N_LENGTH, count);
     }
 }

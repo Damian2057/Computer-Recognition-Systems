@@ -1,12 +1,18 @@
 package p.lodz.pl.logic.extractor.types;
 
+import p.lodz.pl.enums.Type;
+import p.lodz.pl.logic.extractor.types.base.DictionaryExtractor;
+import p.lodz.pl.logic.extractor.types.base.SpecificExtractor;
 import p.lodz.pl.model.Article;
 import p.lodz.pl.model.Feature;
 
-public class KeyWordExtractor implements SpecificExtractor {
+import static p.lodz.pl.constants.Const.KEY_WORDS_DICTIONARY;
+
+public class KeyWordExtractor extends DictionaryExtractor implements SpecificExtractor {
 
     @Override
-    public Feature<?> extract(Article article) {
-        return null;
+    public Feature<String> extract(Article article) {
+        return new Feature<>(Type.KEY_WORD,
+                mostCommonItem(article, KEY_WORDS_DICTIONARY).orElse("undefined"));
     }
 }
