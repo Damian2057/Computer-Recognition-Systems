@@ -21,7 +21,6 @@ public class FeatureExtractor implements Extractor {
 
     public FeatureExtractor() {
         this.articles = loader.read();
-        var xd = prop.getProportionOfDataSets();
     }
 
     @Override
@@ -70,13 +69,25 @@ public class FeatureExtractor implements Extractor {
             }
             vectors.add(vector);
         }
+        normalizeVector(vectors);
+
         return vectors;
     }
 
-
-    private List<Vector> normalizeVector(List<Vector> vectors) {
-
-
-        return null;
+    private void normalizeVector(List<Vector> vectors) {
+        int numberOfFeatures = vectors.get(0).getFeatures().size();
+        for (int i = 0; i < numberOfFeatures; i++) {
+            if (vectors.get(i).getFeatures().get(i).getFeature() instanceof Double) {
+                double max = Double.MIN_VALUE;
+                for (Vector vector : vectors) {
+                    double value = (double) vector.getFeatures().get(i).getFeature();
+                    max = Math.max(value, max);
+                }
+                for (Vector vector : vectors) {
+                    double value = (double) vector.getFeatures().get(i).getFeature() / max;
+                    vector.getFeatures().get(i).setFeature(value);
+                }
+            }
+        }
     }
 }
