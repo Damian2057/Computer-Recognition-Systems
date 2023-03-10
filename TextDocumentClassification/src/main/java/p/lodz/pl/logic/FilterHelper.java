@@ -11,7 +11,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-public class CommonWords {
+import static p.lodz.pl.constants.Const.COMMON_WORDS_DICTIONARY;
+
+public final class FilterHelper {
 
     private static final Dictionary DICTIONARY = new DictionaryReader();
     private static final String LETTER_REGEX = "[^a-zA-Z ]";
@@ -26,9 +28,10 @@ public class CommonWords {
         return splitted;
     }
 
-    public static List<String> removeOnlyByDictionary(Article article, Const path) {
-        String body = article.getBody();
-        String text = dictionaryFilter(body, path);
+    public static List<String> removeWordsFromDictionaryWithCommonWords(Article article, Const path) {
+        String text = simpleFilter(article);
+        text = dictionaryFilter(text, path);
+        text = dictionaryFilter(text, COMMON_WORDS_DICTIONARY);
 
         List<String> splitted = List.of(text.split(" "));
         splitted = splitted.stream().filter(x -> !x.isEmpty()).collect(Collectors.toList());
@@ -58,6 +61,7 @@ public class CommonWords {
 
         return splitted;
     }
+
     private static String simpleFilter(Article article) {
         String text = article.getBody();
         text = text.replaceAll(LETTER_REGEX, "");
