@@ -7,10 +7,8 @@ import org.jsoup.select.Elements;
 import p.lodz.pl.model.Article;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.io.IOException;
+import java.util.*;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
@@ -20,11 +18,9 @@ public class ArticleLoader implements Loader<Article> {
 
     private static final Logger LOGGER = LogManager.getLogManager().getLogger(Logger.GLOBAL_LOGGER_NAME);
     private static final String REGEX = "(?i)west-germany|usa|france|uk|canada|japan";
-    private final String path;
     private final List<Document> documents;
 
     public ArticleLoader(String path) {
-        this.path = path;
 //        this.documents = Arrays.stream(Objects.requireNonNull(new File(path).listFiles())).map(file -> {
 //            try {
 //                return Jsoup.parse(file, "UTF-8", "");

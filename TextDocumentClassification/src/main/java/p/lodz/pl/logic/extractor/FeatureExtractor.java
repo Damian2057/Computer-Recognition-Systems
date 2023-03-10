@@ -10,12 +10,15 @@ import p.lodz.pl.model.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 import static p.lodz.pl.constants.Const.ARTICLES;
 
 public class FeatureExtractor implements Extractor {
 
-    private static final Loader<Article> loader = new ArticleLoader(ARTICLES.name());
+    private static final Loader<Article> loader = new ArticleLoader(ARTICLES.getName());
+    private static final Logger LOGGER = LogManager.getLogManager().getLogger(Logger.GLOBAL_LOGGER_NAME);
     private static final Properties prop = Config.getProperties();
     private final List<Article> articles;
 
@@ -27,6 +30,7 @@ public class FeatureExtractor implements Extractor {
     public List<Vector> extract() {
         List<Vector> vectors = new ArrayList<>();
         for (Article article : articles) {
+            LOGGER.info(String.format("%s vectors created", vectors.size()));
             Vector vector = new Vector(article.getPlace());
             if (prop.isCurrencyExtractor()) {
                 vector.addFeature(Type.CURRENCY.getExtractor().extract(article));
@@ -71,6 +75,7 @@ public class FeatureExtractor implements Extractor {
         }
         normalizeVector(vectors);
 
+        LOGGER.info("All vectors were calculated");
         return vectors;
     }
 
