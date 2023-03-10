@@ -48,13 +48,9 @@ public class PrepareFile {
         }
         try (PrintWriter writer = new PrintWriter(new FileWriter(output))) {
             for (String word : words) {
-<<<<<<< HEAD
                 if (word.length() > 1) {
                     writer.println(word);
                 }
-=======
-                writer.println(word);
->>>>>>> origin/dev
             }
         } catch (IOException e) {
             throw new RuntimeException("Problem with saving the output file", e);
