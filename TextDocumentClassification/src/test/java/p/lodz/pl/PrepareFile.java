@@ -28,8 +28,8 @@ public class PrepareFile {
         dictionaries = Arrays.asList(Const.COMMON_WORDS_DICTIONARY.getName(),
                 Const.COUNTRY_DICTIONARY.getName(),
                 Const.GEOGRAPHICAL_PLACES_DICTIONARY.getName(),
-                Const.GEOGRAPHICAL_PLACES_DICTIONARY.getName(),
-                Const.HISTORICAL_FIGURES_DICTIONARY.getName());
+                Const.HISTORICAL_FIGURES_DICTIONARY.getName(),
+                Const.CURRENCY_DICTIONARY.getName());
 
         LOGGER.info(String.format("Convert file %s to output file %s", input, output));
     }
@@ -48,7 +48,9 @@ public class PrepareFile {
         }
         try (PrintWriter writer = new PrintWriter(new FileWriter(output))) {
             for (String word : words) {
-                writer.println(word);
+                if (word.length() > 1) {
+                    writer.println(word);
+                }
             }
         } catch (IOException e) {
             throw new RuntimeException("Problem with saving the output file", e);

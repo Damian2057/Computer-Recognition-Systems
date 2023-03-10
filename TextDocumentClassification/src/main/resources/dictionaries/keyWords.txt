@@ -41,24 +41,18 @@ gold
 Ise
 SFO
 policy
-a
 napoleon
-b
 BEF
-d
 bencher
-f
 Lyon
 Indre-et-Loire
 Côte d'Ivoire
 Ingolstadt
 abbreviation
-m
 gola
 razet
 rattler
 French Polynesia
-p
 straight
 Falaise
 yuletide
@@ -577,7 +571,6 @@ National Insurance
 Meursault
 treaty-port
 Lady
-pound
 marlberry
 cimbric
 Rouen
@@ -846,7 +839,6 @@ Sémillon
 Brandt
 Traminer
 marl
-mark
 Berlin Wall
 Juliaca
 mod
@@ -1294,7 +1286,6 @@ Awaji
 Japanese beech
 B-road
 the Allies
-sterling
 Pyrénées-Orientales
 Esslingen
 MacArthur
@@ -2196,7 +2187,6 @@ Rudesheimer
 Martinique
 cacoon
 Russo-Japanese
-yen
 SSAFA
 Treasury bill
 GCB
@@ -2396,7 +2386,6 @@ thuringian
 digestive biscuit
 the WEA
 Haut-Rhin
-march
 airwoman
 meet
 Wehrmacht
@@ -3433,7 +3422,6 @@ Lusatia
 Hiroshima
 cotillion
 mould
-pound sterling
 reiki
 the Queen
 anglo-gallic
