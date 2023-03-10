@@ -1,6 +1,7 @@
 package p.lodz.pl.logic.extractor.types;
 
 import p.lodz.pl.enums.Type;
+import p.lodz.pl.logic.extractor.types.base.SpecificExtractor;
 import p.lodz.pl.model.Article;
 import p.lodz.pl.model.Feature;
 
@@ -20,6 +21,6 @@ public class NumberOfSentencesExtractor implements SpecificExtractor {
             count++;
         }
 
-        return new Feature<Double>(Type.NUMBER_OF_SENTENCES, count);
+        return new Feature<>(Type.NUMBER_OF_SENTENCES, count);
     }
 }

@@ -2,6 +2,7 @@ package p.lodz.pl.enums;
 
 import p.lodz.pl.config.Config;
 import p.lodz.pl.logic.extractor.types.*;
+import p.lodz.pl.logic.extractor.types.base.SpecificExtractor;
 
 public enum Type {
     CURRENCY(new CurrencyExtractor()),

@@ -11,14 +11,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import static p.lodz.pl.constants.Const.COMMON_WORDS_DICTIONARY;
-
 public class CommonWords {
 
     private static final Dictionary DICTIONARY = new DictionaryReader();
     private static final String LETTER_REGEX = "[^a-zA-Z ]";
 
-    public static List<String> removeByDictionary(Article article, Const path) {
+    public static List<String> removeWordsFromDictionary(Article article, Const path) {
         String text = simpleFilter(article);
         text = dictionaryFilter(text, path);
 
@@ -38,7 +36,7 @@ public class CommonWords {
         return splitted;
     }
 
-    public static List<String> applyDictionary(Article article, Const path) {
+    public static List<String> keepWordsFromDictionary(Article article, Const path) {
         String text = simpleFilter(article);
         List<String> keyWords = DICTIONARY.read(path);
         keyWords = keyWords.stream().map(String::toLowerCase).collect(Collectors.toList());
