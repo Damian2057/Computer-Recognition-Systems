@@ -102,3 +102,156 @@ Miami
 Las Vegas
 Hawaii
 Appalachians
+Houston
+Phoenix
+Philadelphia
+San Antonio
+San Diego
+Dallas
+San Jose
+Austin
+Jacksonville
+Fort Worth
+Columbus
+San Francisco
+Charlotte
+Indianapolis
+Seattle
+Denver
+Washington, D.C.
+Washington
+Boston
+Nashville
+El Paso
+Detroit
+Memphis
+Portland
+Oklahoma City
+Oklahoma
+Las Vegas
+Louisville
+Baltimore
+Milwaukee
+Albuquerque
+Tucson
+Fresno
+Mesa
+Sacramento
+Atlanta
+Kansas City
+Colorado Springs
+Colorado
+Anaheim
+Arlington
+Aurora
+Bakersfield
+Baton Rouge
+Boise
+Buffalo
+Chandler
+Chesapeake
+Chula Vista
+Cincinnati
+Cleveland
+Corpus Christi
+Durham
+Fayetteville
+Fort Wayne
+Fremont
+Garland
+Glendale
+Greensboro
+Henderson
+Hialeah
+Honolulu
+Irvine
+Irving
+Jersey City
+New Jersey
+Jersey
+Laredo
+Lexington
+Lincoln
+Long Beach
+Lubbock
+Madison
+Montgomery
+New Orleans
+Oakland
+Omaha
+Orlando
+Pittsburgh
+Raleigh
+Reno
+Richmond
+Riverside
+Rochester
+Salt Lake City
+Salt Lake
+San Bernardino
+Santa Ana
+Scottsdale
+Shreveport
+Spokane
+St. Paul
+St. Petersburg
+Stockton
+Tacoma
+Tampa
+Toledo
+Tulsa
+Tyler
+Virginia Beach
+Virginia
+Wichita
+Winston-Salem
+Worcester
+Yonkers
+Akron
+Allentown
+Amarillo
+Ann Arbor
+Augusta
+Alabama
+Alaska
+Arizona
+Arkansas
+California
+Connecticut
+Delaware
+Florida
+Georgia
+Idaho
+Illinois
+Indiana
+Iowa
+Kansas
+Kentucky
+Louisiana
+Maine
+Maryland
+Massachusetts
+Michigan
+Minnesota
+Mississippi
+Missouri
+Montana
+Nebraska
+Nevada
+New Hampshire
+New Mexico
+North Carolina
+North Dakota
+Ohio
+Oregon
+Pennsylvania
+Rhode Island
+South Carolina
+South Dakota
+Tennessee
+Texas
+Utah
+Vermont
+West Virginia
+Wisconsin
+Wyoming
