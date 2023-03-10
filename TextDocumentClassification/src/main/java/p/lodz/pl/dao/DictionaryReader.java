@@ -21,7 +21,7 @@ public class DictionaryReader implements Dictionary {
             }
 
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(String.format("Dictionary %s reading error", path.name()), e);
         }
         return words;
     }
