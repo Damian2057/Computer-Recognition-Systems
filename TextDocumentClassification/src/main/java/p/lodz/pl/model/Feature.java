@@ -13,4 +13,12 @@ public class Feature<T> {
         this.type = type;
         this.feature = feature;
     }
+
+    public void setFeature(Double feature) {
+        this.feature = (T) feature;
+    }
+
+    public Type getType() {
+        return type;
+    }
 }
