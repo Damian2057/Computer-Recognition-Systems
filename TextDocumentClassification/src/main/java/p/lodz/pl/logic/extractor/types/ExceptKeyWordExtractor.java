@@ -11,12 +11,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static p.lodz.pl.constants.Const.KEY_WORDS_DICTIONARY;
+import static p.lodz.pl.constants.Const.*;
 
 public class ExceptKeyWordExtractor implements SpecificExtractor {
     @Override
     public Feature<?> extract(Article article) {
-        List<String> exceptKeyWords = FilterHelper.removeWordsFromDictionaryWithCommonWords(article, KEY_WORDS_DICTIONARY);
+        List<String> exceptKeyWords = FilterHelper.removeWordsFromDictionaryWithCommonWords(article,
+                KEY_WORDS_DICTIONARY,
+                CURRENCY_DICTIONARY,
+                COUNTRY_DICTIONARY,
+                GEOGRAPHICAL_PLACES_DICTIONARY,
+                HISTORICAL_FIGURES_DICTIONARY,
+                COMMON_WORDS_DICTIONARY);
         Map<String, Integer> map = new LinkedHashMap<>();
         for (String word : exceptKeyWords) {
             map.merge(word, 1, Integer::sum);

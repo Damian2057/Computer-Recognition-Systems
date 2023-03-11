@@ -28,10 +28,11 @@ public final class FilterHelper {
         return splitted;
     }
 
-    public static List<String> removeWordsFromDictionaryWithCommonWords(Article article, Const path) {
+    public static List<String> removeWordsFromDictionaryWithCommonWords(Article article, Const... path) {
         String text = simpleFilter(article);
-        text = dictionaryFilter(text, path);
-        text = dictionaryFilter(text, COMMON_WORDS_DICTIONARY);
+        for (Const dictionary : path) {
+            text = dictionaryFilter(text, dictionary);
+        }
 
         List<String> splitted = List.of(text.split(" "));
         splitted = splitted.stream().filter(x -> !x.isEmpty()).collect(Collectors.toList());
