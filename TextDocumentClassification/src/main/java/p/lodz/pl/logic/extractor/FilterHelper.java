@@ -1,4 +1,4 @@
-package p.lodz.pl.logic;
+package p.lodz.pl.logic.extractor;
 
 import p.lodz.pl.constants.Const;
 import p.lodz.pl.dao.Dictionary;

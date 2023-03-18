@@ -1,7 +1,7 @@
 package p.lodz.pl.logic.extractor.types.base;
 
 import p.lodz.pl.constants.Const;
-import p.lodz.pl.logic.FilterHelper;
+import p.lodz.pl.logic.extractor.FilterHelper;
 import p.lodz.pl.model.Article;
 
 import java.util.LinkedHashMap;
