@@ -5,5 +5,5 @@ import p.lodz.pl.model.Vector;
 import java.util.List;
 
 public interface Matrix {
-    List<ClassificationCategory> measureClassificationQuality(List<Vector> vectors);
+    List<Category> measureClassificationQuality(List<Vector> vectors);
 }

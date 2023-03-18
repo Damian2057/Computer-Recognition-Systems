@@ -2,19 +2,17 @@ package p.lodz.pl.logic.quality;
 
 import p.lodz.pl.model.Vector;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public class ConfusionMatrix implements Matrix {
 
-    private List<ClassificationCategory> categories = new ArrayList<>();
     private List<Vector> vectors;
 
-    public List<ClassificationCategory> measureClassificationQuality(List<Vector> vectors) {
+    public List<Category> measureClassificationQuality(List<Vector> vectors) {
         this.vectors = vectors;
-        this.categories = detectCategories();
+        List<Category> categories = detectCategories();
 
         double acc = calculateAcc();
         categories.forEach(category -> {
@@ -24,15 +22,15 @@ public class ConfusionMatrix implements Matrix {
             category.setRealNumberOfItems(calculateRealNumberOfCategoryItems(category.getType()));
         });
 
-        categories.forEach(ClassificationCategory::calculate);
+        categories.forEach(Category::calculate);
         return categories;
     }
 
-    private List<ClassificationCategory> detectCategories() {
+    private List<Category> detectCategories() {
         Set<String> set = vectors.stream()
                 .map(Vector::getArticleRealCountry)
                 .collect(Collectors.toSet());
-        return set.stream().map(ClassificationCategory::new).toList();
+        return set.stream().map(Category::new).toList();
     }
 
     private double calculateAcc() {

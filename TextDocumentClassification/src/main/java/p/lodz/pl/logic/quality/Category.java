@@ -1,6 +1,6 @@
 package p.lodz.pl.logic.quality;
 
-public class ClassificationCategory {
+public class Category {
     private final String type;
     private double acc;
     private double pre;
@@ -11,11 +11,11 @@ public class ClassificationCategory {
     private int allClassified = 0;
     private int realNumberOfItems = 0;
 
-    public ClassificationCategory(String type) {
+    public Category(String type) {
         this.type = type;
     }
 
-    public void calculate() {
+    void calculate() {
         calculatePre();
         calculateRec();
         calculateF1();
@@ -49,7 +49,7 @@ public class ClassificationCategory {
         return positivelyCorrect;
     }
 
-    public void setPositivelyCorrect(int positivelyCorrect) {
+    void setPositivelyCorrect(int positivelyCorrect) {
         this.positivelyCorrect = positivelyCorrect;
     }
 
@@ -57,7 +57,7 @@ public class ClassificationCategory {
         return allClassified;
     }
 
-    public void setAllClassifiedToCategory(int allClassified) {
+    void setAllClassifiedToCategory(int allClassified) {
         this.allClassified = allClassified;
     }
 
@@ -65,7 +65,7 @@ public class ClassificationCategory {
         return realNumberOfItems;
     }
 
-    public void setRealNumberOfItems(int realNumberOfItems) {
+    void setRealNumberOfItems(int realNumberOfItems) {
         this.realNumberOfItems = realNumberOfItems;
     }
 
