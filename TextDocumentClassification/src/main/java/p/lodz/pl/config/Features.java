@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class Features {
+
     private final boolean currencyExtractor;
     private final boolean numberOfSentencesExtractor;
     private final boolean historicalFigureExtractor;

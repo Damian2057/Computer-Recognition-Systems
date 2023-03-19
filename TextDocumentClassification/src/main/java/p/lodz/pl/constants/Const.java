@@ -19,7 +19,8 @@ public enum Const {
     TITLE("TITLE"),
     BODY("BODY"),
     TEXT("TEXT"),
-    COUNTRY_REGEX("west-germany|USA");
+    TRAINING("training"),
+    TEST("test");
 
     private final String name;
 

@@ -4,12 +4,14 @@ import lombok.Data;
 
 @Data
 public class Properties {
+
     private final Features features;
     private final int longWordLength;
     private final int numberOfOccurrences;
     private final double[] proportionOfDataSets;
     private final String regex;
     private final boolean testMode;
+    private final int k;
 
     public boolean isCurrencyExtractor() {
         return features.isCurrencyExtractor();
