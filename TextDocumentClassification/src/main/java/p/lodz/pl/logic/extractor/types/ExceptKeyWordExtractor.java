@@ -1,7 +1,7 @@
 package p.lodz.pl.logic.extractor.types;
 
 import p.lodz.pl.enums.Type;
-import p.lodz.pl.logic.FilterHelper;
+import p.lodz.pl.logic.extractor.FilterHelper;
 import p.lodz.pl.logic.extractor.types.base.SpecificExtractor;
 import p.lodz.pl.model.Article;
 import p.lodz.pl.model.Feature;
