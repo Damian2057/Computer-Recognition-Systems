@@ -1,8 +1,8 @@
 package p.lodz.pl.logic.extractor;
 
 import p.lodz.pl.constants.Const;
-import p.lodz.pl.dao.Dictionary;
-import p.lodz.pl.dao.DictionaryReader;
+import p.lodz.pl.dao.DictionaryLoader;
+import p.lodz.pl.dao.DictionaryLoaderImpl;
 import p.lodz.pl.model.Article;
 
 import java.util.Arrays;
@@ -11,11 +11,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import static p.lodz.pl.constants.Const.COMMON_WORDS_DICTIONARY;
-
 public final class FilterHelper {
 
-    private static final Dictionary DICTIONARY = new DictionaryReader();
+    private static final DictionaryLoader<String> DICTIONARY = new DictionaryLoaderImpl();
     private static final String LETTER_REGEX = "[^a-zA-Z ]";
 
     public static List<String> removeWordsFromDictionary(Article article, Const path) {

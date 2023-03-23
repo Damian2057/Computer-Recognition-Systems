@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DictionaryReader implements Dictionary {
+public class DictionaryLoaderImpl implements DictionaryLoader<String> {
     @Override
     public List<String> read(Const path) {
         List<String> words = new ArrayList<>();
