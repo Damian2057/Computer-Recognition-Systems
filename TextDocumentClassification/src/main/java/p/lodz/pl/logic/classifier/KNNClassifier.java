@@ -25,6 +25,7 @@ public class KNNClassifier implements Classifier {
         this.testSet = map.get(TEST);
     }
 
+    @Override
     public List<Vector> classifyTestSet() {
         for (Vector testVector : testSet) {
 

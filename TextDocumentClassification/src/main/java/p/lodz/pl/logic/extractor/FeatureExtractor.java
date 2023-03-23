@@ -2,8 +2,8 @@ package p.lodz.pl.logic.extractor;
 
 import p.lodz.pl.config.Config;
 import p.lodz.pl.config.Properties;
+import p.lodz.pl.dao.ArticleLoaderImpl;
 import p.lodz.pl.dao.ArticleLoader;
-import p.lodz.pl.dao.Loader;
 import p.lodz.pl.enums.Type;
 import p.lodz.pl.model.Article;
 import p.lodz.pl.model.Vector;
@@ -17,7 +17,7 @@ import static p.lodz.pl.constants.Const.ARTICLES;
 
 public class FeatureExtractor implements Extractor {
 
-    private static final Loader<Article> loader = new ArticleLoader(ARTICLES.getName());
+    private static final ArticleLoader<Article> loader = new ArticleLoaderImpl(ARTICLES.getName());
     private static final Logger LOGGER = LogManager.getLogManager().getLogger(Logger.GLOBAL_LOGGER_NAME);
     private static final Properties prop = Config.getProperties();
     private final List<Article> articles;

@@ -29,7 +29,7 @@ public class Category {
         return acc;
     }
 
-    public void setAcc(double acc) {
+    void setAcc(double acc) {
         this.acc = acc;
     }
 
