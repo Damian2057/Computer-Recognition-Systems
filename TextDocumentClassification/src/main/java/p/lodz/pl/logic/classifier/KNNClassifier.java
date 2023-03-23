@@ -36,7 +36,7 @@ public class KNNClassifier implements Classifier {
 
     private Map<Const, List<Vector>> splitSet(List<Vector> vectors) {
         int size = vectors.size();
-        int mid = (int) Math.ceil(size * prop.getProportionOfDataSets()[0]);
+        int mid = (int) Math.ceil(size * prop.getProportionOfDataSets()[0] * 0.01);
 
         List<Vector> firstList = new ArrayList<>(vectors.subList(0, mid));
         List<Vector> secondList = new ArrayList<>(vectors.subList(mid, size));
