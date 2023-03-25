@@ -2,12 +2,12 @@ package p.lodz.pl.logic.classifier.measures;
 
 public class MeasureFactory {
 
-    public Measure getMetric(String measure) {
+    public Measure getMeasure(String measure) {
         switch (measure) {
             case "ngrams" -> {
                 return new NGramMeasure();
             }
-            default -> throw new RuntimeException("invalid metric type");
+            default -> throw new RuntimeException("invalid measure type");
         }
     }
 }

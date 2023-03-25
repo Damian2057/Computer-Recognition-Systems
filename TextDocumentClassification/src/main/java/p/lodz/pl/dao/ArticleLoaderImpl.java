@@ -1,5 +1,6 @@
 package p.lodz.pl.dao;
 
+import lombok.extern.java.Log;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -11,14 +12,12 @@ import p.lodz.pl.model.Article;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
-import java.util.logging.LogManager;
-import java.util.logging.Logger;
 
 import static p.lodz.pl.constants.Const.*;
 
+@Log
 public class ArticleLoaderImpl implements ArticleLoader<Article> {
 
-    private static final Logger LOGGER = LogManager.getLogManager().getLogger(Logger.GLOBAL_LOGGER_NAME);
     private static final Properties prop = Config.getProperties();
     private final String regex;
     private final List<Document> documents;
@@ -76,7 +75,7 @@ public class ArticleLoaderImpl implements ArticleLoader<Article> {
                 articles.add(builder.build());
             }
         }
-        LOGGER.info(String.format("%s data loaded", articles.size()));
+        log.info(String.format("%s data loaded", articles.size()));
 
         return articles;
     }

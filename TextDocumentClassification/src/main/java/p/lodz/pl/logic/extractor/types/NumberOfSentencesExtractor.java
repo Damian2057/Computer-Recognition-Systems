@@ -20,6 +20,9 @@ public class NumberOfSentencesExtractor implements SpecificExtractor {
         while (matcher.find()) {
             count++;
         }
+        if (count == 0) {
+            count = 1;
+        }
 
         return new Feature<>(Type.NUMBER_OF_SENTENCES, count);
     }
