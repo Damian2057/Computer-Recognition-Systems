@@ -12,6 +12,8 @@ public class Properties {
     private final String regex;
     private final boolean testMode;
     private final int k;
+    private final String metric;
+    private final String measure;
 
     public boolean isCurrencyExtractor() {
         return features.isCurrencyExtractor();

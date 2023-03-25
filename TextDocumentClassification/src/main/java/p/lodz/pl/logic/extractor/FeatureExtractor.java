@@ -1,24 +1,23 @@
 package p.lodz.pl.logic.extractor;
 
+import lombok.extern.java.Log;
 import p.lodz.pl.config.Config;
 import p.lodz.pl.config.Properties;
-import p.lodz.pl.dao.ArticleLoaderImpl;
 import p.lodz.pl.dao.ArticleLoader;
+import p.lodz.pl.dao.ArticleLoaderImpl;
 import p.lodz.pl.enums.Type;
 import p.lodz.pl.model.Article;
 import p.lodz.pl.model.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.LogManager;
-import java.util.logging.Logger;
 
 import static p.lodz.pl.constants.Const.ARTICLES;
 
+@Log
 public class FeatureExtractor implements Extractor {
 
     private static final ArticleLoader<Article> loader = new ArticleLoaderImpl(ARTICLES.getName());
-    private static final Logger LOGGER = LogManager.getLogManager().getLogger(Logger.GLOBAL_LOGGER_NAME);
     private static final Properties prop = Config.getProperties();
     private final List<Article> articles;
 
@@ -32,7 +31,7 @@ public class FeatureExtractor implements Extractor {
         final int size = articles.size();
         for (Article article : articles) {
             try {
-                LOGGER.info(Math.round((vectors.size() * 1.0 / size) * 100.0) + " % percent vectors created");
+                log.info(Math.round((vectors.size() * 1.0 / size) * 100.0) + " % percent vectors created");
                 Vector vector = new Vector(article.getPlace());
                 if (prop.isCurrencyExtractor()) {
                     vector.addFeature(Type.CURRENCY.extract(article));
@@ -80,7 +79,7 @@ public class FeatureExtractor implements Extractor {
         }
         normalizeVector(vectors);
 
-        LOGGER.info("All vectors were calculated");
+        log.info("All vectors were calculated");
         return vectors;
     }
 

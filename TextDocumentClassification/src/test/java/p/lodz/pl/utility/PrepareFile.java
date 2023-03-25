@@ -1,5 +1,6 @@
-package p.lodz.pl;
+package p.lodz.pl.utility;
 
+import lombok.extern.java.Log;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import p.lodz.pl.constants.Const;
@@ -8,16 +9,14 @@ import java.io.*;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-import java.util.logging.LogManager;
-import java.util.logging.Logger;
 
 /**
  * This class is used to prepare glossaries based on which data analysis takes place
  */
+@Log
 public class PrepareFile {
 
     private static final boolean enable = false;
-    private static final Logger LOGGER = LogManager.getLogManager().getLogger(Logger.GLOBAL_LOGGER_NAME);
     private final String output = "output";
     private String input;
     private List<String> dictionaries;
@@ -30,13 +29,12 @@ public class PrepareFile {
                 Const.GEOGRAPHICAL_PLACES_DICTIONARY.getName(),
                 Const.HISTORICAL_FIGURES_DICTIONARY.getName(),
                 Const.CURRENCY_DICTIONARY.getName());
-
-        LOGGER.info(String.format("Convert file %s to output file %s", input, output));
+        log.info(String.format("Convert file %s to output file %s", input, output));
     }
 
     @Test(enabled = enable, priority = 1)
     public void removeDuplicates() {
-        LOGGER.info("Deleting duplicates");
+        log.info("Deleting duplicates");
         HashSet<String> words = new HashSet<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(input))) {
             String line;
@@ -84,7 +82,7 @@ public class PrepareFile {
                 throw new RuntimeException("Problem with saving the output file", e);
             }
         }
-        LOGGER.info("Completed!");
+        log.info("Completed!");
     }
 
 }
