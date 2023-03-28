@@ -14,6 +14,7 @@ public class Properties {
     private final int k;
     private final String metric;
     private final String measure;
+    private final int[] ngramLimitation;
 
     public boolean isCurrencyExtractor() {
         return features.isCurrencyExtractor();
