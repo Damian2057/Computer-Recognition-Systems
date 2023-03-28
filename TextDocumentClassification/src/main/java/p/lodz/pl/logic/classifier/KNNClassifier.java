@@ -28,21 +28,21 @@ public class KNNClassifier implements Classifier {
         this.trainingSet = map.get(TRAINING);
         this.testSet = map.get(TEST);
         this.metric = factory.getMetric(prop.getMetric());
+        log.info("TestSet size: " + testSet.size());
+        log.info("TrainingSet size: " + trainingSet.size());
     }
 
     @Override
     public List<Vector> classifyTestSet() {
-        for (int i = 0; i < testSet.size(); i++) {
-            int finalI = i;
-            new Thread(() -> {
-                List<Neighbor> neighbors = new ArrayList<>();
-                for (Vector trainingVector : trainingSet) {
-                    neighbors.add(metric.calculateMetric(testSet.get(finalI), trainingVector));
-                }
-                testSet.get(finalI).setClassificationCountry(getClassByKNN(neighbors));
-            }).start();
+        log.info("Classification started");
+        for (Vector testVector : testSet) {
+            List<Neighbor> neighbors = new ArrayList<>();
+            for (Vector trainingVector : trainingSet) {
+                neighbors.add(metric.calculateMetric(testVector, trainingVector));
+            }
+            testVector.setClassificationCountry(getClassByKNN(neighbors));
         }
-
+        log.info("Classification completed");
         return testSet;
     }
 
