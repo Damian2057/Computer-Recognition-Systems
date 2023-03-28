@@ -21,6 +21,7 @@
   "k": 10,
   "measure": "ngrams",
   "metric": "euclideanMetric",
+  "ngramLimitation": [2, 3],
 
   "testMode": {
     "enable": true,

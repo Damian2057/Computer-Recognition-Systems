@@ -1,5 +1,6 @@
 package p.lodz.pl.logic.start;
 
+import lombok.extern.java.Log;
 import p.lodz.pl.config.Config;
 import p.lodz.pl.config.Properties;
 import p.lodz.pl.dao.SerializeLoaderImpl;
@@ -15,6 +16,7 @@ import p.lodz.pl.model.Vector;
 
 import java.util.List;
 
+@Log
 public class StarterImpl implements Starter {
 
     private static final Properties prop = Config.getProperties();
@@ -31,6 +33,7 @@ public class StarterImpl implements Starter {
         } else {
             SerializeLoader<List<Vector>> reader = new SerializeLoaderImpl();
             vectors = reader.read();
+            log.info(vectors.size() + " vectors loaded");
         }
         this.classifier = new KNNClassifier(vectors);
         this.confusionMatrix = new ConfusionMatrixImpl();
