@@ -1,34 +1,45 @@
 package p.lodz.pl.logic.classifier;
 
+import lombok.extern.java.Log;
 import p.lodz.pl.config.Config;
 import p.lodz.pl.config.Properties;
 import p.lodz.pl.constants.Const;
+import p.lodz.pl.logic.classifier.metrics.Metric;
+import p.lodz.pl.logic.classifier.metrics.MetricFactory;
 import p.lodz.pl.model.Vector;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static p.lodz.pl.constants.Const.TEST;
 import static p.lodz.pl.constants.Const.TRAINING;
 
+@Log
 public class KNNClassifier implements Classifier {
 
     private static final Properties prop = Config.getProperties();
     private final List<Vector> trainingSet;
     private final List<Vector> testSet;
+    private final Metric metric;
 
     public KNNClassifier(List<Vector> vectors) {
         Map<Const, List<Vector>> map = splitSet(vectors);
+        MetricFactory factory = new MetricFactory();
         this.trainingSet = map.get(TRAINING);
         this.testSet = map.get(TEST);
+        this.metric = factory.getMetric(prop.getMetric());
     }
 
     @Override
     public List<Vector> classifyTestSet() {
         for (Vector testVector : testSet) {
-
+            new Thread(() -> {
+                List<Neighbor> neighbors = new ArrayList<>();
+                for (Vector trainingVector : trainingSet) {
+                    neighbors.add(metric.calculateMetric(testVector, trainingVector));
+                }
+                testVector.setClassificationCountry(getClassByKNN(neighbors));
+            }).start();
         }
 
         return testSet;
@@ -46,5 +57,17 @@ public class KNNClassifier implements Classifier {
         resultMap.put(TEST, secondList);
 
         return resultMap;
+    }
+
+    private String getClassByKNN(List<Neighbor> neighbors) {
+        List<Neighbor> kNearest = neighbors.stream()
+                .sorted(Comparator.comparing(Neighbor::getDistance))
+                .limit(prop.getK())
+                .toList();
+        Map<String, Long> countryCount = kNearest.stream()
+                .collect(Collectors.groupingBy(Neighbor::getCountry,
+                        Collectors.counting()));
+        return countryCount.entrySet().stream()
+                .max(Map.Entry.comparingByValue()).get().getKey();
     }
 }

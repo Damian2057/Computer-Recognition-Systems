@@ -19,8 +19,8 @@
 
   "proportionOfDataSets": [60, 40],
   "k": 10,
-  "measure": "ngram",
-  "metric": "euclidean",
+  "measure": "ngrams",
+  "metric": "euclideanMetric",
 
   "testMode": {
     "enable": true,
