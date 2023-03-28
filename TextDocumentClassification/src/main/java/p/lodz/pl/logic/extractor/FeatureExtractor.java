@@ -29,9 +29,10 @@ public class FeatureExtractor implements Extractor {
     public List<Vector> extract() {
         List<Vector> vectors = new ArrayList<>();
         final int size = articles.size();
+        int i = 0;
         for (Article article : articles) {
             try {
-                log.info(Math.round((vectors.size() * 1.0 / size) * 100.0) + " % percent vectors created");
+                log.info(Math.round((i++ * 1.0 / size) * 100.0) + " % percent vectors created");
                 Vector vector = new Vector(article.getPlace());
                 if (prop.isCurrencyExtractor()) {
                     vector.addFeature(Type.CURRENCY.extract(article));
@@ -79,11 +80,12 @@ public class FeatureExtractor implements Extractor {
         }
         normalizeVector(vectors);
 
-        log.info("All vectors were calculated");
+        log.info("All vectors are ready");
         return vectors;
     }
 
     private void normalizeVector(List<Vector> vectors) {
+        log.info("Vector normalization");
         int numberOfFeatures = vectors.get(0).getFeatures().size();
         for (int i = 0; i < numberOfFeatures; i++) {
             if (vectors.get(i).getFeatures().get(i).getFeature() instanceof Double) {

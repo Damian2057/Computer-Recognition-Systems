@@ -32,13 +32,14 @@ public class KNNClassifier implements Classifier {
 
     @Override
     public List<Vector> classifyTestSet() {
-        for (Vector testVector : testSet) {
+        for (int i = 0; i < testSet.size(); i++) {
+            int finalI = i;
             new Thread(() -> {
                 List<Neighbor> neighbors = new ArrayList<>();
                 for (Vector trainingVector : trainingSet) {
-                    neighbors.add(metric.calculateMetric(testVector, trainingVector));
+                    neighbors.add(metric.calculateMetric(testSet.get(finalI), trainingVector));
                 }
-                testVector.setClassificationCountry(getClassByKNN(neighbors));
+                testSet.get(finalI).setClassificationCountry(getClassByKNN(neighbors));
             }).start();
         }
 

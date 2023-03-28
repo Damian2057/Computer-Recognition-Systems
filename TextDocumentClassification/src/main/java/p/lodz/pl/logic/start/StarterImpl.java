@@ -39,8 +39,8 @@ public class StarterImpl implements Starter {
     @Override
     public void start() {
         List<Vector> vectors = classifier.classifyTestSet();
-//        List<Category> qualityList = confusionMatrix.measureClassificationQuality(vectors);
-//        displayInfo(qualityList);
+        List<Category> qualityList = confusionMatrix.measureClassificationQuality(vectors);
+        displayInfo(qualityList);
     }
 
     private void displayInfo(List<Category> categories) {
