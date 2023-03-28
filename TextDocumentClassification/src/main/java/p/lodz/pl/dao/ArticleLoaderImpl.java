@@ -11,6 +11,7 @@ import p.lodz.pl.model.Article;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.*;
 
 import static p.lodz.pl.constants.Const.*;
@@ -24,11 +25,11 @@ public class ArticleLoaderImpl implements ArticleLoader<Article> {
 
     public ArticleLoaderImpl(String path) {
         this.regex = prop.getRegex();
-        if (prop.isTestMode()) {
+        if (prop.getTestMode().isEnable()) {
             try {
-                this.documents = List.of(Jsoup.parse(new File("src/main/resources/articles/reut2-000.sgm"), "UTF-8", ""));
+                this.documents = drawDocuments(path, prop.getTestMode().getNumberOfArticles());
             } catch (Exception e) {
-                throw new RuntimeException();
+                throw new RuntimeException(e);
             }
         } else {
             this.documents = Arrays.stream(Objects.requireNonNull(new File(path).listFiles())).map(file -> {
@@ -78,5 +79,15 @@ public class ArticleLoaderImpl implements ArticleLoader<Article> {
         log.info(String.format("%s data loaded", articles.size()));
 
         return articles;
+    }
+
+    private List<Document> drawDocuments(String path, int count) throws IOException {
+        List<Document> documents = new ArrayList<>();
+        File[] files = new File(path).listFiles();
+        Random rand = new Random();
+        for (int i = 0; i < count; i++) {
+            documents.add(Jsoup.parse(files[rand.nextInt(files.length)], "UTF-8", ""));
+        }
+        return documents;
     }
 }

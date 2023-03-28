@@ -10,7 +10,7 @@ public class Properties {
     private final int numberOfOccurrences;
     private final double[] proportionOfDataSets;
     private final String regex;
-    private final boolean testMode;
+    private final TestMode testMode;
     private final int k;
     private final String metric;
     private final String measure;
