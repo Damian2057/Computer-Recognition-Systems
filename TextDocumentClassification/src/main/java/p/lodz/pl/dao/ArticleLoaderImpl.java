@@ -45,6 +45,7 @@ public class ArticleLoaderImpl implements ArticleLoader<Article> {
     @Override
     public List<Article> read() {
         List<Article> articles = new ArrayList<>();
+        log.info("Load: " + documents.size() + " documents");
         for (Document document : documents) {
             Elements elements = document.select(REUTERS.name());
             for (Element element : elements) {
@@ -76,7 +77,6 @@ public class ArticleLoaderImpl implements ArticleLoader<Article> {
                 articles.add(builder.build());
             }
         }
-        log.info(String.format("%s data loaded", articles.size()));
 
         return articles;
     }

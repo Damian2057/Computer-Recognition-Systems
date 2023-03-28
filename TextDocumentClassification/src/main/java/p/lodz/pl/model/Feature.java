@@ -27,4 +27,12 @@ public class Feature<T> implements Serializable {
     public Type getType() {
         return type;
     }
+
+    public Double getAsDouble() {
+        return (Double) feature;
+    }
+
+    public String getAsString() {
+        return (String) feature;
+    }
 }
