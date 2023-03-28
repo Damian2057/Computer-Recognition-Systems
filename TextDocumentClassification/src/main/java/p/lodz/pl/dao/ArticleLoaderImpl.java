@@ -83,10 +83,12 @@ public class ArticleLoaderImpl implements ArticleLoader<Article> {
 
     private List<Document> drawDocuments(String path, int count) throws IOException {
         List<Document> documents = new ArrayList<>();
-        File[] files = new File(path).listFiles();
+        List<File> fileList = new ArrayList<>(List.of(new File(path).listFiles()));
         Random rand = new Random();
         for (int i = 0; i < count; i++) {
-            documents.add(Jsoup.parse(files[rand.nextInt(files.length)], "UTF-8", ""));
+            File file = fileList.get(rand.nextInt(fileList.size()));
+            documents.add(Jsoup.parse(file, "UTF-8", ""));
+            fileList.remove(file);
         }
         return documents;
     }
