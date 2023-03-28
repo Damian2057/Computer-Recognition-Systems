@@ -9,6 +9,8 @@ public enum Const {
     HISTORICAL_FIGURES_DICTIONARY("src/main/resources/dictionaries/historicalFigures.txt"),
     KEY_WORDS_DICTIONARY("src/main/resources/dictionaries/keyWords.txt"),
     COUNTRY_DICTIONARY("src/main/resources/dictionaries/country.txt"),
+    SERIALIZE_VECTORS("src/main/resources/serialize/vectors.raw"),
+    SERIALIZE_PATH("src/main/resources/serialize"),
     SPACE(" "),
     PLACES("PLACES"),
     D("D"),
