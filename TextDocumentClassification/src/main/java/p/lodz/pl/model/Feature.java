@@ -3,8 +3,10 @@ package p.lodz.pl.model;
 import lombok.Data;
 import p.lodz.pl.enums.Type;
 
+import java.io.Serializable;
+
 @Data
-public class Feature<T> {
+public class Feature<T> implements Serializable {
 
     private final Type type;
     private T feature;

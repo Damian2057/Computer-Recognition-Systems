@@ -16,10 +16,15 @@
   },
   "longWordLength": 7,
   "numberOfOccurrences": 4,
-  "regex": "(?i)west-germany|usa|france|uk|canada|japan",
 
   "proportionOfDataSets": [60, 40],
   "k": 10,
+  "measure": "ngram",
+  "metric": "euclidean",
 
-  "testMode": true
+  "testMode": {
+    "enable": true,
+    "numberOfArticles": 5
+  },
+  "regex": "(?i)west-germany|usa|france|uk|canada|japan"
 }
