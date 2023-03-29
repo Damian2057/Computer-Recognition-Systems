@@ -2,8 +2,7 @@ package p.lodz.pl.logic.quality;
 
 import p.lodz.pl.model.Vector;
 
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ConfusionMatrixImpl implements ConfusionMatrix {
@@ -12,17 +11,19 @@ public class ConfusionMatrixImpl implements ConfusionMatrix {
 
     public List<Category> measureClassificationQuality(List<Vector> vectors) {
         this.vectors = vectors;
-        List<Category> categories = detectCategories();
+        List<Category> categories = new ArrayList<>(detectCategories());
 
         double acc = calculateAcc();
         categories.forEach(category -> {
             category.setAcc(acc);
             category.setPositivelyCorrect(calculatePositivelyCorrect(category.getType()));
-            category.setAllClassifiedToCategory(calculateAllClassifiedToCategory(category.getType()));
+            category.setAllClassified(calculateAllClassifiedToCategory(category.getType()));
             category.setRealNumberOfItems(calculateRealNumberOfCategoryItems(category.getType()));
         });
 
         categories.forEach(Category::calculate);
+        Category summary = calculateAverageWeighted(categories);
+        categories.add(summary);
         return categories;
     }
 
@@ -55,5 +56,24 @@ public class ConfusionMatrixImpl implements ConfusionMatrix {
     private int calculateRealNumberOfCategoryItems(String type) {
         return (int) vectors.stream().filter(article -> article.getArticleRealCountry()
                 .equals(type)).count();
+    }
+
+    private Category calculateAverageWeighted(List<Category> categories) {
+        double preValue = 0.0,
+                recValue = 0.0,
+                f1Value = 0.0;
+        for (Category category : categories) {
+            preValue += category.getPre() * category.getAllClassified();
+            recValue += category.getRec() * category.getAllClassified();
+            f1Value += category.getF1() * category.getAllClassified();
+        }
+        int count = categories.stream().mapToInt(Category::getAllClassified).sum();
+
+        Category category = new Category("Summary");
+        category.setAcc(categories.get(0).getAcc());
+        category.setPre(preValue / count);
+        category.setRec(recValue / count);
+        category.setF1(f1Value / count);
+        return category;
     }
 }

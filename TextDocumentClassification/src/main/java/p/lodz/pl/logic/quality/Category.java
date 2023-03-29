@@ -1,5 +1,8 @@
 package p.lodz.pl.logic.quality;
 
+import lombok.Data;
+
+@Data
 public class Category {
     private final String type;
     private double acc;
@@ -19,54 +22,6 @@ public class Category {
         calculatePre();
         calculateRec();
         calculateF1();
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public double getAcc() {
-        return acc;
-    }
-
-    void setAcc(double acc) {
-        this.acc = acc;
-    }
-
-    public double getPre() {
-        return pre;
-    }
-
-    public double getRec() {
-        return rec;
-    }
-
-    public double getF1() {
-        return f1;
-    }
-
-    public int getPositivelyCorrect() {
-        return positivelyCorrect;
-    }
-
-    void setPositivelyCorrect(int positivelyCorrect) {
-        this.positivelyCorrect = positivelyCorrect;
-    }
-
-    public int getAllClassified() {
-        return allClassified;
-    }
-
-    void setAllClassifiedToCategory(int allClassified) {
-        this.allClassified = allClassified;
-    }
-
-    public int getRealNumberOfItems() {
-        return realNumberOfItems;
-    }
-
-    void setRealNumberOfItems(int realNumberOfItems) {
-        this.realNumberOfItems = realNumberOfItems;
     }
 
     private void calculatePre() {
