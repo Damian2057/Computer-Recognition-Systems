@@ -20,21 +20,23 @@ import java.util.List;
 public class StarterImpl implements Starter {
 
     private static final Properties prop = Config.getProperties();
-    private final SerializeLoader<List<Vector>> reader = new SerializeLoaderImpl();
     private final Classifier classifier;
     private final ConfusionMatrix confusionMatrix;
 
     public StarterImpl() {
         List<Vector> vectors;
-        if (!reader.isFileExist()) {
+        SerializeLoader<List<Vector>> reader1 = new SerializeLoaderImpl();
+
+        if (!reader1.isFileExist()) {
             Extractor extractor = new FeatureExtractor();
             vectors = extractor.extract();
-            reader.write(vectors);
+            reader1.write(vectors);
         } else {
             SerializeLoader<List<Vector>> reader = new SerializeLoaderImpl();
             vectors = reader.read();
             log.info(vectors.size() + " vectors loaded");
         }
+
         this.classifier = new KNNClassifier(vectors);
         this.confusionMatrix = new ConfusionMatrixImpl();
     }
@@ -47,6 +49,16 @@ public class StarterImpl implements Starter {
     }
 
     private void displayInfo(List<Category> categories) {
-
+        StringBuilder builder = new StringBuilder();
+        for (Category category : categories) {
+            builder.append("===========================\n")
+                    .append(category.getType())
+                    .append("\n===========================\n")
+                    .append(String.format("| ACC | %s\n", category.getAcc()))
+                    .append(String.format("| PRE | %s\n", category.getPre()))
+                    .append(String.format("| REC | %s\n", category.getRec()))
+                    .append(String.format("| F1  | %s\n", category.getF1()));
+        }
+        log.info("\n" + builder);
     }
 }
