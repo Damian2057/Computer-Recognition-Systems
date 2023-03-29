@@ -63,17 +63,21 @@ public class ConfusionMatrixImpl implements ConfusionMatrix {
                 recValue = 0.0,
                 f1Value = 0.0;
         for (Category category : categories) {
-            preValue += category.getPre() * category.getAllClassified();
-            recValue += category.getRec() * category.getAllClassified();
-            f1Value += category.getF1() * category.getAllClassified();
+            preValue += ifNan(category.getPre() * category.getAllClassified());
+            recValue += ifNan(category.getRec() * category.getAllClassified());
+            f1Value += ifNan(category.getF1() * category.getAllClassified());
         }
         int count = categories.stream().mapToInt(Category::getAllClassified).sum();
-
         Category category = new Category("Summary");
         category.setAcc(categories.get(0).getAcc());
         category.setPre(preValue / count);
         category.setRec(recValue / count);
         category.setF1(f1Value / count);
+
         return category;
+    }
+
+    private static double ifNan(Double Nan) {
+        return Double.isNaN(Nan) ? 0.0 : Nan;
     }
 }
