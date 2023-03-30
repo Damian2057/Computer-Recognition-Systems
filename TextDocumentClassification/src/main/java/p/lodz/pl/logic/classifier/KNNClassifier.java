@@ -9,6 +9,9 @@ import p.lodz.pl.logic.classifier.metrics.MetricFactory;
 import p.lodz.pl.model.Vector;
 
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static p.lodz.pl.constants.Const.TEST;
@@ -34,16 +37,29 @@ public class KNNClassifier implements Classifier {
 
     @Override
     public List<Vector> classifyTestSet() {
-        log.info("Classification started");
-        for (Vector testVector : testSet) {
-            List<Neighbor> neighbors = new ArrayList<>();
-            for (Vector trainingVector : trainingSet) {
-                neighbors.add(metric.calculateMetric(testVector, trainingVector));
+        try {
+            log.info("Classification started");
+            int size = testSet.size();
+            ExecutorService executor = Executors.newCachedThreadPool();
+            for (int i = 0; i < size; i++) {
+                int finalI = i;
+                executor.execute(() -> {
+                    List<Neighbor> neighbors = new ArrayList<>();
+                    for (Vector trainingVector : trainingSet) {
+                        neighbors.add(metric.calculateMetric(testSet.get(finalI), trainingVector));
+                    }
+                    testSet.get(finalI).setClassificationCountry(getClassByKNN(neighbors));
+                });
             }
-            testVector.setClassificationCountry(getClassByKNN(neighbors));
+            log.info("All threads created");
+            executor.shutdown();
+            boolean finished = executor.awaitTermination(3, TimeUnit.MINUTES);
+
+            log.info("Classification completed");
+            return testSet;
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
-        log.info("Classification completed");
-        return testSet;
     }
 
     private Map<Const, List<Vector>> splitSet(List<Vector> vectors) {

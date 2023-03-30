@@ -18,7 +18,7 @@
   "numberOfOccurrences": 4,
 
   "proportionOfDataSets": [60, 40],
-  "k": 3,
+  "k": 10,
   "measure": "ngrams",
   "metric": "euclideanMetric",
   "ngramLimitation": [2, 3],
