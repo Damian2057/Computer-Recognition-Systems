@@ -24,18 +24,17 @@ public class StarterImpl implements Starter {
     private final ConfusionMatrix confusionMatrix;
 
     public StarterImpl() {
+        Extractor extractor = new FeatureExtractor();
+        SerializeLoader<List<Vector>> reader = new SerializeLoaderImpl();
         List<Vector> vectors;
-        SerializeLoader<List<Vector>> reader1 = new SerializeLoaderImpl();
-
-        if (!reader1.isFileExist()) {
-            Extractor extractor = new FeatureExtractor();
+        if (!reader.isFileExist()) {
             vectors = extractor.extract();
-            reader1.write(vectors);
+            reader.write(vectors);
         } else {
-            SerializeLoader<List<Vector>> reader = new SerializeLoaderImpl();
             vectors = reader.read();
             log.info(vectors.size() + " vectors loaded");
         }
+        vectors = extractor.reExtract(vectors);
 
         this.classifier = new KNNClassifier(vectors);
         this.confusionMatrix = new ConfusionMatrixImpl();

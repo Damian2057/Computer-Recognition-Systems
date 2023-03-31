@@ -25,7 +25,7 @@
 
   "testMode": {
     "enable": true,
-    "numberOfArticles": 5
+    "numberOfArticles": 3
   },
   "regex": "(?i)west-germany|usa|france|uk|canada|japan"
 }
