@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface ConfusionMatrix {
     List<Category> measureClassificationQuality(List<Vector> vectors);
+    int[][] getMatrix();
 }
