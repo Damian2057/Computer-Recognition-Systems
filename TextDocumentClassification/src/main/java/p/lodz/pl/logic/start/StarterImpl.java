@@ -60,5 +60,16 @@ public class StarterImpl implements Starter {
                     .append(String.format("| F1  | %s\n", category.getF1()));
         }
         log.info("\n" + builder);
+
+        StringBuilder matrixBuilder = new StringBuilder();
+        int[][] matrix = confusionMatrix.getMatrix();
+        matrixBuilder.append("usa\tuk\tcanada\tfrance\tjapan\twest-germany\n");
+        for (int i = 0; i < 6; i++) {
+            for (int j = 0; j < 6; j++) {
+                matrixBuilder.append(matrix[i][j]).append("\t\t");
+            }
+            matrixBuilder.append("\n");
+        }
+        log.info("\nMatrix\n" + matrixBuilder);
     }
 }

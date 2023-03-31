@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 public class ConfusionMatrixImpl implements ConfusionMatrix {
 
     private List<Vector> vectors;
+    int[][] matrix = new int[6][6];
 
     public List<Category> measureClassificationQuality(List<Vector> vectors) {
         this.vectors = vectors;
@@ -24,7 +25,12 @@ public class ConfusionMatrixImpl implements ConfusionMatrix {
         categories.forEach(Category::calculate);
         Category summary = calculateAverageWeighted(categories);
         categories.add(summary);
+        calculateConfusionMatrix();
         return categories;
+    }
+
+    public int[][] getMatrix() {
+        return matrix;
     }
 
     private List<Category> detectCategories() {
@@ -63,11 +69,11 @@ public class ConfusionMatrixImpl implements ConfusionMatrix {
                 recValue = 0.0,
                 f1Value = 0.0;
         for (Category category : categories) {
-            preValue += ifNan(category.getPre() * category.getAllClassified());
-            recValue += ifNan(category.getRec() * category.getAllClassified());
-            f1Value += ifNan(category.getF1() * category.getAllClassified());
+            preValue += ifNan(category.getPre() * category.getRealNumberOfItems());
+            recValue += ifNan(category.getRec() * category.getRealNumberOfItems());
+            f1Value += ifNan(category.getF1() * category.getRealNumberOfItems());
         }
-        int count = categories.stream().mapToInt(Category::getAllClassified).sum();
+        int count = categories.stream().mapToInt(Category::getRealNumberOfItems).sum();
         Category category = new Category("Summary");
         category.setAcc(categories.get(0).getAcc());
         category.setPre(preValue / count);
@@ -80,4 +86,39 @@ public class ConfusionMatrixImpl implements ConfusionMatrix {
     private static double ifNan(Double Nan) {
         return Double.isNaN(Nan) ? 0.0 : Nan;
     }
+
+    private void calculateConfusionMatrix() {
+        for (Vector vector : vectors) {
+            int real = getCountryByIndex(vector.getArticleRealCountry());
+            int pred = getCountryByIndex(vector.getClassificationCountry());
+            this.matrix[real][pred] += 1;
+        }
+    }
+
+    private int getCountryByIndex(String country) {
+        switch (country) {
+            case "usa" -> {
+                return 0;
+            }
+            case "uk" -> {
+                return 1;
+            }
+            case "canada" -> {
+                return 2;
+            }
+            case "france" -> {
+                return 3;
+            }
+            case "japan" -> {
+                return 4;
+            }
+            case "west-germany" -> {
+                return 5;
+            }
+            default -> {
+                return -1;
+            }
+        }
+    }
+
 }
