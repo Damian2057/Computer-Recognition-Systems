@@ -7,4 +7,5 @@ import java.util.List;
 public interface Extractor {
 
     List<Vector> extract();
+    List<Vector> reExtract(List<Vector> vectors);
 }

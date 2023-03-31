@@ -19,14 +19,11 @@ public class FeatureExtractor implements Extractor {
 
     private static final ArticleLoader<Article> loader = new ArticleLoaderImpl(ARTICLES.getName());
     private static final Properties prop = Config.getProperties();
-    private final List<Article> articles;
-
-    public FeatureExtractor() {
-        this.articles = loader.read();
-    }
+    private List<Article> articles;
 
     @Override
     public List<Vector> extract() {
+        this.articles = loader.read();
         List<Vector> vectors = new ArrayList<>();
         final int size = articles.size();
         int i = 0;
@@ -34,45 +31,20 @@ public class FeatureExtractor implements Extractor {
             try {
                 log.info(Math.round((i++ * 1.0 / size) * 100.0) + " % percent vectors created");
                 Vector vector = new Vector(article.getPlace());
-                if (prop.isCurrencyExtractor()) {
-                    vector.addFeature(Type.CURRENCY.extract(article));
-                }
-                if (prop.isNumberOfSentencesExtractor()) {
-                    vector.addFeature(Type.NUMBER_OF_SENTENCES.extract(article));
-                }
-                if (prop.isHistoricalFigureExtractor()) {
-                    vector.addFeature(Type.HISTORICAL_FIGURES.extract(article));
-                }
-                if (prop.isPlacesExtractor()) {
-                    vector.addFeature(Type.PLACES.extract(article));
-                }
-                if (prop.isCountryExtractor()) {
-                    vector.addFeature(Type.COUNTRY.extract(article));
-                }
-                if (prop.isFrequencyUniquenessWordsExtractor()) {
-                    vector.addFeature(Type.FREQUENCY_NUMBER_OF_UNIQUENESS_WORDS.extract(article));
-                }
-                if (prop.isNumberOfLongWordsExtractor()) {
-                    vector.addFeature(Type.NUMBER_OF_WORD_N_LENGTH.extract(article));
-                }
-                if (prop.isAverageWordLengthExtractor()) {
-                    vector.addFeature(Type.AVERAGE_WORD_LENGTH.extract(article));
-                }
-                if (prop.isKeyWordExtractor()) {
-                    vector.addFeature(Type.KEY_WORD.extract(article));
-                }
-                if (prop.isExceptKeyWordExtractor()) {
-                    vector.addFeature(Type.EXCEPT_KEY_WORD.extract(article));
-                }
-                if (prop.isFrequencyCommonWordExtractor()) {
-                    vector.addFeature(Type.FREQUENCY_OF_MOST_COMMON_WORD.extract(article));
-                }
-                if (prop.isCapitalWordExtractor()) {
-                    vector.addFeature(Type.CAPITAL_WORD.extract(article));
-                }
-                if (prop.isDocumentLengthExtractor()) {
-                    vector.addFeature(Type.DOCUMENT_LENGTH.extract(article));
-                }
+                vector.addFeature(Type.CURRENCY.extract(article));
+                vector.addFeature(Type.NUMBER_OF_SENTENCES.extract(article));
+                vector.addFeature(Type.HISTORICAL_FIGURES.extract(article));
+                vector.addFeature(Type.PLACES.extract(article));
+                vector.addFeature(Type.COUNTRY.extract(article));
+                vector.addFeature(Type.FREQUENCY_NUMBER_OF_UNIQUENESS_WORDS.extract(article));
+                vector.addFeature(Type.NUMBER_OF_WORD_N_LENGTH.extract(article));
+                vector.addFeature(Type.AVERAGE_WORD_LENGTH.extract(article));
+                vector.addFeature(Type.KEY_WORD.extract(article));
+                vector.addFeature(Type.EXCEPT_KEY_WORD.extract(article));
+                vector.addFeature(Type.FREQUENCY_OF_MOST_COMMON_WORD.extract(article));
+                vector.addFeature(Type.CAPITAL_WORD.extract(article));
+                vector.addFeature(Type.DOCUMENT_LENGTH.extract(article));
+
                 vectors.add(vector);
             } catch (Exception e) {
                 throw new RuntimeException("feature extraction problem for article:" + article.toString(), e);
@@ -82,6 +54,56 @@ public class FeatureExtractor implements Extractor {
 
         log.info("All vectors are ready");
         return vectors;
+    }
+
+    @Override
+    public List<Vector> reExtract(List<Vector> vectors) {
+        List<Vector> reExtractVectors = new ArrayList<>();
+        for (Vector vector : vectors) {
+            Vector reVector = new Vector(vector.getArticleRealCountry());
+            if (prop.isCurrencyExtractor()) {
+                reVector.addFeature(vector.getFeatures().get(0));
+            }
+            if (prop.isNumberOfSentencesExtractor()) {
+                reVector.addFeature(vector.getFeatures().get(1));
+            }
+            if (prop.isHistoricalFigureExtractor()) {
+                reVector.addFeature(vector.getFeatures().get(2));
+            }
+            if (prop.isPlacesExtractor()) {
+                reVector.addFeature(vector.getFeatures().get(3));
+            }
+            if (prop.isCountryExtractor()) {
+                reVector.addFeature(vector.getFeatures().get(4));
+            }
+            if (prop.isFrequencyUniquenessWordsExtractor()) {
+                reVector.addFeature(vector.getFeatures().get(5));
+            }
+            if (prop.isNumberOfLongWordsExtractor()) {
+                reVector.addFeature(vector.getFeatures().get(6));
+            }
+            if (prop.isAverageWordLengthExtractor()) {
+                reVector.addFeature(vector.getFeatures().get(7));
+            }
+            if (prop.isKeyWordExtractor()) {
+                reVector.addFeature(vector.getFeatures().get(8));
+            }
+            if (prop.isExceptKeyWordExtractor()) {
+                reVector.addFeature(vector.getFeatures().get(9));
+            }
+            if (prop.isFrequencyCommonWordExtractor()) {
+                reVector.addFeature(vector.getFeatures().get(10));
+            }
+            if (prop.isCapitalWordExtractor()) {
+                reVector.addFeature(vector.getFeatures().get(11));
+            }
+            if (prop.isDocumentLengthExtractor()) {
+                reVector.addFeature(vector.getFeatures().get(12));
+            }
+            reExtractVectors.add(reVector);
+
+        }
+        return reExtractVectors;
     }
 
     private void normalizeVector(List<Vector> vectors) {
