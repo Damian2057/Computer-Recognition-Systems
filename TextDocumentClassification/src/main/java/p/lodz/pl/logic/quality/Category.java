@@ -25,14 +25,18 @@ public class Category {
     }
 
     private void calculatePre() {
-        this.pre = 1.0 * positivelyCorrect / allClassified;
+        this.pre = ifNan(1.0 * positivelyCorrect / allClassified);
     }
 
     private void calculateRec() {
-        this.rec = 1.0 * positivelyCorrect / realNumberOfItems;
+        this.rec = ifNan(1.0 * positivelyCorrect / realNumberOfItems);
     }
 
     private void calculateF1() {
-        this.f1 = 2.0 * pre * rec / (pre + rec);
+        this.f1 = ifNan(2.0 * pre * rec / (pre + rec));
+    }
+
+    private static double ifNan(Double Nan) {
+        return Double.isNaN(Nan) ? 0.0 : Nan;
     }
 }
