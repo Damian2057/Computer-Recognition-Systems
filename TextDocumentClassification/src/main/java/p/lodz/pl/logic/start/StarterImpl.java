@@ -49,6 +49,7 @@ public class StarterImpl implements Starter {
     }
 
     private void displayInfo(List<Category> categories) {
+        String county = "usa\t\tuk\t\tcanada\tfrance\tjapan\twest-germany\n";
         StringBuilder builder = new StringBuilder();
         for (Category category : categories) {
             builder.append("===========================\n")
@@ -62,14 +63,21 @@ public class StarterImpl implements Starter {
         log.info("\n" + builder);
 
         StringBuilder matrixBuilder = new StringBuilder();
+        matrixBuilder.append("\n======================================================");
+        matrixBuilder.append("\n\t\t\t\t\tRealNumber\n" + county);
+        for (int i = 0; i < categories.size() - 1; i++) {
+            matrixBuilder.append(categories.get(i).getRealNumberOfItems() + "\t\t");
+        }
+
+        matrixBuilder.append("\n======================================================");
         int[][] matrix = confusionMatrix.getMatrix();
-        matrixBuilder.append("usa\tuk\tcanada\tfrance\tjapan\twest-germany\n");
+        matrixBuilder.append("\n\t\t\t\t\t  Matrix\n" + county);
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 6; j++) {
                 matrixBuilder.append(matrix[i][j]).append("\t\t");
             }
             matrixBuilder.append("\n");
         }
-        log.info("\nMatrix\n" + matrixBuilder);
+        log.info(matrixBuilder.toString());
     }
 }
