@@ -21,11 +21,11 @@ public class ConfusionMatrixImpl implements ConfusionMatrix {
             category.setAllClassified(calculateAllClassifiedToCategory(category.getType()));
             category.setRealNumberOfItems(calculateRealNumberOfCategoryItems(category.getType()));
         });
-
         categories.forEach(Category::calculate);
         Category summary = calculateAverageWeighted(categories);
         categories.add(summary);
         calculateConfusionMatrix();
+
         return categories;
     }
 
@@ -69,9 +69,9 @@ public class ConfusionMatrixImpl implements ConfusionMatrix {
                 recValue = 0.0,
                 f1Value = 0.0;
         for (Category category : categories) {
-            preValue += ifNan(category.getPre() * category.getRealNumberOfItems());
-            recValue += ifNan(category.getRec() * category.getRealNumberOfItems());
-            f1Value += ifNan(category.getF1() * category.getRealNumberOfItems());
+            preValue += category.getPre() * category.getRealNumberOfItems();
+            recValue += category.getRec() * category.getRealNumberOfItems();
+            f1Value += category.getF1() * category.getRealNumberOfItems();
         }
         int count = categories.stream().mapToInt(Category::getRealNumberOfItems).sum();
         Category category = new Category("Summary");
@@ -81,10 +81,6 @@ public class ConfusionMatrixImpl implements ConfusionMatrix {
         category.setF1(f1Value / count);
 
         return category;
-    }
-
-    private static double ifNan(Double Nan) {
-        return Double.isNaN(Nan) ? 0.0 : Nan;
     }
 
     private void calculateConfusionMatrix() {
