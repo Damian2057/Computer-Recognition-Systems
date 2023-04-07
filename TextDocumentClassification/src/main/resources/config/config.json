@@ -1,6 +1,6 @@
 {
   "features": {
-    "currencyExtractor": true,
+    "currencyExtractor": false,
     "numberOfSentencesExtractor": true,
     "historicalFigureExtractor": true,
     "placesExtractor": true,
@@ -8,24 +8,24 @@
     "frequencyUniquenessWordsExtractor": true,
     "numberOfLongWordsExtractor": true,
     "averageWordLengthExtractor": true,
-    "keyWordExtractor": true,
-    "exceptKeyWordExtractor": true,
+    "keyWordExtractor": false,
+    "exceptKeyWordExtractor": false,
     "frequencyCommonWordExtractor": true,
-    "capitalWordExtractor": true,
+    "capitalWordExtractor": false,
     "documentLengthExtractor": true
   },
   "longWordLength": 7,
   "numberOfOccurrences": 4,
 
   "proportionOfDataSets": [60, 40],
-  "k": 10,
+  "k": 4,
   "measure": "ngrams",
   "metric": "euclideanMetric",
   "ngramLimitation": [2, 3],
 
   "testMode": {
     "enable": true,
-    "numberOfArticles": 3
+    "numberOfArticles": 1
   },
   "regex": "(?i)west-germany|usa|france|uk|canada|japan"
 }

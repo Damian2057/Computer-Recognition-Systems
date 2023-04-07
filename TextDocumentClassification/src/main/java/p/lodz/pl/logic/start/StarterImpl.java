@@ -1,10 +1,8 @@
 package p.lodz.pl.logic.start;
 
 import lombok.extern.java.Log;
-import p.lodz.pl.config.Config;
-import p.lodz.pl.config.Properties;
-import p.lodz.pl.dao.SerializeLoaderImpl;
 import p.lodz.pl.dao.SerializeLoader;
+import p.lodz.pl.dao.SerializeLoaderImpl;
 import p.lodz.pl.logic.classifier.Classifier;
 import p.lodz.pl.logic.classifier.KNNClassifier;
 import p.lodz.pl.logic.extractor.Extractor;
@@ -19,7 +17,6 @@ import java.util.List;
 @Log
 public class StarterImpl implements Starter {
 
-    private static final Properties prop = Config.getProperties();
     private final Classifier classifier;
     private final ConfusionMatrix confusionMatrix;
 
@@ -62,12 +59,6 @@ public class StarterImpl implements Starter {
         log.info("\n" + builder);
 
         StringBuilder matrixBuilder = new StringBuilder();
-        matrixBuilder.append("\n======================================================");
-        matrixBuilder.append("\n\t\t\t\t\tRealNumber\n" + county);
-        for (int i = 0; i < categories.size() - 1; i++) {
-            matrixBuilder.append(categories.get(i).getRealNumberOfItems() + "\t\t");
-        }
-
         matrixBuilder.append("\n======================================================");
         int[][] matrix = confusionMatrix.getMatrix();
         matrixBuilder.append("\n\t\t\t\t\t  Matrix\n" + county);
