@@ -1,0 +1,17 @@
+version: '3.3'
+services:
+  db:
+    image: postgres:14.1-alpine
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - '${POSTGRES_LOCAL_PORT}:${POSTGRES_DOCKER_PORT}'
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      timeout: 20s
+      retries: 10
+    volumes:
+      - ./src/main/resources/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./src/main/resources/testData.sql:/docker-entrypoint-initdb.d/testData.sql
+volumes:
+  db:
