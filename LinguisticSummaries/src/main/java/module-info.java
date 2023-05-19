@@ -6,7 +6,7 @@ module LinguisticSummaries {
     requires java.logging;
 
     opens p.lodz.pl.frontend to javafx.fxml, javafx.controls, javafx.graphics;
-    opens p.lodz.pl.frontend.comonents to javafx.fxml, javafx.controls, javafx.graphics;
+    opens p.lodz.pl.frontend.components to javafx.fxml, javafx.controls, javafx.graphics;
     exports p.lodz.pl.frontend;
-    exports p.lodz.pl.frontend.comonents;
+    exports p.lodz.pl.frontend.components;
 }
