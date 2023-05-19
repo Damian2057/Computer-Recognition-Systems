@@ -1,4 +1,4 @@
-package p.lodz.pl.frontend.comonents;
+package p.lodz.pl.frontend.components;
 
 import javafx.fxml.Initializable;
 
