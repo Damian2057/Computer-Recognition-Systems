@@ -23,8 +23,6 @@ public class LinguisticSummary<R> extends AbstractSummary<R> {
         this.policies = policies;
     }
 
-
-
     public Label<R> getQualifier() {
         return qualifier;
     }
