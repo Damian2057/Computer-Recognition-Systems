@@ -51,9 +51,9 @@ public class StageController implements Initializable {
         absoluteChoiceBox.getItems().clear();
         relativeChoiceBox.getItems().clear();
 
-        formColumn.setCellValueFactory(cellData -> new ReadOnlyStringWrapper("I"));
-        summaryColumn.setCellValueFactory(cellData -> new ReadOnlyStringWrapper("Some cars have sporty height"));
-        degreeColumn.setCellValueFactory(cellData -> new ReadOnlyStringWrapper("[0.62]"));
+//        formColumn.setCellValueFactory(cellData -> new ReadOnlyStringWrapper("I"));
+//        summaryColumn.setCellValueFactory(cellData -> new ReadOnlyStringWrapper("Some cars have sporty height"));
+//        degreeColumn.setCellValueFactory(cellData -> new ReadOnlyStringWrapper("[0.62]"));
 
         formColumn.setCellFactory(column -> new TableCell<SummaryData, String>() {
             @Override
