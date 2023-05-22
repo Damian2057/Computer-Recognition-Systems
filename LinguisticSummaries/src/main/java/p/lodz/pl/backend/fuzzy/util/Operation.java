@@ -21,12 +21,11 @@ public class Operation<R> {
     }
 
     /**
-     * Get multiplication of two FuzzySet
-     * @param anotherOne
+     * Get complement of FuzzySet
+     * @param first
      * @return
      */
-    public CrispSet complement(CrispSet anotherOne) {
-        //TODO: Math.max();
+    public CrispSet not(CrispSet first) {
         return null;
     }
 }
