@@ -31,6 +31,44 @@ public class MockRepository {
         return quantifiers;
     }
 
+    public void save(LinguisticVariable<PolicyEntity> linguisticVariable) {
+        linguisticVariables.add(linguisticVariable);
+    }
+
+    public void save(Quantifier quantifier) {
+        quantifiers.add(quantifier);
+    }
+
+    public void delete(LinguisticVariable<PolicyEntity> linguisticVariable) {
+        linguisticVariables.remove(linguisticVariable);
+    }
+
+    public void delete(Quantifier quantifier) {
+        quantifiers.remove(quantifier);
+    }
+
+    public LinguisticVariable<PolicyEntity> findLinguisticVariableByName(String name) {
+        return linguisticVariables.stream()
+                .filter(linguisticVariable -> linguisticVariable.getLinguisticVariableName().equals(name))
+                .findFirst()
+                .orElse(null);
+    }
+
+    public Quantifier findQuantifierByName(String name) {
+        return quantifiers.stream()
+                .filter(quantifier -> quantifier.getLabelName().equals(name))
+                .findFirst()
+                .orElse(null);
+    }
+
+    public Label<PolicyEntity> findLinguisticLabelByName(String name) {
+        return linguisticVariables.stream()
+                .flatMap(linguisticVariable -> linguisticVariable.getLabels().stream())
+                .filter(label -> label.getLabelName().equals(name))
+                .findFirst()
+                .orElse(null);
+    }
+
     private List<Quantifier> getQuantifiers() {
         List<Quantifier> quantifierList = new ArrayList<>();
 

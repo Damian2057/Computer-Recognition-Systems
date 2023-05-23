@@ -9,7 +9,7 @@ public class Label<R> extends FuzzySet<R> {
     private final String linguisticVariableName;
     private final String labelName;
 
-    public Label(String linguisticVariableName,String labelName, Extractor<R> extractor, MembershipFunction function) {
+    public Label(String linguisticVariableName, String labelName, Extractor<R> extractor, MembershipFunction function) {
         super(extractor, function);
         this.linguisticVariableName = linguisticVariableName;
         this.labelName = labelName;
