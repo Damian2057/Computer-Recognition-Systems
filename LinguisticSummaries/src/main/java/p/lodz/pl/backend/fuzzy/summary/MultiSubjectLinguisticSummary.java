@@ -22,20 +22,20 @@ public class MultiSubjectLinguisticSummary<R> extends AbstractSummary<R> {
         this.policies = policies;
     }
 
-    @Override
-    public String generateSummary() {
-        return null;
-    }
-
-    public double degreeOfTruth() {
-        return 0.0;
-    }
-
     public List<Label<R>> getQualifiers() {
         return qualifiers;
     }
 
     public List<R> getPolicies() {
         return policies;
+    }
+
+    @Override
+    public List<Summary> generateSummary() {
+        return null;
+    }
+
+    private double degreeOfTruth() {
+        return 0.0;
     }
 }

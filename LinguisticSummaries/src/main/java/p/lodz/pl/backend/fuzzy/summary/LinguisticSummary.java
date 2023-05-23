@@ -29,7 +29,55 @@ public class LinguisticSummary<R> extends AbstractSummary<R> {
     }
 
     @Override
-    public String generateSummary() {
+    public List<Summary> generateSummary() {
         return null;
+    }
+
+    private double degreeOfTruth() {
+        return 0.0;
+    }
+
+    private double degreeOfImprecision() {
+        return 0.0;
+    }
+
+    private double degreeOfCovering() {
+        return 0.0;
+    }
+
+    private double degreeOfAppropriateness() {
+        return 0.0;
+    }
+
+    private double lengthOfSummary() {
+        return 0.0;
+    }
+
+    private double degreeOfQuantifierImprecision() {
+        return 0.0;
+    }
+
+    private double degreeOfQuantifierCardinality() {
+        return 0.0;
+    }
+
+    private double degreeOfSummarizerCardinality() {
+        return 0.0;
+    }
+
+    private double degreeOfQualifierImprecision() {
+        return 0.0;
+    }
+
+    private double degreeOfQualifierCardinality() {
+        return 0.0;
+    }
+
+    private double lengthOfQualifier() {
+        return 0.0;
+    }
+
+    private double quality() {
+        return 0.0;
     }
 }

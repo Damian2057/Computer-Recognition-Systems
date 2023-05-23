@@ -31,7 +31,6 @@ public class DBConnection implements Dao {
     public List<PolicyEntity> getPolicies() {
         try {
             List<PolicyEntity> policies = new ArrayList<>();
-            //Class.forName("org.postgresql.Driver");
             c = DriverManager
                     .getConnection(url,
                             user, password);
