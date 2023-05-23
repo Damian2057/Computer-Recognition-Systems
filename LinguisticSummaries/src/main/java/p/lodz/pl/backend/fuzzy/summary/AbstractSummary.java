@@ -4,7 +4,7 @@ import p.lodz.pl.backend.fuzzy.quantifier.Quantifier;
 
 import java.util.List;
 
-public abstract class AbstractSummary<R> {
+public abstract class AbstractSummary {
 
     protected final Quantifier quantifier;
 

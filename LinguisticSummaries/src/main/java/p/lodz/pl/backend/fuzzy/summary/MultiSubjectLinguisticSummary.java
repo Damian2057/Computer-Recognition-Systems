@@ -5,14 +5,14 @@ import p.lodz.pl.backend.fuzzy.quantifier.Quantifier;
 
 import java.util.List;
 
-public class MultiSubjectLinguisticSummary<R> extends AbstractSummary<R> {
+public class MultiSubjectLinguisticSummary<R> extends AbstractSummary {
 
     private final List<Label<R>> qualifiers;
     private final String subject1;
     private final String subject2;
     private final List<R> policies;
 
-    protected MultiSubjectLinguisticSummary(Quantifier<R> quantifier,
+    protected MultiSubjectLinguisticSummary(Quantifier quantifier,
                                             List<Label<R>> qualifiers,
                                             String subject1, String subject2, List<R> policies) {
         super(quantifier);
