@@ -1,4 +1,11 @@
 package p.lodz.pl.backend.fuzzy.summary;
 
-public class Summary {
+import lombok.Builder;
+
+@Builder
+public record Summary(
+        int form,
+        String summary,
+        double quality
+) {
 }

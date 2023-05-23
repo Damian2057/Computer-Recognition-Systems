@@ -4,16 +4,16 @@ import java.util.List;
 
 public class LinguisticVariable<R> {
 
-    private final String name;
+    private final String linguisticVariableName;
     protected final List<Label<R>> labels;
 
     public LinguisticVariable(String name, List<Label<R>> labels) {
         this.labels = labels;
-        this.name = name;
+        this.linguisticVariableName = name;
     }
 
-    public String getName() {
-        return name;
+    public String getLinguisticVariableName() {
+        return linguisticVariableName;
     }
 
     public List<Label<R>> getLabels() {
