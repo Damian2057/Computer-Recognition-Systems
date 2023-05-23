@@ -44,4 +44,9 @@ public class FuzzySet<R> extends CrispSet {
                 .mapToDouble(x -> function.getMemberShip(extractor.apply(x))).max()
                 .orElse(0.0);
     }
+
+    public boolean isConvex(List<R> list) {
+        //TODO: complete
+        return false;
+    }
 }
