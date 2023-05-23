@@ -7,30 +7,21 @@ import java.util.List;
 
 public class LinguisticSummary<R> extends AbstractSummary<R> {
 
-    private final Label<R> qualifier;
-    private final List<Label<R>> summarizers;
+    private final List<Label<R>> qualifiers;
     private final String subject;
     private final List<R> policies;
 
     public LinguisticSummary(Quantifier<R> quantifier,
-                             Label<R> qualifier,
-                             List<Label<R>> summarizers,
+                             List<Label<R>> qualifiers,
                              String subject, List<R> policies) {
         super(quantifier);
-        this.qualifier = qualifier;
-        this.summarizers = summarizers;
+        this.qualifiers = qualifiers;
         this.subject = subject;
         this.policies = policies;
     }
 
-
-
-    public Label<R> getQualifier() {
-        return qualifier;
-    }
-
-    public List<Label<R>> getSummarizers() {
-        return summarizers;
+    public List<Label<R>> getQualifiers() {
+        return qualifiers;
     }
 
     public List<R> getPolicies() {
