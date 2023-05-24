@@ -1,6 +1,7 @@
 package p.lodz.pl.backend.repository;
 
 import p.lodz.pl.backend.fuzzy.function.TrapezoidalFunction;
+import p.lodz.pl.backend.fuzzy.function.TriangularFunction;
 import p.lodz.pl.backend.fuzzy.function.domain.ContinuousDomain;
 import p.lodz.pl.backend.fuzzy.linguistic.Label;
 import p.lodz.pl.backend.fuzzy.linguistic.LinguisticVariable;
@@ -13,7 +14,15 @@ import java.util.List;
 public class MockRepository {
 
     private static final String  POLICY_TENURE = "PolicyTenure";
-    private static final String AGE = "Age";
+    private static final String  AGE_OF_CAR = "AgeOfCar";
+    private static final String  AGE_OF_POLICYHOLDER = "AgeOfPolicyholder";
+    private static final String  POPULATION_DENSITY = "PopulationDensity";
+    private static final String  DISPLACEMENT = "Displacement";
+    private static final String  TURNING_RADIUS = "TurningRadius";
+    private static final String  GROSS_WEIGHT = "GrossWeight";
+    private static final String  LENGTH = "Length";
+    private static final String  WIDTH = "Width";
+    private static final String  HEIGHT = "Height";
 
     private final List<LinguisticVariable<PolicyEntity>> linguisticVariables;
     private final List<Quantifier> quantifiers;
@@ -82,20 +91,17 @@ public class MockRepository {
         List<LinguisticVariable<PolicyEntity>> linguisticVariableList = new ArrayList<>();
 
         linguisticVariableList.add(new LinguisticVariable<>(POLICY_TENURE, getPolicyTenureLabels()));
-        linguisticVariableList.add(new LinguisticVariable<>(AGE, getAgeLabels()));
+        linguisticVariableList.add(new LinguisticVariable<>(AGE_OF_CAR, getAgeOfCarLabels()));
+        linguisticVariableList.add(new LinguisticVariable<>(AGE_OF_POLICYHOLDER, getAgeOfPolicyholderLabels()));
+        linguisticVariableList.add(new LinguisticVariable<>(POPULATION_DENSITY, getPopulationDensityLabels()));
+        linguisticVariableList.add(new LinguisticVariable<>(DISPLACEMENT, getDisplacementLabels()));
+        linguisticVariableList.add(new LinguisticVariable<>(TURNING_RADIUS, getTurningRadiusLabels()));
+        linguisticVariableList.add(new LinguisticVariable<>(GROSS_WEIGHT, getGrossWeightLabels()));
+        linguisticVariableList.add(new LinguisticVariable<>(LENGTH, getLengthLabels()));
+        linguisticVariableList.add(new LinguisticVariable<>(WIDTH, getWidthLabels()));
+        linguisticVariableList.add(new LinguisticVariable<>(HEIGHT, getHeightLabels()));
 
         return linguisticVariableList;
-    }
-
-    private List<Label<PolicyEntity>> getAgeLabels() {
-        //EXAMPLE
-        List<Label<PolicyEntity>> ageLabels = new ArrayList<>();
-
-        ageLabels.add(new Label<>(AGE, "Young", PolicyEntity::ageOfCar, null));
-        ageLabels.add(new Label<>(AGE, "Middle", PolicyEntity::ageOfCar, null));
-        ageLabels.add(new Label<>(AGE, "Old", PolicyEntity::ageOfCar, null));
-
-        return ageLabels;
     }
 
     private List<Label<PolicyEntity>> getPolicyTenureLabels() {
@@ -111,5 +117,142 @@ public class MockRepository {
                 new TrapezoidalFunction(new ContinuousDomain(0.98, 1.39), 0.98, 1.05, 1.39, 1.39)));
 
         return policyTenureLabels;
+    }
+
+    private List<Label<PolicyEntity>> getAgeOfCarLabels() {
+        List<Label<PolicyEntity>> ageOfCarLabels = new ArrayList<>();
+
+        ageOfCarLabels.add(new Label<>(AGE_OF_CAR, "Vintage", PolicyEntity::ageOfCar,
+                new TrapezoidalFunction(new ContinuousDomain(1995, 2000), 1995, 1995, 1998, 2000)));
+        ageOfCarLabels.add(new Label<>(AGE_OF_CAR, "Old", PolicyEntity::ageOfCar,
+                new TrapezoidalFunction(new ContinuousDomain(1998, 2008), 1998, 2000, 2005, 2008)));
+        ageOfCarLabels.add(new Label<>(AGE_OF_CAR, "Used", PolicyEntity::ageOfCar,
+                new TrapezoidalFunction(new ContinuousDomain(2005, 2016), 2005, 2007, 2013, 2016)));
+        ageOfCarLabels.add(new Label<>(AGE_OF_CAR, "New", PolicyEntity::ageOfCar,
+                new TrapezoidalFunction(new ContinuousDomain(2014, 2020), 2014, 2015, 2020, 2020)));
+
+        return ageOfCarLabels;
+    }
+
+    private List<Label<PolicyEntity>> getAgeOfPolicyholderLabels() {
+        List<Label<PolicyEntity>> ageOfPolicyholders = new ArrayList<>();
+
+        ageOfPolicyholders.add(new Label<>(AGE_OF_POLICYHOLDER, "Young adult", PolicyEntity::ageOfPolicyHolder,
+                new TrapezoidalFunction(new ContinuousDomain(18, 24), 18, 18, 20, 24)));
+        ageOfPolicyholders.add(new Label<>(AGE_OF_POLICYHOLDER, "Adult", PolicyEntity::ageOfPolicyHolder,
+                new TrapezoidalFunction(new ContinuousDomain(22, 44), 22, 26, 38, 44)));
+        ageOfPolicyholders.add(new Label<>(AGE_OF_POLICYHOLDER, "Medium age", PolicyEntity::ageOfPolicyHolder,
+                new TrapezoidalFunction(new ContinuousDomain(40, 58), 40, 42, 54, 58)));
+        ageOfPolicyholders.add(new Label<>(AGE_OF_POLICYHOLDER, "Old", PolicyEntity::ageOfPolicyHolder,
+                new TrapezoidalFunction(new ContinuousDomain(56, 62), 56, 58, 62, 62)));
+
+        return  ageOfPolicyholders;
+    }
+
+    private List<Label<PolicyEntity>> getPopulationDensityLabels() {
+        List<Label<PolicyEntity>> populationDensities = new ArrayList<>();
+
+        populationDensities.add(new Label<>(POPULATION_DENSITY, "Rural area", PolicyEntity::populationDensity,
+                new TriangularFunction(new ContinuousDomain(290, 3950), 290, 290, 3950)));
+        populationDensities.add(new Label<>(POPULATION_DENSITY, "Suburbia", PolicyEntity::populationDensity,
+                new TriangularFunction(new ContinuousDomain(290, 14930), 290, 7610, 14930)));
+        populationDensities.add(new Label<>(POPULATION_DENSITY, "City", PolicyEntity::populationDensity,
+                new TrapezoidalFunction(new ContinuousDomain(7610, 29570), 7610, 14930, 22250, 29750)));
+        populationDensities.add(new Label<>(POPULATION_DENSITY, "Big city", PolicyEntity::populationDensity,
+                new TrapezoidalFunction(new ContinuousDomain(22250, 55190), 22250, 29750, 44210, 55190)));
+        populationDensities.add(new Label<>(POPULATION_DENSITY, "Metropolis", PolicyEntity::populationDensity,
+                new TrapezoidalFunction(new ContinuousDomain(47870, 73400), 47870, 51530, 73400, 73400)));
+
+        return populationDensities;
+    }
+
+    private List<Label<PolicyEntity>> getDisplacementLabels() {
+        List<Label<PolicyEntity>> displacements = new ArrayList<>();
+
+        displacements.add(new Label<>(DISPLACEMENT, "Less than 900", PolicyEntity::displacement,
+                new TrapezoidalFunction(new ContinuousDomain(796, 946), 796, 796, 896, 946)));
+        displacements.add(new Label<>(DISPLACEMENT, "From 950 to 1100", PolicyEntity::displacement,
+                new TrapezoidalFunction(new ContinuousDomain(896, 1146), 896, 946, 1096, 1146)));
+        displacements.add(new Label<>(DISPLACEMENT, "About 1225", PolicyEntity::displacement,
+                new TrapezoidalFunction(new ContinuousDomain(1096, 1346), 1096, 1146, 1246, 1346)));
+        displacements.add(new Label<>(DISPLACEMENT, "More than 1350", PolicyEntity::displacement,
+                new TrapezoidalFunction(new ContinuousDomain(1246, 1498), 1246, 1346, 1498, 1498)));
+
+        return displacements;
+    }
+
+    private List<Label<PolicyEntity>> getGrossWeightLabels() {
+        List<Label<PolicyEntity>> grossWeights = new ArrayList<>();
+
+        grossWeights.add(new Label<>(GROSS_WEIGHT, "Less than 1150 kg", PolicyEntity::grossWeight,
+                new TrapezoidalFunction(new ContinuousDomain(1051, 1219), 1051, 1051, 1135, 1219)));
+        grossWeights.add(new Label<>(GROSS_WEIGHT, "Up to 1300 kg", PolicyEntity::grossWeight,
+                new TrapezoidalFunction(new ContinuousDomain(1051, 1345), 1051, 1261, 1303, 1345)));
+        grossWeights.add(new Label<>(GROSS_WEIGHT, "Around 1475 kg", PolicyEntity::grossWeight,
+                new TrapezoidalFunction(new ContinuousDomain(1261, 1597), 1261, 1387, 1513, 1597)));
+        grossWeights.add(new Label<>(GROSS_WEIGHT, "More than 1600 kg", PolicyEntity::grossWeight,
+                new TrapezoidalFunction(new ContinuousDomain(1513, 1720), 1513, 1597, 1720, 1720)));
+
+        return grossWeights;
+    }
+
+    private List<Label<PolicyEntity>> getTurningRadiusLabels() {
+        List<Label<PolicyEntity>> turningRadiuses = new ArrayList<>();
+
+        turningRadiuses.add(new Label<>(TURNING_RADIUS, "Very small", PolicyEntity::turningRadius,
+                new TrapezoidalFunction(new ContinuousDomain(4.50, 4.65), 4.50, 4.50, 4.60, 4.65)));
+        turningRadiuses.add(new Label<>(TURNING_RADIUS, "Small", PolicyEntity::turningRadius,
+                new TrapezoidalFunction(new ContinuousDomain(4.60, 4.90), 4.60, 4.70, 4.85, 4.90)));
+        turningRadiuses.add(new Label<>(TURNING_RADIUS, "Average", PolicyEntity::turningRadius,
+                new TriangularFunction(new ContinuousDomain(4.75, 5.10), 4.75, 5.00, 5.10)));
+        turningRadiuses.add(new Label<>(TURNING_RADIUS, "Big", PolicyEntity::turningRadius,
+                new TrapezoidalFunction(new ContinuousDomain(5.00, 5.20), 5.00, 5.10, 5.20, 5.20)));
+
+        return turningRadiuses;
+    }
+
+    private List<Label<PolicyEntity>> getLengthLabels() {
+        List<Label<PolicyEntity>> legths = new ArrayList<>();
+
+        legths.add(new Label<>(LENGTH, "Small car", PolicyEntity::length,
+                new TrapezoidalFunction(new ContinuousDomain(3445, 3670), 3445, 3445, 3580, 3670)));
+        legths.add(new Label<>(LENGTH, "Hatchback", PolicyEntity::length,
+                new TrapezoidalFunction(new ContinuousDomain(3580, 3985), 3580, 3670, 3850, 3985)));
+        legths.add(new Label<>(LENGTH, "Small suv", PolicyEntity::length,
+                new TrapezoidalFunction(new ContinuousDomain(3895, 4165), 3895,3940, 4075, 4165)));
+        legths.add(new Label<>(LENGTH, "Combi", PolicyEntity::length,
+                new TrapezoidalFunction(new ContinuousDomain(4075, 4300), 4075, 4165, 4300, 4300)));
+
+        return legths;
+    }
+
+    private List<Label<PolicyEntity>> getWidthLabels() {
+        List<Label<PolicyEntity>> widths = new ArrayList<>();
+
+        widths.add(new Label<>(WIDTH, "City car", PolicyEntity::width,
+                new TrapezoidalFunction(new ContinuousDomain(1475, 1559), 1475, 1475, 1496, 1559)));
+        widths.add(new Label<>(WIDTH, "Compact car", PolicyEntity::width,
+                new TrapezoidalFunction(new ContinuousDomain(1517, 1685), 1517, 1538, 1622, 1685)));
+        widths.add(new Label<>(WIDTH, "Family car", PolicyEntity::width,
+                new TrapezoidalFunction(new ContinuousDomain(1622, 1790), 1622, 1664, 1727, 1790)));
+        widths.add(new Label<>(WIDTH, "Pick-up", PolicyEntity::width,
+                new TrapezoidalFunction(new ContinuousDomain(1748, 1811), 1748, 1769, 1811, 1811)));
+
+        return widths;
+    }
+
+    private List<Label<PolicyEntity>> getHeightLabels() {
+        List<Label<PolicyEntity>> heights = new ArrayList<>();
+
+        heights.add(new Label<>(HEIGHT, "Sporty", PolicyEntity::height,
+                new TrapezoidalFunction(new ContinuousDomain(1475, 1525), 1475, 1475, 1500, 1525)));
+        heights.add(new Label<>(HEIGHT, "Convertible", PolicyEntity::height,
+                new TriangularFunction(new ContinuousDomain(1475, 1625), 1475, 1550, 1625)));
+        heights.add(new Label<>(HEIGHT, "Classic", PolicyEntity::height,
+                new TrapezoidalFunction(new ContinuousDomain(1575, 1800), 1575, 1625, 1725, 1800)));
+        heights.add(new Label<>(HEIGHT, "Crossover", PolicyEntity::height,
+                new TrapezoidalFunction(new ContinuousDomain(1750, 1825), 1750, 1775, 1825, 1825)));
+
+        return heights;
     }
 }
