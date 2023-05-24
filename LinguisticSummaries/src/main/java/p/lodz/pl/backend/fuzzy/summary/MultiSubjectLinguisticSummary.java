@@ -5,7 +5,7 @@ import p.lodz.pl.backend.fuzzy.quantifier.Quantifier;
 
 import java.util.List;
 
-public class MultiSubjectLinguisticSummary<R> extends AbstractSummary {
+public class MultiSubjectLinguisticSummary<R> extends AbstractLinguisticSummary {
 
     private final List<Label<R>> qualifiers;
     private final String subject1;

@@ -4,11 +4,11 @@ import p.lodz.pl.backend.fuzzy.quantifier.Quantifier;
 
 import java.util.List;
 
-public abstract class AbstractSummary {
+public abstract class AbstractLinguisticSummary {
 
     protected final Quantifier quantifier;
 
-    protected AbstractSummary(Quantifier quantifier) {
+    protected AbstractLinguisticSummary(Quantifier quantifier) {
         this.quantifier = quantifier;
     }
 
