@@ -1,9 +1,13 @@
+import org.testng.Assert;
+import org.testng.annotations.Test;
 import p.lodz.pl.backend.repository.DBConnection;
 import p.lodz.pl.backend.repository.Dao;
 
 public class DataBaseTest {
-    public static void main(String[] args) {
+
+    @Test
+    public void dataBaseConnectionTest() {
         Dao dao = new DBConnection();
-        System.out.println(dao.getPolicies().size());
+        Assert.assertTrue(dao.getPolicies().size() > 0);
     }
 }

@@ -6,7 +6,7 @@ public class CrispSet {
 
     protected final MembershipFunction function;
 
-    protected CrispSet(MembershipFunction function) {
+    public CrispSet(MembershipFunction function) {
         this.function = function;
     }
 

@@ -49,4 +49,8 @@ public class FuzzySet<R> extends CrispSet {
         //TODO: complete
         return false;
     }
+
+    public Extractor<R> getExtractor() {
+        return extractor;
+    }
 }

@@ -3,6 +3,7 @@ package p.lodz.pl.backend.fuzzy.summary;
 import p.lodz.pl.backend.fuzzy.linguistic.Label;
 import p.lodz.pl.backend.fuzzy.quantifier.Quantifier;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class LinguisticSummary<R> extends AbstractSummary {
@@ -30,7 +31,10 @@ public class LinguisticSummary<R> extends AbstractSummary {
 
     @Override
     public List<Summary> generateSummary() {
-        return null;
+        List<Summary> summaries = new ArrayList<>();
+
+
+        return summaries;
     }
 
     private double degreeOfTruth() {

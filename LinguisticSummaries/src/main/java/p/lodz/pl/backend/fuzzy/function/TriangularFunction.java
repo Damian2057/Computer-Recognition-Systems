@@ -8,7 +8,7 @@ public class TriangularFunction extends BasicFunction implements MembershipFunct
     private final double b;
     private final double c;
 
-    protected TriangularFunction(Domain domain, double a, double b, double c) {
+    public TriangularFunction(Domain domain, double a, double b, double c) {
         super(domain);
         this.a = a;
         this.b = b;
