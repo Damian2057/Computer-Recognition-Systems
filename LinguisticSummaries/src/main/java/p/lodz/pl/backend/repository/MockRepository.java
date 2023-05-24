@@ -82,7 +82,28 @@ public class MockRepository {
         List<Quantifier> quantifierList = new ArrayList<>();
 
         quantifierList.add(new Quantifier("Almost none", x -> x,
-                new TrapezoidalFunction(new ContinuousDomain(0, 0.2), 0, 0, 0.12, 0.2), true));
+                new TrapezoidalFunction(new ContinuousDomain(0, 0.2), 0, 0, 0.12, 0.2), false));
+        quantifierList.add(new Quantifier("Some", x -> x,
+                new TrapezoidalFunction(new ContinuousDomain(0.16, 0.44), 0.16, 0.2, 0.4, 0.44), false));
+        quantifierList.add(new Quantifier("About half", x -> x,
+                new TrapezoidalFunction(new ContinuousDomain(0.4, 0.64), 0.4, 0.44, 0.6, 0.64), false));
+        quantifierList.add(new Quantifier("Many", x -> x,
+                new TrapezoidalFunction(new ContinuousDomain(0.6, 0.92), 0.6, 0.64, 0.88, 0.92), false));
+        quantifierList.add(new Quantifier("Almost all", x -> x,
+                new TrapezoidalFunction(new ContinuousDomain(0.88, 1.0), 0.88, 0.92, 1.0, 1.0), false));
+
+        quantifierList.add(new Quantifier("Less than 9000", x -> x,
+                new TrapezoidalFunction(new ContinuousDomain(0, 9000), 0, 0, 4000, 9000), true));
+        quantifierList.add(new Quantifier("About 1/4", x -> x,
+                new TriangularFunction(new ContinuousDomain(5000, 15000), 5000, 10000, 15000), true));
+        quantifierList.add(new Quantifier("About half", x -> x,
+                new TrapezoidalFunction(new ContinuousDomain(14000, 22000), 14000, 19000, 20000, 22000), true));
+        quantifierList.add(new Quantifier("Over 20000", x -> x,
+                new TriangularFunction(new ContinuousDomain(20000, 27000), 20000, 25000, 27000), true));
+        quantifierList.add(new Quantifier("About 3/4", x -> x,
+                new TrapezoidalFunction(new ContinuousDomain(26000, 35000), 26000, 28000, 30000, 35000), true));
+        quantifierList.add(new Quantifier("More than 3/4", x -> x,
+                new TrapezoidalFunction(new ContinuousDomain(34000, 39064), 34000, 36000, 39064, 39064), true));
 
         return quantifierList;
     }
