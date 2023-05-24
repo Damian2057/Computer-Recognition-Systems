@@ -3,6 +3,7 @@ package p.lodz.pl.backend.fuzzy.function;
 import p.lodz.pl.backend.fuzzy.function.domain.Domain;
 
 public abstract class BasicFunction implements MembershipFunction {
+
     protected final Domain domain;
 
     protected BasicFunction(Domain domain) {
