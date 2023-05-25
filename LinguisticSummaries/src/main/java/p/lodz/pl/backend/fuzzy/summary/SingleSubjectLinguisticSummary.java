@@ -4,6 +4,7 @@ import p.lodz.pl.backend.fuzzy.linguistic.Label;
 import p.lodz.pl.backend.fuzzy.quantifier.Quantifier;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class SingleSubjectLinguisticSummary<R> extends AbstractLinguisticSummary {
@@ -34,7 +35,6 @@ public class SingleSubjectLinguisticSummary<R> extends AbstractLinguisticSummary
         if (!quantifier.isAbsolute()) {
             generateSecondForm();
         }
-
         return summaries;
     }
 

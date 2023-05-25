@@ -1,14 +1,13 @@
 package p.lodz.pl.frontend.components;
 
 import javafx.beans.property.ReadOnlyStringWrapper;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import p.lodz.pl.backend.fuzzy.summary.Summary;
 
 import java.net.URL;
 import java.util.*;
@@ -16,13 +15,13 @@ import java.util.*;
 public class StageController implements Initializable {
 
     @FXML
-    private TableColumn<SummaryData, String> formColumn;
+    private TableColumn<Summary, String> formColumn;
     @FXML
-    private TableView<SummaryData> summaryTableView;
+    private TableView<Summary> summaryTableView;
     @FXML
-    private TableColumn<SummaryData, String> summaryColumn;
+    private TableColumn<Summary, String> summaryColumn;
     @FXML
-    private TableColumn<SummaryData, String> degreeColumn;
+    private TableColumn<Summary, String> degreeColumn;
     @FXML
     private ChoiceBox<String> relativeChoiceBox;
     @FXML
@@ -51,48 +50,48 @@ public class StageController implements Initializable {
         absoluteChoiceBox.getItems().clear();
         relativeChoiceBox.getItems().clear();
 
-//        formColumn.setCellValueFactory(cellData -> new ReadOnlyStringWrapper("I"));
-//        summaryColumn.setCellValueFactory(cellData -> new ReadOnlyStringWrapper("Some cars have sporty height"));
-//        degreeColumn.setCellValueFactory(cellData -> new ReadOnlyStringWrapper("[0.62]"));
+        formColumn.setCellValueFactory(cellData -> new ReadOnlyStringWrapper("I"));
+        summaryColumn.setCellValueFactory(cellData -> new ReadOnlyStringWrapper("Some cars have sporty height"));
+        degreeColumn.setCellValueFactory(cellData -> new ReadOnlyStringWrapper("[0.62]"));
 
-        formColumn.setCellFactory(column -> new TableCell<SummaryData, String>() {
-            @Override
-            protected void updateItem(String item, boolean empty) {
-                super.updateItem(item, empty);
-                if (item == null || empty) {
-                    setText(null);
-                } else {
-                    setText(item);
-                }
-            }
-        });
+//        formColumn.setCellFactory(column -> new TableCell<Summary, String>() {
+//            @Override
+//            protected void updateItem(String item, boolean empty) {
+//                super.updateItem(item, empty);
+//                if (item == null || empty) {
+//                    setText(null);
+//                } else {
+//                    setText(item);
+//                }
+//            }
+//        });
+//
+//        summaryColumn.setCellFactory(column -> new TableCell<Summary, String>() {
+//            @Override
+//            protected void updateItem(String item, boolean empty) {
+//                super.updateItem(item, empty);
+//                if (item == null || empty) {
+//                    setText(null);
+//                } else {
+//                    setText(item);
+//                }
+//            }
+//        });
+//
+//        degreeColumn.setCellFactory(column -> new TableCell<Summary, String>() {
+//            @Override
+//            protected void updateItem(String item, boolean empty) {
+//                super.updateItem(item, empty);
+//                if (item == null || empty) {
+//                    setText(null);
+//                } else {
+//                    setText(item);
+//                }
+//            }
+//        });
 
-        summaryColumn.setCellFactory(column -> new TableCell<SummaryData, String>() {
-            @Override
-            protected void updateItem(String item, boolean empty) {
-                super.updateItem(item, empty);
-                if (item == null || empty) {
-                    setText(null);
-                } else {
-                    setText(item);
-                }
-            }
-        });
-
-        degreeColumn.setCellFactory(column -> new TableCell<SummaryData, String>() {
-            @Override
-            protected void updateItem(String item, boolean empty) {
-                super.updateItem(item, empty);
-                if (item == null || empty) {
-                    setText(null);
-                } else {
-                    setText(item);
-                }
-            }
-        });
-
-        ObservableList<SummaryData> data = FXCollections.observableArrayList();
-        data.add(new SummaryData("I","Some cars have sporty height", "0.62"));
+        ObservableList<Summary> data = FXCollections.observableArrayList();
+        data.add(new Summary(1,"Some cars have sporty height", Collections.singletonList(0.62)));
 
         summaryTableView.setItems(data);
 
