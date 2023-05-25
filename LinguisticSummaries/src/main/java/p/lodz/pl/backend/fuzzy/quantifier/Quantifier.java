@@ -16,4 +16,9 @@ public class Quantifier extends Label<Double> {
     public boolean isAbsolute() {
         return isAbsolute;
     }
+
+    @Override
+    public String getLinguisticVariableName() {
+        throw new UnsupportedOperationException("Quantifier does not have linguistic variable name");
+    }
 }
