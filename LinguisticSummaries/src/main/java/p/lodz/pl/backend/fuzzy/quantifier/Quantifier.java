@@ -1,10 +1,10 @@
 package p.lodz.pl.backend.fuzzy.quantifier;
 
 import p.lodz.pl.backend.fuzzy.function.MembershipFunction;
-import p.lodz.pl.backend.fuzzy.linguistic.Label;
+import p.lodz.pl.backend.fuzzy.linguistic.LinguisticLabel;
 import p.lodz.pl.backend.fuzzy.util.Extractor;
 
-public class Quantifier extends Label<Double> {
+public class Quantifier extends LinguisticLabel<Double> {
 
     private final boolean isAbsolute;
 

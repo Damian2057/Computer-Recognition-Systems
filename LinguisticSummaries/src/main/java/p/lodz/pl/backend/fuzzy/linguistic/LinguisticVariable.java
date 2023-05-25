@@ -5,9 +5,9 @@ import java.util.List;
 public class LinguisticVariable<R> {
 
     private final String linguisticVariableName;
-    protected final List<Label<R>> labels;
+    protected final List<LinguisticLabel<R>> labels;
 
-    public LinguisticVariable(String name, List<Label<R>> labels) {
+    public LinguisticVariable(String name, List<LinguisticLabel<R>> labels) {
         this.labels = labels;
         this.linguisticVariableName = name;
     }
@@ -16,7 +16,7 @@ public class LinguisticVariable<R> {
         return linguisticVariableName;
     }
 
-    public List<Label<R>> getLabels() {
+    public List<LinguisticLabel<R>> getLabels() {
         return labels;
     }
 }
