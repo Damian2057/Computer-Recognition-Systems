@@ -17,7 +17,6 @@ public class SingleSubjectLinguisticSummary<R> extends AbstractLinguisticSummary
     private List<Summary> summaries;
 
     public SingleSubjectLinguisticSummary(Quantifier quantifier,
-
                                           List<LinguisticLabel<R>> qualifiers,
                                           String subject, List<R> policies, List<Double> weights) {
 

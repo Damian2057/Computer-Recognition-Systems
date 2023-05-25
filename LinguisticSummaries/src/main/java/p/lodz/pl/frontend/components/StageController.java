@@ -1,18 +1,34 @@
 package p.lodz.pl.frontend.components;
 
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Label;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
+import lombok.SneakyThrows;
 import p.lodz.pl.backend.fuzzy.linguistic.LinguisticVariable;
 import p.lodz.pl.backend.fuzzy.quantifier.Quantifier;
+import p.lodz.pl.backend.fuzzy.summary.SingleSubjectLinguisticSummary;
 import p.lodz.pl.backend.fuzzy.summary.Summary;
 import p.lodz.pl.backend.model.PolicyEntity;
+import p.lodz.pl.backend.repository.DBConnection;
+import p.lodz.pl.backend.repository.Dao;
 import p.lodz.pl.backend.repository.MockRepository;
 import p.lodz.pl.backend.fuzzy.linguistic.LinguisticLabel;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
@@ -29,7 +45,7 @@ public class StageController implements Initializable {
     @FXML
     private TableView<Summary> summaryTableView;
     @FXML
-    private TableColumn<Summary, String> formColumn;
+    private TableColumn<Summary, Integer> formColumn;
     @FXML
     private TableColumn<Summary, String> summaryColumn;
     @FXML
@@ -61,6 +77,12 @@ public class StageController implements Initializable {
     @FXML
     private AnchorPane scrollQuantifiers;
 
+    private Scene previousScene;
+
+    private List selectedSummarizers = new ArrayList();
+    private List selectedQuantifiers = new ArrayList();
+
+    @SneakyThrows
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -68,11 +90,20 @@ public class StageController implements Initializable {
         List<LinguisticVariable<PolicyEntity>> linguisticVariablesList = mockRepository.findAllLinguisticVariables();
         List<Quantifier> quantifiersList = mockRepository.findAllQuantifiers();
 
+        // Initialize the TableView
+        summaryTableView.setItems(FXCollections.observableArrayList());
 
-        summaryTableView.getColumns().setAll(formColumn, summaryColumn, averageQMColumn,degreeofTruthColumn, degreeOfImprecisionColumn, degreeOfCoveringColumn, degreeOfAppropriatenessColumn, lengthOfSummaryColumn, degreeOfQuantifierImprecisionColumn, degreeOfQuantifierRelativeCardinalityColumn, degreeOfSummarizerRelativeCardinalityColumn, degreeOfQualifierImprecisionColumn, degreeOfQualifierRelativeCardinalityColumn, lengthOfQualifierColumn);
+        // Initialize the columns
+        formColumn.setCellValueFactory(cellData -> Bindings.createObjectBinding(() -> cellData.getValue().form()));
+        summaryColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().summary()));
+        averageQMColumn.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().quality().get(0)).asObject());
+
+        Summary summary = new Summary(1, "Summary 1", Collections.singletonList(0.5));
+        summaryTableView.getItems().add(summary);
+
+//        summaryTableView.getColumns().setAll(formColumn, summaryColumn, averageQMColumn,degreeofTruthColumn, degreeOfImprecisionColumn, degreeOfCoveringColumn, degreeOfAppropriatenessColumn, lengthOfSummaryColumn, degreeOfQuantifierImprecisionColumn, degreeOfQuantifierRelativeCardinalityColumn, degreeOfSummarizerRelativeCardinalityColumn, degreeOfQualifierImprecisionColumn, degreeOfQualifierRelativeCardinalityColumn, lengthOfQualifierColumn);
 
         int linguisticOffsetY = 10;
-        List selectedSummarizers = new ArrayList();
 
         for (LinguisticVariable<PolicyEntity> linguisticVariable : linguisticVariablesList) {
 
@@ -117,7 +148,7 @@ public class StageController implements Initializable {
         scrollAttributes.setPrefHeight(linguisticOffsetY + 10);
 
         int quantifierOffsetY = 10;
-        List selectedQuantifiers = new ArrayList();
+
         int i = 0;
         for (Quantifier quantifier : quantifiersList) {
 
@@ -151,15 +182,66 @@ public class StageController implements Initializable {
     }
 
     public void generateSummaries(ActionEvent event) {
+        MockRepository mockRepository = new MockRepository();
+        Dao dao = new DBConnection();
+        Quantifier quantifier = mockRepository.findAllQuantifiers().get(0);
+        SingleSubjectLinguisticSummary<PolicyEntity> linguisticSummary = new SingleSubjectLinguisticSummary<>(quantifier,
+                selectedSummarizers,
+                "car",
+                dao.getPolicies(),
+                Collections.emptyList());
+        List<Summary> summaries = linguisticSummary.generateSummary();
+        for (Summary s : summaries) {
+            String result = s.form() + " " + s.summary() + " " + s.quality();
+            System.out.println(result);
+        }
     }
 
     public void goToAdvancedSettings(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/components/advanced.fxml"));
+            Parent advancedRoot = loader.load();
+            AdvancedController advancedController = loader.getController();
+
+            Scene currentScene = ((Node) event.getSource()).getScene();
+
+            advancedController.setPreviousScene(currentScene);
+
+            Scene advancedScene = new Scene(advancedRoot);
+
+            Stage currentStage = (Stage) currentScene.getWindow();
+
+            currentStage.setScene(advancedScene);
+
+            currentStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void goToMultiSubject(ActionEvent event) {
+        try {
+            Parent advancedRoot = FXMLLoader.load(getClass().getResource("/components/multiSubject.fxml"));
+            Scene advancedScene = new Scene(advancedRoot);
+            Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            currentStage.setScene(advancedScene);
+            currentStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void openWeightsWindow(ActionEvent event) {
+    public void openWeightsWindow(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/components/weightedQM.fxml"));
+        Parent fileRoot = loader.load();
+
+        Stage fileStage = new Stage();
+        fileStage.setTitle("Weights");
+
+        Scene fileScene = new Scene(fileRoot);
+        fileStage.setScene(fileScene);
+
+        fileStage.show();
     }
 
 
