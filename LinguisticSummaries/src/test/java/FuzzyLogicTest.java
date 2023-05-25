@@ -2,7 +2,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import p.lodz.pl.backend.fuzzy.function.TriangularFunction;
 import p.lodz.pl.backend.fuzzy.function.domain.ContinuousDomain;
-import p.lodz.pl.backend.fuzzy.linguistic.Label;
+import p.lodz.pl.backend.fuzzy.linguistic.LinguisticLabel;
 import p.lodz.pl.backend.fuzzy.linguistic.LinguisticVariable;
 import p.lodz.pl.backend.fuzzy.quantifier.Quantifier;
 import p.lodz.pl.backend.fuzzy.set.FuzzySet;
@@ -14,8 +14,6 @@ import p.lodz.pl.backend.model.PolicyEntity;
 import p.lodz.pl.backend.repository.DBConnection;
 import p.lodz.pl.backend.repository.Dao;
 import p.lodz.pl.backend.repository.MockRepository;
-
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -51,11 +49,11 @@ public class FuzzyLogicTest {
 
         Quantifier quantifier = mockRepository.findAllQuantifiers().get(0);
         LinguisticVariable<PolicyEntity> linguisticVariable = mockRepository.findAllLinguisticVariables().get(0);
-        Label<PolicyEntity> label1 = linguisticVariable.getLabels().get(0);
-        Label<PolicyEntity> label2 = linguisticVariable.getLabels().get(1);
-        Label<PolicyEntity> label3 = linguisticVariable.getLabels().get(2);
+        LinguisticLabel<PolicyEntity> label1 = linguisticVariable.getLabels().get(0);
+        LinguisticLabel<PolicyEntity> label2 = linguisticVariable.getLabels().get(1);
+        LinguisticLabel<PolicyEntity> label3 = linguisticVariable.getLabels().get(2);
         //Label<PolicyEntity> label4 = linguisticVariable.getLabels().get(3);
-        List<Label<PolicyEntity>> labels = List.of(label1, label2, label3);
+        List<LinguisticLabel<PolicyEntity>> labels = List.of(label1, label2, label3);
 
         SingleSubjectLinguisticSummary<PolicyEntity> linguisticSummary = new SingleSubjectLinguisticSummary<>(quantifier,
                 labels,
