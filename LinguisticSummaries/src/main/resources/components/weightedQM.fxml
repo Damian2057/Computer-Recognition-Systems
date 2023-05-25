@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="anchorPane" prefHeight="250.0" prefWidth="850.0" stylesheets="/style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="p.lodz.pl.frontend.components.WeightedQMController">
+   <children>
+      <Pane layoutX="30.0" layoutY="71.0" prefHeight="100.0" prefWidth="806.0" style="-fx-background-radius: 15; -fx-background-color: #83c5be;" />
+      <TextField fx:id="degreeOfTruthTF" layoutX="43.0" layoutY="121.0" prefHeight="25.0" prefWidth="46.0" />
+      <TextField fx:id="degreeOfImprecisionTF" layoutX="110.0" layoutY="121.0" prefHeight="25.0" prefWidth="46.0" />
+      <TextField fx:id="degreeOfCoveringTF" layoutX="177.0" layoutY="121.0" prefHeight="25.0" prefWidth="46.0" />
+      <TextField fx:id="degreeOfAppropriatenessTF" layoutX="254.0" layoutY="121.0" prefHeight="25.0" prefWidth="46.0" />
+      <TextField fx:id="lengthOfSummaryTF" layoutX="324.0" layoutY="121.0" prefHeight="25.0" prefWidth="46.0" />
+      <TextField fx:id="degreeOfQuantifierImprecisionTF" layoutX="393.0" layoutY="121.0" prefHeight="25.0" prefWidth="46.0" />
+      <TextField fx:id="degreeOfQuantifierRelativeCardinalityTF" layoutX="467.0" layoutY="121.0" prefHeight="25.0" prefWidth="46.0" />
+      <TextField fx:id="degreeOfSummarizerRelativeCardinalityTF" layoutX="540.0" layoutY="121.0" prefHeight="25.0" prefWidth="46.0" />
+      <TextField fx:id="degreeOfQualifierImprecisionTF" layoutX="614.0" layoutY="121.0" prefHeight="25.0" prefWidth="46.0" />
+      <TextField fx:id="degreeOfQualifierRelativeCardinalityTF" layoutX="688.0" layoutY="121.0" prefHeight="25.0" prefWidth="46.0" />
+      <TextField fx:id="lengthOfQualifierTF" layoutX="765.0" layoutY="121.0" prefHeight="25.0" prefWidth="46.0" />
+      <Label layoutX="285.0" layoutY="14.0" text="Change weights of quality measures T1-T11" textFill="#006d77">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="58.0" layoutY="90.0" text="w1" textFill="#006d77">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="125.0" layoutY="90.0" text="w2" textFill="#006d77">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="192.0" layoutY="90.0" text="w3" textFill="#006d77">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="269.0" layoutY="90.0" text="w4" textFill="#006d77">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="339.0" layoutY="90.0" text="w5" textFill="#006d77">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="408.0" layoutY="90.0" text="w6" textFill="#006d77">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="482.0" layoutY="90.0" text="w7" textFill="#006d77">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="555.0" layoutY="90.0" text="w8" textFill="#006d77">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="629.0" layoutY="90.0" text="w9" textFill="#006d77">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="703.0" layoutY="90.0" text="w10" textFill="#006d77">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="780.0" layoutY="90.0" text="w11" textFill="#006d77">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Button fx:id="saveWeightsButton" layoutX="394.0" layoutY="191.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="62.0" text="Save" />
+   </children>
+</AnchorPane>

@@ -25,13 +25,13 @@
       <Pane layoutX="822.0" layoutY="85.0" prefHeight="125.0" prefWidth="170.0" style="-fx-background-color: #83c5be; -fx-background-radius: 15;">
          <children>
             <Button layoutX="29.0" layoutY="25.0" mnemonicParsing="false" text="Advanced settings" />
-            <Button layoutX="29.0" layoutY="74.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="113.0" text="Multi-subject" />
+            <Button layoutX="29.0" layoutY="74.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="113.0" text="Single-subject" />
          </children>
       </Pane>
       <ScrollPane layoutX="40.0" layoutY="79.0" prefHeight="251.0" prefWidth="368.0" style="-fx-background-radius: 15; -fx-border-radius: 15;">
-        <content>
-          <AnchorPane fx:id="scrollAttributes" minHeight="0.0" minWidth="0.0" prefHeight="249.0" prefWidth="352.0" style="-fx-background-color: #83c5be; -fx-border-color: #006d77; -fx-background-radius: 15; -fx-border-radius: 15;" />
-        </content>
+         <content>
+            <AnchorPane fx:id="scrollAttributes" minHeight="0.0" minWidth="0.0" prefHeight="249.0" prefWidth="352.0" style="-fx-background-color: #83c5be; -fx-border-color: #006d77; -fx-background-radius: 15; -fx-border-radius: 15;" />
+         </content>
       </ScrollPane>
       <Button fx:id="generateButton" layoutX="468.0" layoutY="350.0" mnemonicParsing="false" text="Generate" />
       <Label layoutX="641.0" layoutY="84.0" text="Absolute quantifier" />
@@ -41,13 +41,17 @@
       <Pane layoutY="420.0" prefHeight="330.0" prefWidth="1000.0" style="-fx-background-color: #83c5be;">
          <children>
             <TableView fx:id="summaryTableView" layoutX="17.0" layoutY="33.0" prefHeight="283.0" prefWidth="967.0">
-              <columns>
+               <columns>
                   <TableColumn fx:id="formColumn" prefWidth="75.0" text="Form" />
-                <TableColumn fx:id="summaryColumn" prefWidth="778.0" text="Summary" />
-                <TableColumn fx:id="degreeColumn" minWidth="0.0" prefWidth="113.0" text="Degree of truth" />
-              </columns>
+                  <TableColumn fx:id="summaryColumn" prefWidth="778.0" text="Summary" />
+                  <TableColumn fx:id="degreeColumn" minWidth="0.0" prefWidth="113.0" text="Degree of truth" />
+               </columns>
             </TableView>
          </children>
       </Pane>
+      <ChoiceBox fx:id="firstSubjectChoiceBox" layoutX="425.0" layoutY="244.0" prefWidth="150.0" />
+      <ChoiceBox fx:id="secondSubjectChoiceBox" layoutX="617.0" layoutY="244.0" prefWidth="150.0" />
+      <Label layoutX="469.0" layoutY="210.0" text="First subject" />
+      <Label layoutX="652.0" layoutY="210.0" text="Second subject" />
    </children>
 </AnchorPane>
