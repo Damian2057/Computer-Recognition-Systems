@@ -12,6 +12,6 @@ services:
       retries: 10
     volumes:
       - ./src/main/resources/init.sql:/docker-entrypoint-initdb.d/init.sql
-      - ./src/main/resources/testData.sql:/docker-entrypoint-initdb.d/policy.sql
+      - ./src/main/resources/policy.sql:/docker-entrypoint-initdb.d/policy.sql
 volumes:
   db:
