@@ -40,21 +40,8 @@ public class FuzzyLogicTest {
 
     @Test
     public void logicSecondFormTest() {
-        List<String> sum = new ArrayList<>();
-        sum.add("S1");
-        sum.add("S2");
-        sum.add("S3");
-        //sum.add("S4");
-
-        for (int i = 0; i < sum.size(); i++) {
-            for (int j = 0; j < sum.size(); j++) {
-                if (i != j) {
-                    System.out.println(sum.get(i) + " " + sum.get(j));
-                }
-            }
-        }
-        System.out.println("-------------------");
-
+        int size = Combiner.getSecondFormCombinations(3).size();
+        Assert.assertEquals(size, 12);
     }
 
     @Test

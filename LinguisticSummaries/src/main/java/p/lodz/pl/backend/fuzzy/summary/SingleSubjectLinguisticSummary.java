@@ -63,7 +63,9 @@ public class SingleSubjectLinguisticSummary<R> extends AbstractLinguisticSummary
         final int form = 2;
         List<List<Integer>> combinations = Combiner.getSecondFormCombinations(qualifiers.size());
         for (List<Integer> combination : combinations) {
-            System.out.println(combination);
+            for (int i : combination) {
+
+            }
         }
     }
 
