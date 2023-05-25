@@ -1,19 +1,19 @@
 package p.lodz.pl.backend.fuzzy.summary;
 
-import p.lodz.pl.backend.fuzzy.linguistic.Label;
+import p.lodz.pl.backend.fuzzy.linguistic.LinguisticLabel;
 import p.lodz.pl.backend.fuzzy.quantifier.Quantifier;
 
 import java.util.List;
 
 public class MultiSubjectLinguisticSummary<R> extends AbstractLinguisticSummary {
 
-    private final List<Label<R>> qualifiers;
+    private final List<LinguisticLabel<R>> qualifiers;
     private final String subject1;
     private final String subject2;
     private final List<R> policies;
 
     protected MultiSubjectLinguisticSummary(Quantifier quantifier,
-                                            List<Label<R>> qualifiers,
+                                            List<LinguisticLabel<R>> qualifiers,
                                             String subject1, String subject2, List<R> policies) {
         super(quantifier);
         this.qualifiers = qualifiers;
@@ -22,7 +22,7 @@ public class MultiSubjectLinguisticSummary<R> extends AbstractLinguisticSummary 
         this.policies = policies;
     }
 
-    public List<Label<R>> getQualifiers() {
+    public List<LinguisticLabel<R>> getQualifiers() {
         return qualifiers;
     }
 
