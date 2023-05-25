@@ -2,10 +2,21 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import p.lodz.pl.backend.fuzzy.function.TriangularFunction;
 import p.lodz.pl.backend.fuzzy.function.domain.ContinuousDomain;
+import p.lodz.pl.backend.fuzzy.linguistic.Label;
+import p.lodz.pl.backend.fuzzy.linguistic.LinguisticVariable;
+import p.lodz.pl.backend.fuzzy.quantifier.Quantifier;
 import p.lodz.pl.backend.fuzzy.set.FuzzySet;
+import p.lodz.pl.backend.fuzzy.summary.Combiner;
+import p.lodz.pl.backend.fuzzy.summary.SingleSubjectLinguisticSummary;
+import p.lodz.pl.backend.fuzzy.summary.Summary;
 import p.lodz.pl.backend.fuzzy.util.Operation;
+import p.lodz.pl.backend.model.PolicyEntity;
+import p.lodz.pl.backend.repository.DBConnection;
+import p.lodz.pl.backend.repository.Dao;
+import p.lodz.pl.backend.repository.MockRepository;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class FuzzyLogicTest {
@@ -23,31 +34,8 @@ public class FuzzyLogicTest {
 
     @Test
     public void logicFirstFormTest() {
-        List<String> sum = new ArrayList<>();
-        sum.add("S1");
-        sum.add("S2");
-        sum.add("S3");
-        //sum.add("S4");
-
-        for (String s : sum) {
-            System.out.println(s);
-        }
-        System.out.println("-------------------");
-        for (int i = 0; i < sum.size(); i++) {
-            for (int j = i; j < sum.size(); j++) {
-                if (i != j) {
-                    System.out.println(sum.get(i) + " " + sum.get(j));
-                }
-            }
-        }
-        System.out.println("-------------------");
-        for (int i = 2; i < sum.size(); i++) {
-            StringBuilder xd = new StringBuilder();
-            for (int j = 0; j < i + 1; j++) {
-                xd.append(sum.get(j)).append(" ");
-            }
-            System.out.println(xd);
-        }
+        int size = Combiner.getFirstFormCombinations(1, 3).size();
+        Assert.assertEquals(size, 7);
     }
 
     @Test
@@ -66,6 +54,32 @@ public class FuzzyLogicTest {
             }
         }
         System.out.println("-------------------");
+
+    }
+
+    @Test
+    public void summaryTest() {
+        MockRepository mockRepository = new MockRepository();
+        Dao dao = new DBConnection();
+
+        Quantifier quantifier = mockRepository.findAllQuantifiers().get(0);
+        LinguisticVariable<PolicyEntity> linguisticVariable = mockRepository.findAllLinguisticVariables().get(0);
+        Label<PolicyEntity> label1 = linguisticVariable.getLabels().get(0);
+        Label<PolicyEntity> label2 = linguisticVariable.getLabels().get(1);
+        Label<PolicyEntity> label3 = linguisticVariable.getLabels().get(2);
+        //Label<PolicyEntity> label4 = linguisticVariable.getLabels().get(3);
+        List<Label<PolicyEntity>> labels = List.of(label1, label2, label3);
+
+        SingleSubjectLinguisticSummary<PolicyEntity> linguisticSummary = new SingleSubjectLinguisticSummary<>(quantifier,
+                labels,
+                "car",
+                dao.getPolicies(),
+                Collections.emptyList());
+        List<Summary> summaries = linguisticSummary.generateSummary();
+        for (Summary s : summaries) {
+            String result = s.form() + " " + s.summary() + " " + s.quality();
+            System.out.println(result);
+        }
 
     }
 

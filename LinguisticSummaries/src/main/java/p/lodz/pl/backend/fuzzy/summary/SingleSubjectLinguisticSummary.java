@@ -4,7 +4,6 @@ import p.lodz.pl.backend.fuzzy.linguistic.Label;
 import p.lodz.pl.backend.fuzzy.quantifier.Quantifier;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class SingleSubjectLinguisticSummary<R> extends AbstractLinguisticSummary {
@@ -31,7 +30,7 @@ public class SingleSubjectLinguisticSummary<R> extends AbstractLinguisticSummary
     @Override
     public List<Summary> generateSummary() {
         summaries = new ArrayList<>();
-        generateFirstForm();
+        //generateFirstForm();
         if (!quantifier.isAbsolute()) {
             generateSecondForm();
         }
@@ -41,40 +40,18 @@ public class SingleSubjectLinguisticSummary<R> extends AbstractLinguisticSummary
 
     private void generateFirstForm() {
         final int form = 1;
-        //Q1 P1 have Q#
-        for (Label<R> qualifier : qualifiers) {
-            StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append(quantifier.getLabelName()).append(SPACE)
-                            .append(subject).append(HAVE)
-                            .append(qualifier.getLabelName()).append(SPACE)
-                            .append(qualifier.getLinguisticVariableName());
-            summaries.add(new Summary(form, stringBuilder.toString(), getQualityForSummary()));
-        }
-        //Q1 P1 have Q# and Q#
-        for (int i = 0; i < qualifiers.size(); i++) {
-            for (int j = i; j < qualifiers.size(); j++) {
-                if (i != j) {
-                    StringBuilder stringBuilder = new StringBuilder();
-                    stringBuilder.append(quantifier.getLabelName()).append(SPACE)
-                            .append(subject).append(HAVE)
-                            .append(qualifiers.get(i).getLabelName()).append(SPACE)
-                            .append(qualifiers.get(i).getLinguisticVariableName())
-                            .append(AND)
-                            .append(qualifiers.get(j).getLabelName()).append(SPACE)
-                            .append(qualifiers.get(j).getLinguisticVariableName());
-                    summaries.add(new Summary(form, stringBuilder.toString(), getQualityForSummary()));
-                }
-            }
-        }
-        //Q1 P1 have Q# and Q# and Q# ...
-        for (int i = 2; i < qualifiers.size(); i++) {
+        List<List<Integer>> combinations = Combiner.getFirstFormCombinations(1, qualifiers.size());
+
+        for (List<Integer> combination : combinations) {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append(quantifier.getLabelName()).append(SPACE)
                     .append(subject).append(HAVE);
-            for (int j = 0; j < i + 1; j++) {
+            int index = 0;
+            for (int i : combination) {
                 stringBuilder.append(qualifiers.get(i).getLabelName()).append(SPACE)
                         .append(qualifiers.get(i).getLinguisticVariableName());
-                if (j + 1 < i + 1) {
+                index++;
+                if (index < combination.size()) {
                     stringBuilder.append(AND);
                 }
             }
@@ -84,11 +61,10 @@ public class SingleSubjectLinguisticSummary<R> extends AbstractLinguisticSummary
 
     private void generateSecondForm() {
         final int form = 2;
-        //Q1 P1 that are Q# are Q#
-
-        //Q1 P1 that are Q# and Q#... are Q#
-
-        //Q1 P1 that are Q# are Q# and Q#...
+        List<List<Integer>> combinations = Combiner.getSecondFormCombinations(qualifiers.size());
+        for (List<Integer> combination : combinations) {
+            System.out.println(combination);
+        }
     }
 
     public List<Label<R>> getQualifiers() {
@@ -100,7 +76,45 @@ public class SingleSubjectLinguisticSummary<R> extends AbstractLinguisticSummary
     }
 
     private List<Double> getQualityForSummary() {
-        return Collections.emptyList();
+        double T1 = degreeOfTruth();
+        double T2 = degreeOfImprecision();
+        double T3 = degreeOfCovering();
+        double T4 = degreeOfAppropriateness();
+        double T5 = lengthOfSummary();
+        double T6 = degreeOfQuantifierImprecision();
+        double T7 = degreeOfQuantifierCardinality();
+        double T8 = degreeOfSummarizerCardinality();
+        double T9 = degreeOfQualifierImprecision();
+        double T10 = degreeOfQualifierCardinality();
+        double T11 = lengthOfQualifier();
+
+        double avg = T1 * weights.get(0)
+                + T2 * weights.get(1)
+                + T3 * weights.get(2)
+                + T4 * weights.get(3)
+                + T5 * weights.get(4)
+                + T6 * weights.get(5)
+                + T7 * weights.get(6)
+                + T8 * weights.get(7)
+                + T9 * weights.get(8)
+                + T10 * weights.get(9)
+                + T11 * weights.get(10);
+
+        List<Double> quality = new ArrayList<>();
+        quality.add(avg);
+        quality.add(T1);
+        quality.add(T2);
+        quality.add(T3);
+        quality.add(T4);
+        quality.add(T5);
+        quality.add(T6);
+        quality.add(T7);
+        quality.add(T8);
+        quality.add(T9);
+        quality.add(T10);
+        quality.add(T11);
+
+        return quality;
     }
 
     private double degreeOfTruth() {
