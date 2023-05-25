@@ -22,7 +22,7 @@ public class FuzzyLogicTest {
     }
 
     @Test
-    public void logicTest() {
+    public void logicFirstFormTest() {
         List<String> sum = new ArrayList<>();
         sum.add("S1");
         sum.add("S2");
@@ -48,6 +48,25 @@ public class FuzzyLogicTest {
             }
             System.out.println(xd);
         }
+    }
+
+    @Test
+    public void logicSecondFormTest() {
+        List<String> sum = new ArrayList<>();
+        sum.add("S1");
+        sum.add("S2");
+        sum.add("S3");
+        //sum.add("S4");
+
+        for (int i = 0; i < sum.size(); i++) {
+            for (int j = 0; j < sum.size(); j++) {
+                if (i != j) {
+                    System.out.println(sum.get(i) + " " + sum.get(j));
+                }
+            }
+        }
+        System.out.println("-------------------");
+
     }
 
 }

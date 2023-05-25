@@ -32,7 +32,10 @@ public class SingleSubjectLinguisticSummary<R> extends AbstractLinguisticSummary
     public List<Summary> generateSummary() {
         summaries = new ArrayList<>();
         generateFirstForm();
-        generateSecondForm();
+        if (!quantifier.isAbsolute()) {
+            generateSecondForm();
+        }
+
         return summaries;
     }
 
@@ -81,6 +84,11 @@ public class SingleSubjectLinguisticSummary<R> extends AbstractLinguisticSummary
 
     private void generateSecondForm() {
         final int form = 2;
+        //Q1 P1 that are Q# are Q#
+
+        //Q1 P1 that are Q# and Q#... are Q#
+
+        //Q1 P1 that are Q# are Q# and Q#...
     }
 
     public List<Label<R>> getQualifiers() {
