@@ -10,7 +10,7 @@
 
 <AnchorPane fx:id="anchorPane" prefHeight="750.0" prefWidth="1000.0" stylesheets="/style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="p.lodz.pl.frontend.components.AdvancedController">
    <children>
-      <Button fx:id="goBackButton" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" text="Go back" />
+      <Button fx:id="goBackButton" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#goToPreviousView" text="Go back" />
       <TitledPane animated="false" layoutX="176.0" layoutY="27.0" prefHeight="250.0" prefWidth="300.0" text="Summarizers">
         <content>
           <AnchorPane fx:id="summarizerLabelsPane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: #83c5be;" />
