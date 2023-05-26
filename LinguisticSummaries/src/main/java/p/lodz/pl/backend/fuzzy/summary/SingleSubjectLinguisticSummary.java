@@ -2,9 +2,10 @@ package p.lodz.pl.backend.fuzzy.summary;
 
 import p.lodz.pl.backend.fuzzy.linguistic.LinguisticLabel;
 import p.lodz.pl.backend.fuzzy.quantifier.Quantifier;
+import p.lodz.pl.backend.fuzzy.util.Combiner;
+import p.lodz.pl.backend.fuzzy.util.Pair;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class SingleSubjectLinguisticSummary<R> extends AbstractLinguisticSummary {
@@ -30,7 +31,7 @@ public class SingleSubjectLinguisticSummary<R> extends AbstractLinguisticSummary
     @Override
     public List<Summary> generateSummary() {
         summaries = new ArrayList<>();
-        //generateFirstForm();
+        generateFirstForm();
         if (!quantifier.isAbsolute()) {
             generateSecondForm();
         }
@@ -60,11 +61,31 @@ public class SingleSubjectLinguisticSummary<R> extends AbstractLinguisticSummary
 
     private void generateSecondForm() {
         final int form = 2;
-        List<List<Integer>> combinations = Combiner.getSecondFormCombinations(qualifiers.size());
-        for (List<Integer> combination : combinations) {
-            for (int i : combination) {
-
+        List<Pair<List<Integer>, List<Integer>>> combinations = Combiner.getSecondFormCombinations(qualifiers.size());
+        for (Pair<List<Integer>, List<Integer>> combination : combinations) {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append(quantifier.getLabelName()).append(SPACE)
+                    .append(subject).append(THAT);
+            int index = 0;
+            for (int i : combination.getQualifiers()) {
+                stringBuilder.append(qualifiers.get(i).getLabelName()).append(SPACE)
+                        .append(qualifiers.get(i).getLinguisticVariableName());
+                index++;
+                if (index < combination.getQualifiers().size()) {
+                    stringBuilder.append(AND);
+                }
             }
+            stringBuilder.append(ALSO);
+            index = 0;
+            for (int i : combination.getSummarizers()) {
+                stringBuilder.append(qualifiers.get(i).getLabelName()).append(SPACE)
+                        .append(qualifiers.get(i).getLinguisticVariableName());
+                index++;
+                if (index < combination.getQualifiers().size()) {
+                    stringBuilder.append(AND);
+                }
+            }
+            summaries.add(new Summary(form, stringBuilder.toString(), getQualityForSummary()));
         }
     }
 
@@ -89,17 +110,19 @@ public class SingleSubjectLinguisticSummary<R> extends AbstractLinguisticSummary
         double T10 = degreeOfQualifierCardinality();
         double T11 = lengthOfQualifier();
 
-        double avg = T1 * weights.get(0)
-                + T2 * weights.get(1)
-                + T3 * weights.get(2)
-                + T4 * weights.get(3)
-                + T5 * weights.get(4)
-                + T6 * weights.get(5)
-                + T7 * weights.get(6)
-                + T8 * weights.get(7)
-                + T9 * weights.get(8)
-                + T10 * weights.get(9)
-                + T11 * weights.get(10);
+        double avg = 0;
+
+//        double avg = T1 * weights.get(0)
+//                + T2 * weights.get(1)
+//                + T3 * weights.get(2)
+//                + T4 * weights.get(3)
+//                + T5 * weights.get(4)
+//                + T6 * weights.get(5)
+//                + T7 * weights.get(6)
+//                + T8 * weights.get(7)
+//                + T9 * weights.get(8)
+//                + T10 * weights.get(9)
+//                + T11 * weights.get(10);
 
         List<Double> quality = new ArrayList<>();
         quality.add(avg);

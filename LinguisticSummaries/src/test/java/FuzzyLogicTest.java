@@ -6,7 +6,7 @@ import p.lodz.pl.backend.fuzzy.linguistic.LinguisticLabel;
 import p.lodz.pl.backend.fuzzy.linguistic.LinguisticVariable;
 import p.lodz.pl.backend.fuzzy.quantifier.Quantifier;
 import p.lodz.pl.backend.fuzzy.set.FuzzySet;
-import p.lodz.pl.backend.fuzzy.summary.Combiner;
+import p.lodz.pl.backend.fuzzy.util.Combiner;
 import p.lodz.pl.backend.fuzzy.summary.SingleSubjectLinguisticSummary;
 import p.lodz.pl.backend.fuzzy.summary.Summary;
 import p.lodz.pl.backend.fuzzy.util.Operation;
@@ -61,11 +61,12 @@ public class FuzzyLogicTest {
                 dao.getPolicies(),
                 Collections.emptyList());
         List<Summary> summaries = linguisticSummary.generateSummary();
+
+        Assert.assertEquals(summaries.size(), 19);
         for (Summary s : summaries) {
             String result = s.form() + " " + s.summary() + " " + s.quality();
             System.out.println(result);
         }
-
     }
 
 }

@@ -1,4 +1,6 @@
-package p.lodz.pl.backend.fuzzy.summary;
+package p.lodz.pl.backend.fuzzy.util;
+
+import p.lodz.pl.backend.fuzzy.util.Pair;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,7 +16,6 @@ public class Combiner {
         List<Integer> elems = IntStream.rangeClosed(0, size - 1)
                 .boxed()
                 .toList();
-
         List<List<Integer>> combinations = new ArrayList<>();
 
         for (int k = start; k <= size; k++) {
@@ -38,8 +39,9 @@ public class Combiner {
         return combinations;
     }
 
-    public static List<List<Integer>> getSecondFormCombinations(int size) {
-        List<List<Integer>> result = new ArrayList<>();
+    public static List<Pair<List<Integer>, List<Integer>>> getSecondFormCombinations(int size) {
+        List<Pair<List<Integer>, List<Integer>>> result = new ArrayList<>();
+
         List<List<Integer>> combinations = new ArrayList<>(getFirstFormCombinations(1, size));
         for (List<Integer> combination : combinations) {
             List<Integer> copy = new ArrayList<>(combination);
@@ -47,10 +49,9 @@ public class Combiner {
                     .boxed()
                     .toList());
             supplement.removeAll(copy);
+            List<List<Integer>> sup = getFirstFormCombinations(supplement, 1, size);
 
-            var xd = getFirstFormCombinations(supplement, 1, size);
-            xd.forEach(x -> x.addAll(0, copy));
-            result.addAll(xd);
+            sup.forEach(x -> result.add(new Pair<>(copy, x)));
         }
 
         return result;
