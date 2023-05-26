@@ -9,6 +9,8 @@ public abstract class AbstractLinguisticSummary {
     protected static final String SPACE = " ";
     protected static final String AND = " and ";
     protected static final String HAVE = " have ";
+    protected static final String THAT = " that are ";
+    protected static final String ALSO = " are also ";
     protected final Quantifier quantifier;
 
     protected AbstractLinguisticSummary(Quantifier quantifier) {
