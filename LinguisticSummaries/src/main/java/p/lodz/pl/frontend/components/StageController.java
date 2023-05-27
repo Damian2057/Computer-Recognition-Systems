@@ -2,9 +2,7 @@ package p.lodz.pl.frontend.components;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,7 +12,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Label;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import lombok.SneakyThrows;
@@ -79,8 +76,12 @@ public class StageController implements Initializable {
 
     private Scene previousScene;
 
-    private List selectedSummarizers = new ArrayList();
-    private List selectedQuantifiers = new ArrayList();
+    private  List<LinguisticLabel<PolicyEntity>> selectedSummarizers = new ArrayList();
+    private List<Quantifier> selectedQuantifiers = new ArrayList();
+
+    private Dao dao = new DBConnection();
+    private List<Double> weights = new ArrayList<>();
+    private SingleSubjectLinguisticSummary<PolicyEntity> linguisticSummary;
 
     @SneakyThrows
     @Override
@@ -89,19 +90,6 @@ public class StageController implements Initializable {
         MockRepository mockRepository = new MockRepository();
         List<LinguisticVariable<PolicyEntity>> linguisticVariablesList = mockRepository.findAllLinguisticVariables();
         List<Quantifier> quantifiersList = mockRepository.findAllQuantifiers();
-
-        // Initialize the TableView
-        summaryTableView.setItems(FXCollections.observableArrayList());
-
-        // Initialize the columns
-        formColumn.setCellValueFactory(cellData -> Bindings.createObjectBinding(() -> cellData.getValue().form()));
-        summaryColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().summary()));
-        averageQMColumn.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().quality().get(0)).asObject());
-
-        Summary summary = new Summary(1, "Summary 1", Collections.singletonList(0.5));
-        summaryTableView.getItems().add(summary);
-
-//        summaryTableView.getColumns().setAll(formColumn, summaryColumn, averageQMColumn,degreeofTruthColumn, degreeOfImprecisionColumn, degreeOfCoveringColumn, degreeOfAppropriatenessColumn, lengthOfSummaryColumn, degreeOfQuantifierImprecisionColumn, degreeOfQuantifierRelativeCardinalityColumn, degreeOfSummarizerRelativeCardinalityColumn, degreeOfQualifierImprecisionColumn, degreeOfQualifierRelativeCardinalityColumn, lengthOfQualifierColumn);
 
         int linguisticOffsetY = 10;
 
@@ -131,13 +119,11 @@ public class StageController implements Initializable {
 
                 checkBox.setOnAction(event -> {
                     if (checkBox.isSelected()) {
-                        String selectedEtiquette = etiquetteLabelName.getLabelName();
+                        LinguisticLabel<PolicyEntity> selectedEtiquette = etiquetteLabelName;
                         selectedSummarizers.add(selectedEtiquette);
-                        System.out.println("Selected etiquettes: " + selectedSummarizers);
                     } else {
                         String unselectedScale = etiquetteLabelName.getLabelName();
                         selectedSummarizers.remove(unselectedScale);
-                        System.out.println("Updated etiquettes: " + selectedSummarizers);
                     }
                 });
 
@@ -165,13 +151,11 @@ public class StageController implements Initializable {
 
             checkBox.setOnAction(event -> {
                 if (checkBox.isSelected()) {
-                    String selectedQuantifier = quantifier.getLabelName();
+                    Quantifier selectedQuantifier = quantifier;
                     selectedQuantifiers.add(selectedQuantifier);
-                    System.out.println("Selected quantifiers: " + selectedQuantifiers);
                 } else {
                     String unselectedScale = quantifier.getLabelName();
                     selectedQuantifiers.remove(unselectedScale);
-                    System.out.println("Updated quantifiers: " + selectedQuantifiers);
                 }
             });
 
@@ -179,21 +163,58 @@ public class StageController implements Initializable {
             quantifierOffsetY += 15;
         }
         scrollQuantifiers.setPrefHeight((quantifierOffsetY) * 3);
+
+        List<Double> defaultWeights = new ArrayList<>();
+
+        defaultWeights.add(0.3);
+        defaultWeights.add(0.7);
+        defaultWeights.add(0.7);
+        defaultWeights.add(0.7);
+        defaultWeights.add(0.7);
+        defaultWeights.add(0.7);
+        defaultWeights.add(0.7);
+        defaultWeights.add(0.7);
+        defaultWeights.add(0.7);
+        defaultWeights.add(0.7);
+        defaultWeights.add(0.7);
+
+        setWeights(defaultWeights);
     }
 
     public void generateSummaries(ActionEvent event) {
-        MockRepository mockRepository = new MockRepository();
-        Dao dao = new DBConnection();
-        Quantifier quantifier = mockRepository.findAllQuantifiers().get(0);
-        SingleSubjectLinguisticSummary<PolicyEntity> linguisticSummary = new SingleSubjectLinguisticSummary<>(quantifier,
-                selectedSummarizers,
-                "car",
-                dao.getPolicies(),
-                Collections.emptyList());
-        List<Summary> summaries = linguisticSummary.generateSummary();
-        for (Summary s : summaries) {
-            String result = s.form() + " " + s.summary() + " " + s.quality();
-            System.out.println(result);
+
+        formColumn.setCellValueFactory(cellData -> Bindings.createObjectBinding(() -> cellData.getValue().form()));
+        summaryColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().summary()));
+        averageQMColumn.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().quality().get(0)).asObject());
+        degreeofTruthColumn.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().quality().get(1)).asObject());
+        degreeOfImprecisionColumn.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().quality().get(2)).asObject());
+        degreeOfCoveringColumn.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().quality().get(3)).asObject());
+        degreeOfAppropriatenessColumn.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().quality().get(4)).asObject());
+        lengthOfSummaryColumn.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().quality().get(5)).asObject());
+        degreeOfQuantifierImprecisionColumn.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().quality().get(6)).asObject());
+        degreeOfQuantifierRelativeCardinalityColumn.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().quality().get(7)).asObject());
+        degreeOfSummarizerRelativeCardinalityColumn.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().quality().get(8)).asObject());
+        degreeOfQualifierImprecisionColumn.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().quality().get(9)).asObject());
+        degreeOfQualifierRelativeCardinalityColumn.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().quality().get(10)).asObject());
+        lengthOfQualifierColumn.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().quality().get(11)).asObject());
+
+        summaryTableView.getItems().clear();
+
+        for (int i=0; i< selectedQuantifiers.size(); i++) {
+
+            linguisticSummary = new SingleSubjectLinguisticSummary<>(selectedQuantifiers.get(i),
+                    selectedSummarizers,
+                    "cars",
+                    dao.getPolicies(),
+                    weights);
+//            System.out.println("Wagi w generate summaries" + weights);
+            List<Summary> summaries = linguisticSummary.generateSummary();
+            for (Summary s : summaries) {
+                String result = s.form() + " " + s.summary() + " " + s.quality();
+                System.out.println(result);
+                Summary summary = new Summary(s.form(), s.summary(), s.quality());
+                summaryTableView.getItems().add(summary);
+            }
         }
     }
 
@@ -241,8 +262,15 @@ public class StageController implements Initializable {
         Scene fileScene = new Scene(fileRoot);
         fileStage.setScene(fileScene);
 
+        WeightedQMController weightedQMController = loader.getController();
+        weightedQMController.setStageController(this);
+        weightedQMController.initializeWeights();
+
         fileStage.show();
     }
 
+    public void setWeights(List<Double> weights) {
+        this.weights = weights;
+    }
 
 }
