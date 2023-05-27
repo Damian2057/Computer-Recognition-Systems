@@ -79,8 +79,8 @@ public class StageController implements Initializable {
 
     private Scene previousScene;
 
-    private List selectedSummarizers = new ArrayList();
-    private List selectedQuantifiers = new ArrayList();
+    private  List<LinguisticLabel<PolicyEntity>> selectedSummarizers = new ArrayList();
+    private List<Quantifier> selectedQuantifiers = new ArrayList();
 
     @SneakyThrows
     @Override
@@ -118,7 +118,7 @@ public class StageController implements Initializable {
 
                 checkBox.setOnAction(event -> {
                     if (checkBox.isSelected()) {
-                        String selectedEtiquette = etiquetteLabelName.getLabelName();
+                        LinguisticLabel<PolicyEntity> selectedEtiquette = etiquetteLabelName;
                         selectedSummarizers.add(selectedEtiquette);
                         System.out.println("Selected etiquettes: " + selectedSummarizers);
                     } else {
@@ -152,7 +152,7 @@ public class StageController implements Initializable {
 
             checkBox.setOnAction(event -> {
                 if (checkBox.isSelected()) {
-                    String selectedQuantifier = quantifier.getLabelName();
+                    Quantifier selectedQuantifier = quantifier;
                     selectedQuantifiers.add(selectedQuantifier);
                     System.out.println("Selected quantifiers: " + selectedQuantifiers);
                 } else {
@@ -169,24 +169,15 @@ public class StageController implements Initializable {
     }
 
     public void generateSummaries(ActionEvent event) {
-        MockRepository mockRepository = new MockRepository();
         Dao dao = new DBConnection();
-        Quantifier quantifier = mockRepository.findAllQuantifiers().get(0);
-        SingleSubjectLinguisticSummary<PolicyEntity> linguisticSummary = new SingleSubjectLinguisticSummary<>(quantifier,
+        SingleSubjectLinguisticSummary<PolicyEntity> linguisticSummary = new SingleSubjectLinguisticSummary<>(selectedQuantifiers.get(0),
                 selectedSummarizers,
-                "car",
+                "policyholders",
                 dao.getPolicies(),
                 Collections.emptyList());
-        List<Summary> summaries = linguisticSummary.generateSummary();
-        for (Summary s : summaries) {
-            String result = s.form() + " " + s.summary() + " " + s.quality();
-            System.out.println(result);
-        }
 
-        // Initialize the TableView
         summaryTableView.setItems(FXCollections.observableArrayList());
 
-        // Initialize the columns
         formColumn.setCellValueFactory(cellData -> Bindings.createObjectBinding(() -> cellData.getValue().form()));
         summaryColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().summary()));
         averageQMColumn.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().quality().get(0)).asObject());
@@ -202,23 +193,13 @@ public class StageController implements Initializable {
         degreeOfQualifierRelativeCardinalityColumn.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().quality().get(10)).asObject());
         lengthOfQualifierColumn.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().quality().get(11)).asObject());
 
-        //        summaryTableView.getColumns().setAll(formColumn, summaryColumn, averageQMColumn,degreeofTruthColumn, degreeOfImprecisionColumn, degreeOfCoveringColumn, degreeOfAppropriatenessColumn, lengthOfSummaryColumn, degreeOfQuantifierImprecisionColumn, degreeOfQuantifierRelativeCardinalityColumn, degreeOfSummarizerRelativeCardinalityColumn, degreeOfQualifierImprecisionColumn, degreeOfQualifierRelativeCardinalityColumn, lengthOfQualifierColumn);
-
-        List<Double> quality = new ArrayList<>();
-        quality.add(0.1);
-        quality.add(0.2);
-        quality.add(0.3);
-        quality.add(0.4);
-        quality.add(0.5);
-        quality.add(0.6);
-        quality.add(0.7);
-        quality.add(0.8);
-        quality.add(0.9);
-        quality.add(0.10);
-        quality.add(0.11);
-        quality.add(0.12);
-        Summary summary = new Summary(1, "Summary 1", quality);
-        summaryTableView.getItems().add(summary);
+        List<Summary> summaries = linguisticSummary.generateSummary();
+        for (Summary s : summaries) {
+            String result = s.form() + " " + s.summary() + " " + s.quality();
+            System.out.println(result);
+            Summary summary = new Summary(s.form(), s.summary(), s.quality());
+            summaryTableView.getItems().add(summary);
+        }
     }
 
     public void goToAdvancedSettings(ActionEvent event) {

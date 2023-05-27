@@ -1,5 +1,7 @@
 package p.lodz.pl.frontend.components;
 
+import javafx.event.ActionEvent;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
 public class WeightedQMController {
@@ -14,4 +16,8 @@ public class WeightedQMController {
     public TextField degreeOfQualifierImprecisionTF;
     public TextField degreeOfQualifierRelativeCardinalityTF;
     public TextField lengthOfQualifierTF;
+    public Button saveWeightsButton;
+
+    public void saveWeights(ActionEvent event) {
+    }
 }
