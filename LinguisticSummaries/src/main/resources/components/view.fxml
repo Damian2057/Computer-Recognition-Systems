@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="anchorPane" prefHeight="750.0" prefWidth="1000.0" stylesheets="/style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="p.lodz.pl.frontend.components.StageController">
+<AnchorPane fx:id="anchorPane" prefHeight="750.0" prefWidth="1550.0" stylesheets="/style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="p.lodz.pl.frontend.components.StageController">
    <children>
       <Label layoutX="426.0" layoutY="385.0" text="Linguistic summaries" textFill="#006d77">
          <font>
@@ -34,28 +34,28 @@
         </content>
       </ScrollPane>
       <Button fx:id="generateButton" layoutX="468.0" layoutY="350.0" mnemonicParsing="false" onAction="#generateSummaries" text="Generate" />
-      <Pane layoutY="420.0" prefHeight="330.0" prefWidth="1000.0" style="-fx-background-color: #83c5be;">
+      <Pane layoutY="420.0" prefHeight="330.0" prefWidth="1550.0" style="-fx-background-color: #83c5be;">
          <children>
-            <ScrollPane layoutX="13.0" layoutY="43.0" prefHeight="245.0" prefWidth="975.0">
+            <ScrollPane layoutX="13.0" layoutY="43.0" prefHeight="245.0" prefWidth="1487.0">
               <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="244.0" prefWidth="2835.0">
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="243.0" prefWidth="1483.0">
                      <children>
-                        <TableView fx:id="summaryTableView" prefHeight="283.0" prefWidth="2835.0">
+                        <TableView fx:id="summaryTableView" prefHeight="245.0" prefWidth="1487.0">
                           <columns>
-                              <TableColumn fx:id="formColumn" prefWidth="70.0" text="Form" />
-                            <TableColumn fx:id="summaryColumn" prefWidth="700.0" text="Summary" />
-                              <TableColumn fx:id="averageQMColumn" prefWidth="85.0" text="Average QM" />
-                            <TableColumn fx:id="degreeofTruthColumn" minWidth="0.0" prefWidth="115.0" text="Degree of truth" />
-                              <TableColumn fx:id="degreeOfImprecisionColumn" prefWidth="130.0" text="Degree of imprecision" />
-                              <TableColumn fx:id="degreeOfCoveringColumn" prefWidth="130.0" text="Degree of covering" />
-                              <TableColumn fx:id="degreeOfAppropriatenessColumn" prefWidth="200.0" text="Degree of appropriateness" />
-                              <TableColumn fx:id="lengthOfSummaryColumn" prefWidth="130.0" text="Length of summary" />
-                              <TableColumn fx:id="degreeOfQuantifierImprecisionColumn" prefWidth="200.0" text="Degree of quantifier imprecision" />
-                              <TableColumn fx:id="degreeOfQuantifierRelativeCardinalityColumn" prefWidth="250.0" text="Degree of quantifier relative cardinality" />
-                              <TableColumn fx:id="degreeOfSummarizerRelativeCardinalityColumn" prefWidth="250.0" text="Degree of summarizer relative cardinality" />
-                              <TableColumn fx:id="degreeOfQualifierImprecisionColumn" prefWidth="200.0" text="Degree of qualifier imprecision" />
-                              <TableColumn fx:id="degreeOfQualifierRelativeCardinalityColumn" prefWidth="250.0" text="Degree of qualifier relative cardinality" />
-                              <TableColumn fx:id="lengthOfQualifierColumn" prefWidth="130.0" text="Length of qualifier" />
+                              <TableColumn fx:id="formColumn" prefWidth="50.0" text="Form" />
+                            <TableColumn fx:id="summaryColumn" prefWidth="715.0" text="Summary" />
+                              <TableColumn fx:id="averageQMColumn" prefWidth="60.0" text="S" />
+                            <TableColumn fx:id="degreeofTruthColumn" minWidth="0.0" prefWidth="60.0" text="T1" />
+                              <TableColumn fx:id="degreeOfImprecisionColumn" prefWidth="60.0" text="T2" />
+                              <TableColumn fx:id="degreeOfCoveringColumn" prefWidth="60.0" text="T3" />
+                              <TableColumn fx:id="degreeOfAppropriatenessColumn" prefWidth="60.0" text="T4" />
+                              <TableColumn fx:id="lengthOfSummaryColumn" prefWidth="60.0" text="T5" />
+                              <TableColumn fx:id="degreeOfQuantifierImprecisionColumn" prefWidth="60.0" text="T6" />
+                              <TableColumn fx:id="degreeOfQuantifierRelativeCardinalityColumn" prefWidth="60.0" text="T7" />
+                              <TableColumn fx:id="degreeOfSummarizerRelativeCardinalityColumn" prefWidth="60.0" text="T8" />
+                              <TableColumn fx:id="degreeOfQualifierImprecisionColumn" prefWidth="60.0" text="T9" />
+                              <TableColumn fx:id="degreeOfQualifierRelativeCardinalityColumn" prefWidth="60.0" text="T10" />
+                              <TableColumn fx:id="lengthOfQualifierColumn" prefWidth="60.0" text="T11" />
                           </columns>
                         </TableView>
                      </children>
