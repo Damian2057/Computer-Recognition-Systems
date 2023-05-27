@@ -9,7 +9,6 @@ import p.lodz.pl.backend.fuzzy.util.Extractor;
 import p.lodz.pl.backend.fuzzy.util.Pair;
 
 import java.util.List;
-import java.util.stream.DoubleStream;
 
 public class FuzzySet<R> extends CrispSet {
 
@@ -99,8 +98,42 @@ public class FuzzySet<R> extends CrispSet {
         return max;
     }
 
-    public boolean isConvex(List<R> list) {
-        //TODO: complete
+    public boolean isConvex() {
+        if (function.getDomain() instanceof ContinuousDomain continuousDomain) {
+            double step = 0.001;
+            for (double i = continuousDomain.getMinDomain(); i < continuousDomain.getMaxDomain(); i += step) {
+                double x = function.getMemberShip(i);
+                double y = function.getMemberShip(i + step);
+                double z = function.getMemberShip(i + 2 * step);
+                if (x > y && y > z) {
+                    return false;
+                }
+            }
+            return true;
+        } else if (function.getDomain() instanceof DiscreteDomain discreteDomain) {
+            for (int i = 0; i < discreteDomain.getPoints().size() - 2; i++) {
+                double x = function.getMemberShip(discreteDomain.getPoints().get(i));
+                double y = function.getMemberShip(discreteDomain.getPoints().get(i + 1));
+                double z = function.getMemberShip(discreteDomain.getPoints().get(i + 2));
+                if (x > y && y > z) {
+                    return false;
+                }
+            }
+            return true;
+        } else if (function.getDomain() instanceof DomainWrapper wrapper) {
+            double step = 0.001;
+            for (Pair<Double, Double> pair: wrapper.getDomains()) {
+                for (double i = pair.getFirst(); i < pair.getSecond(); i += step) {
+                    double x = function.getMemberShip(i);
+                    double y = function.getMemberShip(i + step);
+                    double z = function.getMemberShip(i + 2 * step);
+                    if (x > y && y > z) {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
         return false;
     }
 

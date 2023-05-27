@@ -90,13 +90,13 @@ public class SingleSubjectLinguisticSummary<R> extends AbstractLinguisticSummary
                 stringBuilder.append(qualifiers.get(i).getLabelName()).append(SPACE)
                         .append(qualifiers.get(i).getLinguisticVariableName());
                 index++;
-                if (index < combination.getFirst().size()) {
+                if (index < combination.getSecond().size()) {
                     stringBuilder.append(AND);
                 }
                 sum.add(qualifiers.get(i));
             }
 
-            //summaries.add(new Summary(form, stringBuilder.toString(), getQualityForSummary(qua, sum)));
+            summaries.add(new Summary(form, stringBuilder.toString(), getQualityForSummary(qua, sum)));
         }
     }
 
@@ -110,18 +110,17 @@ public class SingleSubjectLinguisticSummary<R> extends AbstractLinguisticSummary
 
     private List<Double> getQualityForSummary(List<FuzzySet<R>> qualifierSet,
                                               List<FuzzySet<R>> summarizerSet) {
-        double T1 = degreeOfTruth(qualifierSet, summarizerSet);
-        double T2 = degreeOfImprecision(summarizerSet);
-        double T3 = degreeOfCovering(qualifierSet, summarizerSet);
-        double T4 = degreeOfAppropriateness(qualifierSet, summarizerSet);
-        double T5 = lengthOfSummary(summarizerSet.size());
-        double T6 = degreeOfQuantifierImprecision();
-        double T7 = degreeOfQuantifierCardinality();
-//        double T8 = degreeOfSummarizerCardinality(summarizerSet);
-//        double T9 = degreeOfQualifierImprecision(qualifierSet);
-//        double T10 = degreeOfQualifierCardinality(qualifierSet);
-//        //check
-//        double T11 = lengthOfQualifier(qualifierSet.size());
+        double T1 = checkNan(degreeOfTruth(qualifierSet, summarizerSet));
+        double T2 = checkNan(degreeOfImprecision(summarizerSet));
+        double T3 = checkNan(degreeOfCovering(qualifierSet, summarizerSet));
+        double T4 = checkNan(degreeOfAppropriateness(qualifierSet, summarizerSet));
+        double T5 = checkNan(lengthOfSummary(summarizerSet.size()));
+        double T6 = checkNan(degreeOfQuantifierImprecision());
+        double T7 = checkNan(degreeOfQuantifierCardinality());
+        double T8 = checkNan(degreeOfSummarizerCardinality(summarizerSet));
+        double T9 = checkNan(degreeOfQualifierImprecision(qualifierSet));
+        double T10 = checkNan(degreeOfQualifierCardinality(qualifierSet));
+        double T11 = checkNan(lengthOfQualifier(qualifierSet.size()));
 
         double avg = T1 * weights.get(0)
                 + T2 * weights.get(1)
@@ -129,11 +128,11 @@ public class SingleSubjectLinguisticSummary<R> extends AbstractLinguisticSummary
                 + T4 * weights.get(3)
                 + T5 * weights.get(4)
                 + T6 * weights.get(5)
-                + T7 * weights.get(6);
-//                + T8 * weights.get(7)
-//                + T9 * weights.get(8)
-//                + T10 * weights.get(9)
-//                + T11 * weights.get(10);
+                + T7 * weights.get(6)
+                + T8 * weights.get(7)
+                + T9 * weights.get(8)
+                + T10 * weights.get(9)
+                + T11 * weights.get(10);
 
         List<Double> quality = new ArrayList<>();
         quality.add(avg);
@@ -144,10 +143,10 @@ public class SingleSubjectLinguisticSummary<R> extends AbstractLinguisticSummary
         quality.add(T5);
         quality.add(T6);
         quality.add(T7);
-//        quality.add(T8);
-//        quality.add(T9);
-//        quality.add(T10);
-//        quality.add(T11);
+        quality.add(T8);
+        quality.add(T9);
+        quality.add(T10);
+        quality.add(T11);
 
         return quality;
     }
@@ -251,7 +250,7 @@ public class SingleSubjectLinguisticSummary<R> extends AbstractLinguisticSummary
      */
     private double degreeOfSummarizerCardinality(List<FuzzySet<R>> summarizer) {
         return 1.0 - Math.pow(summarizer.stream()
-                .mapToDouble(x -> x.cardinality(policies) / x.getDomain().width())
+                .mapToDouble(x -> x.cardinality() / x.support())
                 .reduce(1.0, (a, b) -> a * b), 1.0 / summarizer.size());
     }
 
@@ -259,8 +258,11 @@ public class SingleSubjectLinguisticSummary<R> extends AbstractLinguisticSummary
      * T9
      */
     private double degreeOfQualifierImprecision(List<FuzzySet<R>> qualifier) {
+        if (qualifier.isEmpty()) {
+            return 0.0;
+        }
         return 1.0 - Math.pow(qualifier.stream()
-                .mapToDouble(x -> x.cardinality(policies))
+                .mapToDouble(FuzzySet::degreeOfFuzziness)
                 .reduce(1.0, (a, b) -> a * b) , 1.0 / qualifier.size());
     }
 
@@ -268,8 +270,11 @@ public class SingleSubjectLinguisticSummary<R> extends AbstractLinguisticSummary
      * T10
      */
     private double degreeOfQualifierCardinality(List<FuzzySet<R>> qualifier) {
+        if (qualifier.isEmpty()) {
+            return 0.0;
+        }
         return 1.0 - Math.pow(qualifier.stream()
-                .mapToDouble(x -> x.cardinality(policies) / x.getDomain().width())
+                .mapToDouble(x -> x.cardinality() / x.support())
                 .reduce(1.0, (a, b) -> a * b), 1.0 / qualifier.size());
     }
 
@@ -278,6 +283,16 @@ public class SingleSubjectLinguisticSummary<R> extends AbstractLinguisticSummary
      * ilosc kwalifikatorow
      */
     private double lengthOfQualifier(int size) {
+        if (size == 0) {
+            return 2.0 * Math.pow(0.5, 1);
+        }
         return 2.0 * Math.pow(0.5, size);
+    }
+
+    private double checkNan(double x) {
+        if (Double.isNaN(x)) {
+            return 0.0;
+        }
+        return x;
     }
 }
