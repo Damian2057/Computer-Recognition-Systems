@@ -2,9 +2,7 @@ package p.lodz.pl.frontend.components;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,7 +12,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Label;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import lombok.SneakyThrows;
@@ -82,6 +79,10 @@ public class StageController implements Initializable {
     private  List<LinguisticLabel<PolicyEntity>> selectedSummarizers = new ArrayList();
     private List<Quantifier> selectedQuantifiers = new ArrayList();
 
+    private Dao dao = new DBConnection();
+    private List<Double> weights = new ArrayList<>();
+    private SingleSubjectLinguisticSummary<PolicyEntity> linguisticSummary;
+
     @SneakyThrows
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -120,11 +121,9 @@ public class StageController implements Initializable {
                     if (checkBox.isSelected()) {
                         LinguisticLabel<PolicyEntity> selectedEtiquette = etiquetteLabelName;
                         selectedSummarizers.add(selectedEtiquette);
-                        System.out.println("Selected etiquettes: " + selectedSummarizers);
                     } else {
                         String unselectedScale = etiquetteLabelName.getLabelName();
                         selectedSummarizers.remove(unselectedScale);
-                        System.out.println("Updated etiquettes: " + selectedSummarizers);
                     }
                 });
 
@@ -154,11 +153,9 @@ public class StageController implements Initializable {
                 if (checkBox.isSelected()) {
                     Quantifier selectedQuantifier = quantifier;
                     selectedQuantifiers.add(selectedQuantifier);
-                    System.out.println("Selected quantifiers: " + selectedQuantifiers);
                 } else {
                     String unselectedScale = quantifier.getLabelName();
                     selectedQuantifiers.remove(unselectedScale);
-                    System.out.println("Updated quantifiers: " + selectedQuantifiers);
                 }
             });
 
@@ -166,17 +163,25 @@ public class StageController implements Initializable {
             quantifierOffsetY += 15;
         }
         scrollQuantifiers.setPrefHeight((quantifierOffsetY) * 3);
+
+        List<Double> defaultWeights = new ArrayList<>();
+
+        defaultWeights.add(0.3);
+        defaultWeights.add(0.7);
+        defaultWeights.add(0.7);
+        defaultWeights.add(0.7);
+        defaultWeights.add(0.7);
+        defaultWeights.add(0.7);
+        defaultWeights.add(0.7);
+        defaultWeights.add(0.7);
+        defaultWeights.add(0.7);
+        defaultWeights.add(0.7);
+        defaultWeights.add(0.7);
+
+        setWeights(defaultWeights);
     }
 
     public void generateSummaries(ActionEvent event) {
-        Dao dao = new DBConnection();
-        SingleSubjectLinguisticSummary<PolicyEntity> linguisticSummary = new SingleSubjectLinguisticSummary<>(selectedQuantifiers.get(0),
-                selectedSummarizers,
-                "policyholders",
-                dao.getPolicies(),
-                Collections.emptyList());
-
-        summaryTableView.setItems(FXCollections.observableArrayList());
 
         formColumn.setCellValueFactory(cellData -> Bindings.createObjectBinding(() -> cellData.getValue().form()));
         summaryColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().summary()));
@@ -193,12 +198,23 @@ public class StageController implements Initializable {
         degreeOfQualifierRelativeCardinalityColumn.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().quality().get(10)).asObject());
         lengthOfQualifierColumn.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().quality().get(11)).asObject());
 
-        List<Summary> summaries = linguisticSummary.generateSummary();
-        for (Summary s : summaries) {
-            String result = s.form() + " " + s.summary() + " " + s.quality();
-            System.out.println(result);
-            Summary summary = new Summary(s.form(), s.summary(), s.quality());
-            summaryTableView.getItems().add(summary);
+        summaryTableView.getItems().clear();
+
+        for (int i=0; i< selectedQuantifiers.size(); i++) {
+
+            linguisticSummary = new SingleSubjectLinguisticSummary<>(selectedQuantifiers.get(i),
+                    selectedSummarizers,
+                    "cars",
+                    dao.getPolicies(),
+                    weights);
+//            System.out.println("Wagi w generate summaries" + weights);
+            List<Summary> summaries = linguisticSummary.generateSummary();
+            for (Summary s : summaries) {
+                String result = s.form() + " " + s.summary() + " " + s.quality();
+                System.out.println(result);
+                Summary summary = new Summary(s.form(), s.summary(), s.quality());
+                summaryTableView.getItems().add(summary);
+            }
         }
     }
 
@@ -246,8 +262,15 @@ public class StageController implements Initializable {
         Scene fileScene = new Scene(fileRoot);
         fileStage.setScene(fileScene);
 
+        WeightedQMController weightedQMController = loader.getController();
+        weightedQMController.setStageController(this);
+        weightedQMController.initializeWeights();
+
         fileStage.show();
     }
 
+    public void setWeights(List<Double> weights) {
+        this.weights = weights;
+    }
 
 }
