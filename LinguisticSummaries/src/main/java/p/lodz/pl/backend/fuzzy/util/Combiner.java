@@ -1,7 +1,5 @@
 package p.lodz.pl.backend.fuzzy.util;
 
-import p.lodz.pl.backend.fuzzy.util.Pair;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

@@ -3,7 +3,7 @@ package p.lodz.pl.backend.fuzzy.function.domain;
 import java.util.List;
 
 public class DiscreteDomain extends Domain {
-    private final List<Double> points;
+    private List<Double> points;
 
     public DiscreteDomain(List<Double> points) {
         this.points = points;
@@ -12,5 +12,18 @@ public class DiscreteDomain extends Domain {
     @Override
     public boolean isInDomain(double x) {
         return points.contains(x);
+    }
+
+    @Override
+    public double width() {
+        return points.size();
+    }
+
+    public List<Double> getPoints() {
+        return points;
+    }
+
+    public void setPoints(List<Double> points) {
+        this.points = points;
     }
 }

@@ -43,8 +43,25 @@ public class TrapezoidalFunction extends BasicFunction implements MembershipFunc
         return domain;
     }
 
+    @Override
+    public double cardinality() {
+        return 0.5 * (d - a) * 1.0;
+    }
+
+    @Override
+    public double support() {
+        return d - a;
+    }
+
     private double getValue(double x) {
-        //TODO: COMPLETE
-        return 0.0;
+        if (x > a && x < b) {
+            return (x - a) / (b - a);
+        } else if (x >= b && x <= c) {
+            return 1.0;
+        } else if (x > c && x < d) {
+            return 1 - (x - c) / (d - c);
+        } else {
+            return 0.0;
+        }
     }
 }

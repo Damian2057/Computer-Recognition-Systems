@@ -47,26 +47,31 @@ public class FuzzyLogicTest {
         MockRepository mockRepository = new MockRepository();
         Dao dao = new DBConnection();
 
-        Quantifier quantifier = mockRepository.findAllQuantifiers().get(0);
+        Quantifier quantifier = mockRepository.findAllQuantifiers().get(1);
         LinguisticVariable<PolicyEntity> linguisticVariable = mockRepository.findAllLinguisticVariables().get(0);
         LinguisticLabel<PolicyEntity> label1 = linguisticVariable.getLabels().get(0);
         LinguisticLabel<PolicyEntity> label2 = linguisticVariable.getLabels().get(1);
         LinguisticLabel<PolicyEntity> label3 = linguisticVariable.getLabels().get(2);
-        //Label<PolicyEntity> label4 = linguisticVariable.getLabels().get(3);
+//        LinguisticLabel<PolicyEntity> label4 = linguisticVariable.getLabels().get(3);
         List<LinguisticLabel<PolicyEntity>> labels = List.of(label1, label2, label3);
+
+        List<Double> weights = new java.util.ArrayList<>(List.of(0.3, 0.07, 0.07, 0.07, 0.07, 0.07, 0.07, 0.07, 0.07));
+        weights.add(0.07);
+        weights.add(0.07);
 
         SingleSubjectLinguisticSummary<PolicyEntity> linguisticSummary = new SingleSubjectLinguisticSummary<>(quantifier,
                 labels,
                 "car",
                 dao.getPolicies(),
-                Collections.emptyList());
+                weights);
         List<Summary> summaries = linguisticSummary.generateSummary();
 
-        Assert.assertEquals(summaries.size(), 19);
         for (Summary s : summaries) {
             String result = s.form() + " " + s.summary() + " " + s.quality();
             System.out.println(result);
         }
+
+        Assert.assertEquals(summaries.size(), 19);
     }
 
 }

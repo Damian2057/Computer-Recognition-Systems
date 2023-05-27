@@ -13,4 +13,17 @@ public class ContinuousDomain extends Domain {
     public boolean isInDomain(double x) {
         return x >= minDomain && x <= maxDomain;
     }
+
+    @Override
+    public double width() {
+        return maxDomain - minDomain;
+    }
+
+    public double getMinDomain() {
+        return minDomain;
+    }
+
+    public double getMaxDomain() {
+        return maxDomain;
+    }
 }

@@ -20,6 +20,16 @@ public class FunctionWrapper extends BasicFunction implements MembershipFunction
 
     @Override
     public Domain getDomain() {
-        return null;
+        return domain;
+    }
+
+    @Override
+    public double cardinality() {
+        return 0;
+    }
+
+    @Override
+    public double support() {
+        return domain.width();
     }
 }

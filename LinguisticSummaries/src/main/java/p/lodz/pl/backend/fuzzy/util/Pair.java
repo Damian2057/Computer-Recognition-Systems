@@ -9,11 +9,11 @@ public class Pair<T, R> {
         this.second = second;
     }
 
-    public T getQualifiers() {
+    public T getFirst() {
         return first;
     }
 
-    public R getSummarizers() {
+    public R getSecond() {
         return second;
     }
 }

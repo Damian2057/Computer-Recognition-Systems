@@ -1,8 +1,12 @@
 package p.lodz.pl.backend.fuzzy.set;
 
 import p.lodz.pl.backend.fuzzy.function.MembershipFunction;
+import p.lodz.pl.backend.fuzzy.function.domain.ContinuousDomain;
+import p.lodz.pl.backend.fuzzy.function.domain.DiscreteDomain;
 import p.lodz.pl.backend.fuzzy.function.domain.Domain;
+import p.lodz.pl.backend.fuzzy.function.domain.DomainWrapper;
 import p.lodz.pl.backend.fuzzy.util.Extractor;
+import p.lodz.pl.backend.fuzzy.util.Pair;
 
 import java.util.List;
 
@@ -17,6 +21,14 @@ public class FuzzySet<R> extends CrispSet {
 
     public List<R> support(List<R> list) {
         return alphaCut(list, 0.0);
+    }
+
+    public double support() {
+        return function.support();
+    }
+
+    public double getMemberShip(R x) {
+        return function.getMemberShip(extractor.apply(x));
     }
 
     public List<R> alphaCut(List<R> list, double a) {
@@ -35,19 +47,106 @@ public class FuzzySet<R> extends CrispSet {
         return support(list).isEmpty();
     }
 
-    public boolean isNormal(List<R> list) {
-        return list.stream().anyMatch(x -> function.getMemberShip(extractor.apply(x)) == 1);
-    }
-
-    public double heightOfSet(List<R> list) {
-        return list.stream()
-                .mapToDouble(x -> function.getMemberShip(extractor.apply(x))).max()
-                .orElse(0.0);
-    }
-
-    public boolean isConvex(List<R> list) {
-        //TODO: complete
+    public boolean isNormal() {
+        if (function.getDomain() instanceof ContinuousDomain continuousDomain) {
+            double step = 0.01;
+            for (double i = continuousDomain.getMinDomain(); i <= continuousDomain.getMaxDomain(); i+= step) {
+                if (function.getMemberShip(i) == 1.0) {
+                    return true;
+                }
+            }
+            return false;
+        } else if (function.getDomain() instanceof DiscreteDomain discreteDomain) {
+            for (Double x: discreteDomain.getPoints()) {
+                if (function.getMemberShip(x) == 1.0) {
+                    return true;
+                }
+            }
+        } else if (function.getDomain() instanceof DomainWrapper wrapper) {
+            double step = 0.01;
+            for (Pair<Double, Double> pair: wrapper.getDomains()) {
+                for (double i = pair.getFirst(); i <= pair.getSecond(); i+= step) {
+                    if (function.getMemberShip(i) == 1.0) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
         return false;
+    }
+
+    public double heightOfSet() {
+        double max = Double.MIN_VALUE;
+        if (function.getDomain() instanceof ContinuousDomain continuousDomain) {
+            double step = 0.01;
+            for (double i = continuousDomain.getMinDomain(); i <= continuousDomain.getMaxDomain(); i+= step) {
+                max = Math.max(max, function.getMemberShip(i));
+            }
+        } else if (function.getDomain() instanceof DiscreteDomain discreteDomain) {
+            for (Double x: discreteDomain.getPoints()) {
+                max = Math.max(max, function.getMemberShip(x));
+            }
+        } else if (function.getDomain() instanceof DomainWrapper wrapper) {
+            double step = 0.01;
+            for (Pair<Double, Double> pair: wrapper.getDomains()) {
+                for (double i = pair.getFirst(); i <= pair.getSecond(); i+= step) {
+                    max = Math.max(max, function.getMemberShip(i));
+                }
+            }
+        }
+        return max;
+    }
+
+    public boolean isConvex() {
+        if (function.getDomain() instanceof ContinuousDomain continuousDomain) {
+            double step = 0.001;
+            for (double i = continuousDomain.getMinDomain(); i < continuousDomain.getMaxDomain(); i += step) {
+                double x = function.getMemberShip(i);
+                double y = function.getMemberShip(i + step);
+                double z = function.getMemberShip(i + 2 * step);
+                if (x > y && y > z) {
+                    return false;
+                }
+            }
+            return true;
+        } else if (function.getDomain() instanceof DiscreteDomain discreteDomain) {
+            for (int i = 0; i < discreteDomain.getPoints().size() - 2; i++) {
+                double x = function.getMemberShip(discreteDomain.getPoints().get(i));
+                double y = function.getMemberShip(discreteDomain.getPoints().get(i + 1));
+                double z = function.getMemberShip(discreteDomain.getPoints().get(i + 2));
+                if (x > y && y > z) {
+                    return false;
+                }
+            }
+            return true;
+        } else if (function.getDomain() instanceof DomainWrapper wrapper) {
+            double step = 0.001;
+            for (Pair<Double, Double> pair: wrapper.getDomains()) {
+                for (double i = pair.getFirst(); i < pair.getSecond(); i += step) {
+                    double x = function.getMemberShip(i);
+                    double y = function.getMemberShip(i + step);
+                    double z = function.getMemberShip(i + 2 * step);
+                    if (x > y && y > z) {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public double cardinality(List<R> list) {
+        return list.stream().mapToDouble(x -> function.getMemberShip(extractor.apply(x))).sum();
+    }
+
+    public double degreeOfFuzziness() {
+        return cardinality() / support();
+    }
+
+    public double cardinality() {
+        return function.cardinality();
     }
 
     public Extractor<R> getExtractor() {

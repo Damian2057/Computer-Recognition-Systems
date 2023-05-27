@@ -2,10 +2,13 @@ package p.lodz.pl.backend.fuzzy.summary;
 
 import p.lodz.pl.backend.fuzzy.linguistic.LinguisticLabel;
 import p.lodz.pl.backend.fuzzy.quantifier.Quantifier;
+import p.lodz.pl.backend.fuzzy.set.FuzzySet;
 import p.lodz.pl.backend.fuzzy.util.Combiner;
+import p.lodz.pl.backend.fuzzy.util.Operation;
 import p.lodz.pl.backend.fuzzy.util.Pair;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class SingleSubjectLinguisticSummary<R> extends AbstractLinguisticSummary {
@@ -47,6 +50,7 @@ public class SingleSubjectLinguisticSummary<R> extends AbstractLinguisticSummary
             stringBuilder.append(quantifier.getLabelName()).append(SPACE)
                     .append(subject).append(HAVE);
             int index = 0;
+            List<FuzzySet<R>> fuzzySets = new ArrayList<>();
             for (int i : combination) {
                 stringBuilder.append(qualifiers.get(i).getLabelName()).append(SPACE)
                         .append(qualifiers.get(i).getLinguisticVariableName());
@@ -54,8 +58,10 @@ public class SingleSubjectLinguisticSummary<R> extends AbstractLinguisticSummary
                 if (index < combination.size()) {
                     stringBuilder.append(AND);
                 }
+                fuzzySets.add(qualifiers.get(i).getFuzzySet());
             }
-            summaries.add(new Summary(form, stringBuilder.toString(), getQualityForSummary()));
+            summaries.add(new Summary(form, stringBuilder.toString(),
+                    getQualityForSummary(Collections.emptyList(), fuzzySets)));
         }
     }
 
@@ -67,25 +73,30 @@ public class SingleSubjectLinguisticSummary<R> extends AbstractLinguisticSummary
             stringBuilder.append(quantifier.getLabelName()).append(SPACE)
                     .append(subject).append(THAT);
             int index = 0;
-            for (int i : combination.getQualifiers()) {
+            List<FuzzySet<R>> qua = new ArrayList<>();
+            for (int i : combination.getFirst()) {
                 stringBuilder.append(qualifiers.get(i).getLabelName()).append(SPACE)
                         .append(qualifiers.get(i).getLinguisticVariableName());
                 index++;
-                if (index < combination.getQualifiers().size()) {
+                if (index < combination.getFirst().size()) {
                     stringBuilder.append(AND);
                 }
+                qua.add(qualifiers.get(i));
             }
             stringBuilder.append(ALSO);
             index = 0;
-            for (int i : combination.getSummarizers()) {
+            List<FuzzySet<R>> sum = new ArrayList<>();
+            for (int i : combination.getSecond()) {
                 stringBuilder.append(qualifiers.get(i).getLabelName()).append(SPACE)
                         .append(qualifiers.get(i).getLinguisticVariableName());
                 index++;
-                if (index < combination.getQualifiers().size()) {
+                if (index < combination.getSecond().size()) {
                     stringBuilder.append(AND);
                 }
+                sum.add(qualifiers.get(i));
             }
-            summaries.add(new Summary(form, stringBuilder.toString(), getQualityForSummary()));
+
+            summaries.add(new Summary(form, stringBuilder.toString(), getQualityForSummary(qua, sum)));
         }
     }
 
@@ -97,32 +108,31 @@ public class SingleSubjectLinguisticSummary<R> extends AbstractLinguisticSummary
         return policies;
     }
 
-    private List<Double> getQualityForSummary() {
-        double T1 = degreeOfTruth();
-        double T2 = degreeOfImprecision();
-        double T3 = degreeOfCovering();
-        double T4 = degreeOfAppropriateness();
-        double T5 = lengthOfSummary();
-        double T6 = degreeOfQuantifierImprecision();
-        double T7 = degreeOfQuantifierCardinality();
-        double T8 = degreeOfSummarizerCardinality();
-        double T9 = degreeOfQualifierImprecision();
-        double T10 = degreeOfQualifierCardinality();
-        double T11 = lengthOfQualifier();
+    private List<Double> getQualityForSummary(List<FuzzySet<R>> qualifierSet,
+                                              List<FuzzySet<R>> summarizerSet) {
+        double T1 = checkNan(degreeOfTruth(qualifierSet, summarizerSet));
+        double T2 = checkNan(degreeOfImprecision(summarizerSet));
+        double T3 = checkNan(degreeOfCovering(qualifierSet, summarizerSet));
+        double T4 = checkNan(degreeOfAppropriateness(qualifierSet, summarizerSet));
+        double T5 = checkNan(lengthOfSummary(summarizerSet.size()));
+        double T6 = checkNan(degreeOfQuantifierImprecision());
+        double T7 = checkNan(degreeOfQuantifierCardinality());
+        double T8 = checkNan(degreeOfSummarizerCardinality(summarizerSet));
+        double T9 = checkNan(degreeOfQualifierImprecision(qualifierSet));
+        double T10 = checkNan(degreeOfQualifierCardinality(qualifierSet));
+        double T11 = checkNan(lengthOfQualifier(qualifierSet.size()));
 
-        double avg = 0;
-
-//        double avg = T1 * weights.get(0)
-//                + T2 * weights.get(1)
-//                + T3 * weights.get(2)
-//                + T4 * weights.get(3)
-//                + T5 * weights.get(4)
-//                + T6 * weights.get(5)
-//                + T7 * weights.get(6)
-//                + T8 * weights.get(7)
-//                + T9 * weights.get(8)
-//                + T10 * weights.get(9)
-//                + T11 * weights.get(10);
+        double avg = T1 * weights.get(0)
+                + T2 * weights.get(1)
+                + T3 * weights.get(2)
+                + T4 * weights.get(3)
+                + T5 * weights.get(4)
+                + T6 * weights.get(5)
+                + T7 * weights.get(6)
+                + T8 * weights.get(7)
+                + T9 * weights.get(8)
+                + T10 * weights.get(9)
+                + T11 * weights.get(10);
 
         List<Double> quality = new ArrayList<>();
         quality.add(avg);
@@ -141,61 +151,148 @@ public class SingleSubjectLinguisticSummary<R> extends AbstractLinguisticSummary
         return quality;
     }
 
-    private double degreeOfTruth() {
-        return 0.0;
+    /**
+     * T1
+     */
+    private double degreeOfTruth(List<FuzzySet<R>> qualifiers, List<FuzzySet<R>> summarizers) {
+        Operation<FuzzySet<R>> operation = new Operation<>();
+        FuzzySet<R> s = summarizers.get(0);
+        for (FuzzySet<R> qualifier : summarizers) {
+            s = operation.and(s, qualifier);
+        }
+        if (!qualifiers.isEmpty()) {
+            FuzzySet<R> q = qualifiers.get(0);
+            for (FuzzySet<R> qualifier : qualifiers) {
+                q = operation.and(q, qualifier);
+            }
+            s = operation.and(q, s);
+        }
+
+
+        if (quantifier.isAbsolute()) {
+            return quantifier.getMemberShip(policies.stream().mapToDouble(s::getMemberShip).sum());
+        } else {
+            return quantifier.getMemberShip(policies.stream().mapToDouble(s::getMemberShip).sum()
+                    / s.support(policies).size());
+        }
     }
 
-    private double degreeOfImprecision() {
-        return 0.0;
+    /**
+     * T2
+     */
+    private double degreeOfImprecision(List<FuzzySet<R>> summarizers) {
+        return 1.0 - Math.pow(summarizers.stream()
+                .mapToDouble(x -> x.cardinality() / x.support())
+                .reduce(1.0, (a, b) -> a * b),
+                1.0 / summarizers.size());
     }
 
-    private double degreeOfCovering() {
-        return 0.0;
+    /**
+     * T3
+     */
+    private double degreeOfCovering(List<FuzzySet<R>> qualifiers, List<FuzzySet<R>> summarizers) {
+        Operation<FuzzySet<R>> operation = new Operation<>();
+        FuzzySet<R> s = summarizers.get(0);
+        for (FuzzySet<R> qualifier : summarizers) {
+            s = operation.and(s, qualifier);
+        }
+        if (qualifiers.isEmpty()) {
+            return 1.0 * s.support(policies).size() / policies.size();
+        }
+
+        FuzzySet<R> q = qualifiers.get(0);
+        for (FuzzySet<R> qualifier : qualifiers) {
+            q = operation.and(q, qualifier);
+        }
+        FuzzySet<R> t = operation.and(q, s);
+
+        return 1.0 * t.support(policies).size() / s.support(policies).size();
     }
 
-    private double degreeOfAppropriateness() {
-        return 0.0;
+    /**
+     * T4
+     */
+    private double degreeOfAppropriateness(List<FuzzySet<R>> qualifiers, List<FuzzySet<R>> summarizers) {
+        return Math.abs(summarizers.stream().mapToDouble(x -> 1.0 * x.support(policies).size() / policies.size())
+                .reduce(1.0, (a, b) -> a * b) - degreeOfCovering(qualifiers, summarizers));
     }
 
-    private double lengthOfSummary() {
-        return 0.0;
+    /**
+     * T5
+     * ilosc sumaryzatorow
+     */
+    private double lengthOfSummary(int size) {
+        return 2.0 * Math.pow(0.5, size);
     }
 
+    /**
+     * T6
+     */
     private double degreeOfQuantifierImprecision() {
-        return 0.0;
+        if (!quantifier.isAbsolute()) {
+            return 1.0 - quantifier.getFuzzySet().degreeOfFuzziness();
+        }
+        return 1.0 - quantifier.support() / policies.size();
     }
 
+    /**
+     * T7
+     */
     private double degreeOfQuantifierCardinality() {
-        return 0.0;
+        if (!quantifier.isAbsolute()) {
+            return 1.0 - quantifier.getFuzzySet().cardinality();
+        }
+        return 1.0 - quantifier.cardinality() / policies.size();
     }
 
-    private double degreeOfSummarizerCardinality() {
-        return 0.0;
+    /**
+     * T8
+     */
+    private double degreeOfSummarizerCardinality(List<FuzzySet<R>> summarizer) {
+        return 1.0 - Math.pow(summarizer.stream()
+                .mapToDouble(x -> x.cardinality() / x.support())
+                .reduce(1.0, (a, b) -> a * b), 1.0 / summarizer.size());
     }
 
-    private double degreeOfQualifierImprecision() {
-        return 0.0;
+    /**
+     * T9
+     */
+    private double degreeOfQualifierImprecision(List<FuzzySet<R>> qualifier) {
+        if (qualifier.isEmpty()) {
+            return 0.0;
+        }
+        return 1.0 - Math.pow(qualifier.stream()
+                .mapToDouble(FuzzySet::degreeOfFuzziness)
+                .reduce(1.0, (a, b) -> a * b) , 1.0 / qualifier.size());
     }
 
-    private double degreeOfQualifierCardinality() {
-        return 0.0;
+    /**
+     * T10
+     */
+    private double degreeOfQualifierCardinality(List<FuzzySet<R>> qualifier) {
+        if (qualifier.isEmpty()) {
+            return 0.0;
+        }
+        return 1.0 - Math.pow(qualifier.stream()
+                .mapToDouble(x -> x.cardinality() / x.support())
+                .reduce(1.0, (a, b) -> a * b), 1.0 / qualifier.size());
     }
 
-    private double lengthOfQualifier() {
-        return 0.0;
+    /**
+     * T11
+     * ilosc kwalifikatorow
+     */
+    private double lengthOfQualifier(int size) {
+        if (size == 0) {
+            return 2.0 * Math.pow(0.5, 1);
+        }
+        return 2.0 * Math.pow(0.5, size);
     }
 
-    private double quality() {
-        return degreeOfTruth() * weights.get(0)
-                + degreeOfImprecision() * weights.get(1)
-                + degreeOfCovering() * weights.get(2)
-                + degreeOfAppropriateness() * weights.get(3)
-                + lengthOfSummary() * weights.get(4)
-                + degreeOfQuantifierImprecision() * weights.get(5)
-                + degreeOfQuantifierCardinality() * weights.get(6)
-                + degreeOfSummarizerCardinality() * weights.get(7)
-                + degreeOfQualifierImprecision() * weights.get(8)
-                + degreeOfQualifierCardinality() * weights.get(9)
-                + lengthOfQualifier() * weights.get(10);
+    private double checkNan(double x) {
+        if (Double.isNaN(x)) {
+            return 0.0;
+        }
+        return x;
     }
 }
