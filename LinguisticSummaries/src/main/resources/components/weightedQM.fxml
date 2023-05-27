@@ -81,6 +81,6 @@
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Button fx:id="saveWeightsButton" layoutX="394.0" layoutY="191.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="62.0" text="Save" />
+      <Button fx:id="saveWeightsButton" layoutX="394.0" layoutY="191.0" mnemonicParsing="false" onAction="#saveWeights" prefHeight="25.0" prefWidth="62.0" text="Save" />
    </children>
 </AnchorPane>
