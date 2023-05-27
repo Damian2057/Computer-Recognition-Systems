@@ -142,11 +142,15 @@ public class FuzzySet<R> extends CrispSet {
     }
 
     public double degreeOfFuzziness() {
-        return cardinality() / support();
+        return cardinality() / getDomain().width();
     }
 
     public double cardinality() {
         return function.cardinality();
+    }
+
+    public double supportCardinality() {
+        return function.support() / getDomain().width();
     }
 
     public Extractor<R> getExtractor() {

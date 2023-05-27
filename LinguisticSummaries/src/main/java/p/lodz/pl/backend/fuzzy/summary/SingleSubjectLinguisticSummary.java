@@ -168,7 +168,6 @@ public class SingleSubjectLinguisticSummary<R> extends AbstractLinguisticSummary
             s = operation.and(q, s);
         }
 
-
         if (quantifier.isAbsolute()) {
             return quantifier.getMemberShip(policies.stream().mapToDouble(s::getMemberShip).sum());
         } else {
@@ -182,7 +181,7 @@ public class SingleSubjectLinguisticSummary<R> extends AbstractLinguisticSummary
      */
     private double degreeOfImprecision(List<FuzzySet<R>> summarizers) {
         return 1.0 - Math.pow(summarizers.stream()
-                .mapToDouble(x -> x.cardinality() / x.support())
+                .mapToDouble(FuzzySet::supportCardinality)
                 .reduce(1.0, (a, b) -> a * b),
                 1.0 / summarizers.size());
     }
@@ -230,7 +229,7 @@ public class SingleSubjectLinguisticSummary<R> extends AbstractLinguisticSummary
      */
     private double degreeOfQuantifierImprecision() {
         if (!quantifier.isAbsolute()) {
-            return 1.0 - quantifier.getFuzzySet().degreeOfFuzziness();
+            return 1.0 - quantifier.supportCardinality();
         }
         return 1.0 - quantifier.support() / policies.size();
     }
@@ -240,7 +239,7 @@ public class SingleSubjectLinguisticSummary<R> extends AbstractLinguisticSummary
      */
     private double degreeOfQuantifierCardinality() {
         if (!quantifier.isAbsolute()) {
-            return 1.0 - quantifier.getFuzzySet().cardinality();
+            return 1.0 - quantifier.cardinality() / quantifier.getDomain().width();
         }
         return 1.0 - quantifier.cardinality() / policies.size();
     }
@@ -250,7 +249,7 @@ public class SingleSubjectLinguisticSummary<R> extends AbstractLinguisticSummary
      */
     private double degreeOfSummarizerCardinality(List<FuzzySet<R>> summarizer) {
         return 1.0 - Math.pow(summarizer.stream()
-                .mapToDouble(x -> x.cardinality() / x.support())
+                .mapToDouble(x -> x.cardinality() / x.getDomain().width())
                 .reduce(1.0, (a, b) -> a * b), 1.0 / summarizer.size());
     }
 
@@ -274,7 +273,7 @@ public class SingleSubjectLinguisticSummary<R> extends AbstractLinguisticSummary
             return 0.0;
         }
         return 1.0 - Math.pow(qualifier.stream()
-                .mapToDouble(x -> x.cardinality() / x.support())
+                .mapToDouble(x -> x.cardinality() / x.getDomain().width())
                 .reduce(1.0, (a, b) -> a * b), 1.0 / qualifier.size());
     }
 
