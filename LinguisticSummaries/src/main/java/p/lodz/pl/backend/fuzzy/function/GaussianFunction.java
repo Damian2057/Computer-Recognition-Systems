@@ -19,12 +19,22 @@ public class GaussianFunction extends BasicFunction implements MembershipFunctio
 
     @Override
     public double getMemberShip(Double x) {
-        return domain.isInDomain(x) ? Math.exp(-(middle - x) * (width - x) / (2 * width * width)) : 0.0;
+        return domain.isInDomain(x) ? function.apply(x) : 0.0;
     }
 
     @Override
     public Domain getDomain() {
         return domain;
+    }
+
+    @Override
+    public double cardinality() {
+        return 0;
+    }
+
+    @Override
+    public double support() {
+        return domain.width();
     }
 
     public double getMiddle() {

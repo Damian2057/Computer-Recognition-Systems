@@ -21,4 +21,9 @@ public class Quantifier extends LinguisticLabel<Double> {
     public String getLinguisticVariableName() {
         throw new UnsupportedOperationException("Quantifier does not have linguistic variable name");
     }
+
+    public double degreeOfFuzziness(int min, int max) {
+        return function.getDomain().width() / (max - min);
+    }
+
 }
