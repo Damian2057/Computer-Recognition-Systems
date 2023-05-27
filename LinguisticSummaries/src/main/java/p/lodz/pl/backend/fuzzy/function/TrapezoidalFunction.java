@@ -45,7 +45,7 @@ public class TrapezoidalFunction extends BasicFunction implements MembershipFunc
 
     @Override
     public double cardinality() {
-        return 0.5 * (d - a) * 1.0;
+        return 0.5 * ((d - a) + (c - b)) * 1.0;
     }
 
     @Override
