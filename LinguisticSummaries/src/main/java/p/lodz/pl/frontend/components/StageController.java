@@ -122,8 +122,8 @@ public class StageController implements Initializable {
                         LinguisticLabel<PolicyEntity> selectedEtiquette = etiquetteLabelName;
                         selectedSummarizers.add(selectedEtiquette);
                     } else {
-                        String unselectedScale = etiquetteLabelName.getLabelName();
-                        selectedSummarizers.remove(unselectedScale);
+                        LinguisticLabel<PolicyEntity> unselectedEtiquette = etiquetteLabelName;
+                        selectedSummarizers.remove(unselectedEtiquette);
                     }
                 });
 
@@ -154,8 +154,8 @@ public class StageController implements Initializable {
                     Quantifier selectedQuantifier = quantifier;
                     selectedQuantifiers.add(selectedQuantifier);
                 } else {
-                    String unselectedScale = quantifier.getLabelName();
-                    selectedQuantifiers.remove(unselectedScale);
+                    Quantifier unselectedQuantifier = quantifier;
+                    selectedQuantifiers.remove(unselectedQuantifier);
                 }
             });
 
@@ -167,16 +167,16 @@ public class StageController implements Initializable {
         List<Double> defaultWeights = new ArrayList<>();
 
         defaultWeights.add(0.3);
-        defaultWeights.add(0.7);
-        defaultWeights.add(0.7);
-        defaultWeights.add(0.7);
-        defaultWeights.add(0.7);
-        defaultWeights.add(0.7);
-        defaultWeights.add(0.7);
-        defaultWeights.add(0.7);
-        defaultWeights.add(0.7);
-        defaultWeights.add(0.7);
-        defaultWeights.add(0.7);
+        defaultWeights.add(0.07);
+        defaultWeights.add(0.07);
+        defaultWeights.add(0.07);
+        defaultWeights.add(0.07);
+        defaultWeights.add(0.07);
+        defaultWeights.add(0.07);
+        defaultWeights.add(0.07);
+        defaultWeights.add(0.07);
+        defaultWeights.add(0.07);
+        defaultWeights.add(0.07);
 
         setWeights(defaultWeights);
     }
@@ -210,7 +210,7 @@ public class StageController implements Initializable {
 //            System.out.println("Wagi w generate summaries" + weights);
             List<Summary> summaries = linguisticSummary.generateSummary();
             for (Summary s : summaries) {
-                String result = s.form() + " " + s.summary() + " " + s.quality();
+                String result = s.summary() + " " + s.quality().get(0);
                 System.out.println(result);
                 Summary summary = new Summary(s.form(), s.summary(), s.quality());
                 summaryTableView.getItems().add(summary);

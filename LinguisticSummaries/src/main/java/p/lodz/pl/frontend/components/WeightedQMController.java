@@ -41,16 +41,16 @@ public class WeightedQMController {
 
     public void initializeWeights() {
         degreeOfTruthTF.setText(Double.toString(0.3));
-        degreeOfImprecisionTF.setText(Double.toString(0.7));
-        degreeOfCoveringTF.setText(Double.toString(0.7));
-        degreeOfAppropriatenessTF.setText(Double.toString(0.7));
-        lengthOfSummaryTF.setText(Double.toString(0.7));
-        degreeOfQuantifierImprecisionTF.setText(Double.toString(0.7));
-        degreeOfQuantifierRelativeCardinalityTF.setText(Double.toString(0.7));
-        degreeOfSummarizerRelativeCardinalityTF.setText(Double.toString(0.7));
-        degreeOfQualifierImprecisionTF.setText(Double.toString(0.7));
-        degreeOfQualifierRelativeCardinalityTF.setText(Double.toString(0.7));
-        lengthOfQualifierTF.setText(Double.toString(0.7));
+        degreeOfImprecisionTF.setText(Double.toString(0.07));
+        degreeOfCoveringTF.setText(Double.toString(0.07));
+        degreeOfAppropriatenessTF.setText(Double.toString(0.07));
+        lengthOfSummaryTF.setText(Double.toString(0.07));
+        degreeOfQuantifierImprecisionTF.setText(Double.toString(0.07));
+        degreeOfQuantifierRelativeCardinalityTF.setText(Double.toString(0.07));
+        degreeOfSummarizerRelativeCardinalityTF.setText(Double.toString(0.07));
+        degreeOfQualifierImprecisionTF.setText(Double.toString(0.07));
+        degreeOfQualifierRelativeCardinalityTF.setText(Double.toString(0.07));
+        lengthOfQualifierTF.setText(Double.toString(0.07));
     }
 
     public void saveWeights(ActionEvent event) {
