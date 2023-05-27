@@ -90,19 +90,6 @@ public class StageController implements Initializable {
         List<LinguisticVariable<PolicyEntity>> linguisticVariablesList = mockRepository.findAllLinguisticVariables();
         List<Quantifier> quantifiersList = mockRepository.findAllQuantifiers();
 
-        // Initialize the TableView
-        summaryTableView.setItems(FXCollections.observableArrayList());
-
-        // Initialize the columns
-        formColumn.setCellValueFactory(cellData -> Bindings.createObjectBinding(() -> cellData.getValue().form()));
-        summaryColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().summary()));
-        averageQMColumn.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().quality().get(0)).asObject());
-
-        Summary summary = new Summary(1, "Summary 1", Collections.singletonList(0.5));
-        summaryTableView.getItems().add(summary);
-
-//        summaryTableView.getColumns().setAll(formColumn, summaryColumn, averageQMColumn,degreeofTruthColumn, degreeOfImprecisionColumn, degreeOfCoveringColumn, degreeOfAppropriatenessColumn, lengthOfSummaryColumn, degreeOfQuantifierImprecisionColumn, degreeOfQuantifierRelativeCardinalityColumn, degreeOfSummarizerRelativeCardinalityColumn, degreeOfQualifierImprecisionColumn, degreeOfQualifierRelativeCardinalityColumn, lengthOfQualifierColumn);
-
         int linguisticOffsetY = 10;
 
         for (LinguisticVariable<PolicyEntity> linguisticVariable : linguisticVariablesList) {
@@ -195,6 +182,43 @@ public class StageController implements Initializable {
             String result = s.form() + " " + s.summary() + " " + s.quality();
             System.out.println(result);
         }
+
+        // Initialize the TableView
+        summaryTableView.setItems(FXCollections.observableArrayList());
+
+        // Initialize the columns
+        formColumn.setCellValueFactory(cellData -> Bindings.createObjectBinding(() -> cellData.getValue().form()));
+        summaryColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().summary()));
+        averageQMColumn.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().quality().get(0)).asObject());
+        degreeofTruthColumn.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().quality().get(1)).asObject());
+        degreeOfImprecisionColumn.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().quality().get(2)).asObject());
+        degreeOfCoveringColumn.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().quality().get(3)).asObject());
+        degreeOfAppropriatenessColumn.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().quality().get(4)).asObject());
+        lengthOfSummaryColumn.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().quality().get(5)).asObject());
+        degreeOfQuantifierImprecisionColumn.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().quality().get(6)).asObject());
+        degreeOfQuantifierRelativeCardinalityColumn.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().quality().get(7)).asObject());
+        degreeOfSummarizerRelativeCardinalityColumn.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().quality().get(8)).asObject());
+        degreeOfQualifierImprecisionColumn.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().quality().get(9)).asObject());
+        degreeOfQualifierRelativeCardinalityColumn.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().quality().get(10)).asObject());
+        lengthOfQualifierColumn.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().quality().get(11)).asObject());
+
+        //        summaryTableView.getColumns().setAll(formColumn, summaryColumn, averageQMColumn,degreeofTruthColumn, degreeOfImprecisionColumn, degreeOfCoveringColumn, degreeOfAppropriatenessColumn, lengthOfSummaryColumn, degreeOfQuantifierImprecisionColumn, degreeOfQuantifierRelativeCardinalityColumn, degreeOfSummarizerRelativeCardinalityColumn, degreeOfQualifierImprecisionColumn, degreeOfQualifierRelativeCardinalityColumn, lengthOfQualifierColumn);
+
+        List<Double> quality = new ArrayList<>();
+        quality.add(0.1);
+        quality.add(0.2);
+        quality.add(0.3);
+        quality.add(0.4);
+        quality.add(0.5);
+        quality.add(0.6);
+        quality.add(0.7);
+        quality.add(0.8);
+        quality.add(0.9);
+        quality.add(0.10);
+        quality.add(0.11);
+        quality.add(0.12);
+        Summary summary = new Summary(1, "Summary 1", quality);
+        summaryTableView.getItems().add(summary);
     }
 
     public void goToAdvancedSettings(ActionEvent event) {
