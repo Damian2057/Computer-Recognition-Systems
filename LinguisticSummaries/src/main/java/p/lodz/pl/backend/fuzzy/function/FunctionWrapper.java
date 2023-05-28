@@ -27,7 +27,7 @@ public class FunctionWrapper extends BasicFunction implements MembershipFunction
     }
 
     @Override
-    public double cardinality() {
+    public double integral() {
         SimpsonIntegrator simpsonIntegrator = new SimpsonIntegrator();
         if (getDomain() instanceof ContinuousDomain continuousDomain) {
             return simpsonIntegrator.integrate(Integer.MAX_VALUE,
@@ -39,7 +39,7 @@ public class FunctionWrapper extends BasicFunction implements MembershipFunction
     }
 
     @Override
-    public double support() {
+    public double width() {
         return domain.width();
     }
 }

@@ -10,33 +10,19 @@ import p.lodz.pl.backend.fuzzy.util.Pair;
 
 import java.util.List;
 
-public class FuzzySet<R> extends CrispSet {
+public class FuzzySet<R> extends CrispSet<R> {
 
-    private final Extractor<R> extractor;
 
     public FuzzySet(Extractor<R> extractor, MembershipFunction function) {
-        super(function);
-        this.extractor = extractor;
-    }
-
-    public List<R> support(List<R> list) {
-        return alphaCut(list, 0.0);
+        super(function, extractor);
     }
 
     public double support() {
-        return function.support();
+        return function.width();
     }
 
     public double getMemberShip(R x) {
         return function.getMemberShip(extractor.apply(x));
-    }
-
-    public List<R> alphaCut(List<R> list, double a) {
-        return list.stream().filter(x -> function.getMemberShip(extractor.apply(x)) > a).toList();
-    }
-
-    public double degreeOfFuzziness(List<R> list) {
-        return ((double) support(list).size()) / ((double) list.size());
     }
 
     public Domain getDomain() {
@@ -137,20 +123,16 @@ public class FuzzySet<R> extends CrispSet {
         return false;
     }
 
-    public double cardinality(List<R> list) {
-        return list.stream().mapToDouble(x -> function.getMemberShip(extractor.apply(x))).sum();
-    }
-
     public double degreeOfFuzziness() {
         return cardinality() / getDomain().width();
     }
 
     public double cardinality() {
-        return function.cardinality();
+        return function.integral();
     }
 
     public double supportCardinality() {
-        return function.support() / getDomain().width();
+        return function.width() / getDomain().width();
     }
 
     public Extractor<R> getExtractor() {
