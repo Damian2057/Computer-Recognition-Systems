@@ -10,6 +10,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import p.lodz.pl.backend.fuzzy.function.GaussianFunction;
+import p.lodz.pl.backend.fuzzy.function.MembershipFunction;
+import p.lodz.pl.backend.fuzzy.function.TrapezoidalFunction;
+import p.lodz.pl.backend.fuzzy.function.TriangularFunction;
+import p.lodz.pl.backend.fuzzy.function.domain.ContinuousDomain;
+import p.lodz.pl.backend.fuzzy.function.domain.DiscreteDomain;
+import p.lodz.pl.backend.fuzzy.function.domain.Domain;
 import p.lodz.pl.backend.fuzzy.linguistic.LinguisticLabel;
 import p.lodz.pl.backend.fuzzy.linguistic.LinguisticVariable;
 import p.lodz.pl.backend.fuzzy.quantifier.Quantifier;
@@ -18,6 +25,7 @@ import p.lodz.pl.backend.repository.MockRepository;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -241,20 +249,65 @@ public class AdvancedController implements Initializable {
     public void addLingusticLabel(ActionEvent event) {
         if (addAttributeTypeChoiceBox.getSelectionModel().equals(SUMMARIZER)) {
 
-            String attribute = addAttributeNameChoiceBox.getSelectionModel().toString();
-            LinguisticLabel<PolicyEntity> linguisticLabel = mockRepository.findLinguisticLabelByName(attribute);
-            String newLabel = addEtiquetteNameTextField.getText();
-            String attributeByLabel = mockRepository.findLinguisticVariableByName(newLabel).getLinguisticVariableName();
-            List<LinguisticLabel<PolicyEntity>> labels = mockRepository.findLinguisticVariableByName(attributeByLabel).getLabels();
-//            labels.add(newLabel);
+            String variableName = addAttributeNameChoiceBox.getSelectionModel().toString();
+            LinguisticVariable<PolicyEntity> variableByName = mockRepository.findLinguisticVariableByName(variableName);
+            String newLabelName = addEtiquetteNameTextField.getText();
 
-            LinguisticVariable<PolicyEntity> linguisticVariable = new LinguisticVariable<>(attribute, labels);
+            MembershipFunction function = getFunction(addFunctionTypeChoiceBox.getSelectionModel().toString());
 
-            addFunctionTypeChoiceBox.getSelectionModel();
+            LinguisticLabel<PolicyEntity> label = new LinguisticLabel<>(variableName,
+                    newLabelName,
+                    variableByName.getLabels().get(0).getExtractor(),
+                    function);
 
-//            mockRepository.save(linguisticVariable);
+            variableByName.addLabel(label);
+            mockRepository.save(variableByName);
+
+
         } else if (addAttributeTypeChoiceBox.equals(QUANTIFIER)) {
 
+        }
+    }
+
+    private MembershipFunction getFunction(String name) {
+        Domain domain = getDomain();
+        switch (name) {
+            case TRAPEZOIDAL -> {
+                double a = Double.parseDouble(addAValueTextField.getText());
+                double b = Double.parseDouble(addBValueTextField.getText());
+                double c = Double.parseDouble(addCValueTextField.getText());
+                double d = Double.parseDouble(addDValueTextField.getText());
+                return new TrapezoidalFunction(domain, a, b, c, d);
+            }
+            case TRIANGULAR -> {
+                double a = Double.parseDouble(addAValueTextField.getText());
+                double b = Double.parseDouble(addBValueTextField.getText());
+                double c = Double.parseDouble(addCValueTextField.getText());
+                return new TriangularFunction(domain, a, b, c);
+            }
+            case GAUSSIAN -> {
+                double a = Double.parseDouble(addAValueTextField.getText());
+                double b = Double.parseDouble(addBValueTextField.getText());
+                return new GaussianFunction(domain, a, b);
+            }
+            default -> {
+                return null;
+            }
+        }
+    }
+
+    private Domain getDomain(String domainName) {
+        if ("ContinuousDomain".equals(domainName)) {
+            double lowerBound = Double.parseDouble(addLowerBoundTextField.getText());
+            double upperBound = Double.parseDouble(addUpperBoundTextField.getText());
+            return new ContinuousDomain(lowerBound, upperBound);
+        } else if ("DiscreteDomain".equals(domainName)) {
+            List<Double> values = new ArrayList<>();
+            String[] split = addValuesTextField.getText().split(",");
+            for (String s : split) {
+                values.add(Double.parseDouble(s));
+            }
+            return new DiscreteDomain(values);
         }
     }
 

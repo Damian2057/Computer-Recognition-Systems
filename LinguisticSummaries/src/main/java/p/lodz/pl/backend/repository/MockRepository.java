@@ -42,7 +42,17 @@ public class MockRepository {
     }
 
     public void save(LinguisticVariable<PolicyEntity> linguisticVariable) {
-        linguisticVariables.add(linguisticVariable);
+        if (linguisticVariables.stream()
+                .noneMatch(lv -> lv.getLinguisticVariableName().equals(linguisticVariable.getLinguisticVariableName()))) {
+            linguisticVariables.add(linguisticVariable);
+        } else {
+            for (int i = 0; i < linguisticVariables.size(); i++) {
+                if (linguisticVariables.get(i).getLinguisticVariableName().equals(linguisticVariable.getLinguisticVariableName())) {
+                    linguisticVariables.set(i, linguisticVariable);
+                    break;
+                }
+            }
+        }
     }
 
     public void save(Quantifier quantifier) {

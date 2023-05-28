@@ -19,4 +19,8 @@ public class LinguisticVariable<R> {
     public List<LinguisticLabel<R>> getLabels() {
         return labels;
     }
+
+    public void addLabel(LinguisticLabel<R> label) {
+        labels.add(label);
+    }
 }
