@@ -31,7 +31,7 @@ public class GaussianFunction extends BasicFunction implements MembershipFunctio
     }
 
     @Override
-    public double cardinality() {
+    public double integral() {
         SimpsonIntegrator simpsonIntegrator = new SimpsonIntegrator();
         if (getDomain() instanceof ContinuousDomain continuousDomain) {
             return simpsonIntegrator.integrate(Integer.MAX_VALUE,
@@ -44,7 +44,7 @@ public class GaussianFunction extends BasicFunction implements MembershipFunctio
     }
 
     @Override
-    public double support() {
+    public double width() {
         return domain.width();
     }
 

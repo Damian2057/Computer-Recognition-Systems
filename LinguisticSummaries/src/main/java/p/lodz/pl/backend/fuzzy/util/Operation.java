@@ -24,7 +24,7 @@ public class Operation<R extends CrispSet> {
         if (first instanceof FuzzySet fuzzySet) {
             return ((R) new FuzzySet<>(fuzzySet.getExtractor(), function));
         } else {
-            return ((R) new CrispSet(function));
+            return ((R) new CrispSet(function, first.getExtractor()));
         }
     }
 
@@ -38,7 +38,7 @@ public class Operation<R extends CrispSet> {
         if (first instanceof FuzzySet fuzzySet) {
             return ((R) new FuzzySet<>(fuzzySet.getExtractor(), function));
         } else {
-            return ((R) new CrispSet(function));
+            return ((R) new CrispSet(function, first.getExtractor()));
         }
     }
 
@@ -51,7 +51,7 @@ public class Operation<R extends CrispSet> {
         if (first instanceof FuzzySet fuzzySet) {
             return ((R) new FuzzySet<>(fuzzySet.getExtractor(), function));
         } else {
-            return ((R) new CrispSet(function));
+            return ((R) new CrispSet(function, first.getExtractor()));
         }
     }
 
