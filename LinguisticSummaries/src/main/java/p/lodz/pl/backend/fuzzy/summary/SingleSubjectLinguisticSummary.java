@@ -168,11 +168,11 @@ public class SingleSubjectLinguisticSummary<R> extends AbstractLinguisticSummary
             s = operation.and(q, s);
         }
 
-        if (quantifier.isAbsolute()) {
+        if (quantifier.isAbsolute()) { // 0 - M
             return quantifier.getMemberShip(policies.stream().mapToDouble(s::getMemberShip).sum());
-        } else {
+        } else { // 0 - 1
             return quantifier.getMemberShip(policies.stream().mapToDouble(s::getMemberShip).sum()
-                    / s.support(policies).size());
+                    / policies.size());
         }
     }
 
@@ -221,7 +221,6 @@ public class SingleSubjectLinguisticSummary<R> extends AbstractLinguisticSummary
 
     /**
      * T5
-     * ilosc sumaryzatorow
      */
     private double lengthOfSummary(int size) {
         return 2.0 * Math.pow(0.5, size);
@@ -264,7 +263,7 @@ public class SingleSubjectLinguisticSummary<R> extends AbstractLinguisticSummary
             return 0.0;
         }
         return 1.0 - Math.pow(qualifier.stream()
-                .mapToDouble(FuzzySet::degreeOfFuzziness)
+                .mapToDouble(FuzzySet::support)
                 .reduce(1.0, (a, b) -> a * b) , 1.0 / qualifier.size());
     }
 
@@ -282,7 +281,6 @@ public class SingleSubjectLinguisticSummary<R> extends AbstractLinguisticSummary
 
     /**
      * T11
-     * ilosc kwalifikatorow
      */
     private double lengthOfQualifier(int size) {
         if (size == 0) {
