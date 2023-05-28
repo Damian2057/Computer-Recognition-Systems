@@ -1,5 +1,6 @@
 package p.lodz.pl.backend.repository;
 
+import p.lodz.pl.backend.fuzzy.function.MembershipFunction;
 import p.lodz.pl.backend.fuzzy.function.TrapezoidalFunction;
 import p.lodz.pl.backend.fuzzy.function.TriangularFunction;
 import p.lodz.pl.backend.fuzzy.function.domain.ContinuousDomain;
@@ -45,6 +46,7 @@ public class MockRepository {
         if (linguisticVariables.stream()
                 .noneMatch(lv -> lv.getLinguisticVariableName().equals(linguisticVariable.getLinguisticVariableName()))) {
             linguisticVariables.add(linguisticVariable);
+            System.out.println("xd");
         } else {
             for (int i = 0; i < linguisticVariables.size(); i++) {
                 if (linguisticVariables.get(i).getLinguisticVariableName().equals(linguisticVariable.getLinguisticVariableName())) {
@@ -79,6 +81,20 @@ public class MockRepository {
                 .filter(quantifier -> quantifier.getLabelName().equals(name))
                 .findFirst()
                 .orElse(null);
+    }
+
+    public void deleteByLabelName(String labelName) {
+        var linguisticLabel = findLinguisticLabelByNames(labelName);
+        linguisticLabel.getLabels().removeIf(ll -> ll.getLabelName().equals(labelName));
+//        linguisticVariables.remove(linguisticLabel);
+    }
+
+    public LinguisticVariable<PolicyEntity> findLinguisticLabelByNames(String labelName) {
+        return linguisticVariables.stream()
+                .filter(lv -> lv.getLabels().stream()
+                        .anyMatch(ll -> ll.getLabelName().equals(labelName)))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Linguistic variable not found"));
     }
 
     public LinguisticLabel<PolicyEntity> findLinguisticLabelByName(String name) {

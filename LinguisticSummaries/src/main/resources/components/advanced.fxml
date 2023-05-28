@@ -6,6 +6,7 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="anchorPane" prefHeight="750.0" prefWidth="1000.0" stylesheets="/style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="p.lodz.pl.frontend.components.AdvancedController">
@@ -27,11 +28,14 @@
                   <Font name="System Bold" size="16.0" />
                </font>
             </Label>
-            <Label layoutX="15.0" layoutY="109.0" text="Attribute name" />
+            <Label fx:id="addAttributeName" layoutX="15.0" layoutY="109.0" text="Attribute name" />
             <ChoiceBox fx:id="addAttributeNameChoiceBox" layoutX="116.0" layoutY="105.0" prefHeight="25.0" prefWidth="184.0" />
-            <Label layoutX="15.0" layoutY="209.0" text="Function type" />
-            <ChoiceBox fx:id="addFunctionTypeChoiceBox" layoutX="116.0" layoutY="205.0" prefHeight="25.0" prefWidth="184.0" />
+            <Label layoutX="16.0" layoutY="258.0" text="Function type" />
+            <ChoiceBox fx:id="addFunctionTypeChoiceBox" layoutX="117.0" layoutY="254.0" prefHeight="25.0" prefWidth="184.0" />
             <Button fx:id="addButton" layoutX="123.0" layoutY="391.0" mnemonicParsing="false" onAction="#addLingusticLabel" prefHeight="25.0" prefWidth="59.0" text="Add" />
+            <ChoiceBox fx:id="addDomainTypeChoiceBox" layoutX="117.0" layoutY="203.0" prefHeight="25.0" prefWidth="184.0" />
+            <Label layoutX="16.0" layoutY="207.0" text="Domain type" />
+            <Pane fx:id="addFunctionPointsPane" layoutX="16.0" layoutY="288.0" prefHeight="100.0" prefWidth="285.0" />
          </children>
       </AnchorPane>
       <AnchorPane fx:id="editAnchorPane" layoutX="343.0" layoutY="300.0" prefHeight="430.0" prefWidth="315.0" style="-fx-background-color: #83c5be; -fx-background-radius: 15;">
@@ -44,12 +48,15 @@
             <Label layoutX="21.0" layoutY="159.0" text="Etiquette name" />
             <Label layoutX="21.0" layoutY="59.0" text="Attribute type" />
             <ChoiceBox fx:id="editAttributeTypeChoiceBox" layoutX="121.0" layoutY="55.0" prefHeight="25.0" prefWidth="184.0" />
-            <Label layoutX="21.0" layoutY="109.0" text="Attribute name" />
+            <Label fx:id="editAttributeName" layoutX="21.0" layoutY="109.0" text="Attribute name" />
             <ChoiceBox fx:id="editAttributeNameChoiceBox" layoutX="122.0" layoutY="105.0" prefHeight="25.0" prefWidth="184.0" />
-            <Label layoutX="21.0" layoutY="209.0" text="Function type" />
-            <ChoiceBox fx:id="editFunctionTypeChoiceBox" layoutX="122.0" layoutY="205.0" prefHeight="25.0" prefWidth="184.0" />
+            <Label layoutX="20.0" layoutY="258.0" text="Function type" />
+            <ChoiceBox fx:id="editFunctionTypeChoiceBox" layoutX="121.0" layoutY="254.0" prefHeight="25.0" prefWidth="184.0" />
             <Button fx:id="editButton" layoutX="125.0" layoutY="397.0" mnemonicParsing="false" onAction="#editLingusticLabel" text="Edit" />
             <ChoiceBox fx:id="editEtiquetteNameChoiceBox" layoutX="121.0" layoutY="155.0" prefHeight="25.0" prefWidth="184.0" />
+            <ChoiceBox fx:id="editDomainTypeChoiceBox" layoutX="121.0" layoutY="203.0" prefHeight="25.0" prefWidth="184.0" />
+            <Label layoutX="20.0" layoutY="207.0" text="Domain type" />
+            <Pane fx:id="editFunctionPointsPane" layoutX="16.0" layoutY="288.0" prefHeight="100.0" prefWidth="285.0" />
          </children>
       </AnchorPane>
       <AnchorPane fx:id="removeAnchorPane" layoutX="671.0" layoutY="300.0" prefHeight="430.0" prefWidth="315.0" style="-fx-background-color: #83c5be; -fx-background-radius: 15;">
@@ -62,7 +69,7 @@
             <Label layoutX="15.0" layoutY="159.0" text="Etiquette name" />
             <Label layoutX="15.0" layoutY="59.0" text="Attribute type" />
             <ChoiceBox fx:id="removeAttributeTypeChoiceBox" layoutX="115.0" layoutY="55.0" prefHeight="25.0" prefWidth="184.0" />
-            <Label layoutX="15.0" layoutY="109.0" text="Attribute name" />
+            <Label fx:id="removeAttributeName" layoutX="15.0" layoutY="109.0" text="Attribute name" />
             <ChoiceBox fx:id="removeAttributeNameChoiceBox" layoutX="116.0" layoutY="105.0" prefHeight="25.0" prefWidth="184.0" />
             <ChoiceBox fx:id="removeEtiquetteNameChoiceBox" layoutX="115.0" layoutY="155.0" prefHeight="25.0" prefWidth="184.0" />
             <Button fx:id="removeButton" layoutX="125.0" layoutY="390.0" mnemonicParsing="false" onAction="#removeLingusticLabel" prefHeight="25.0" prefWidth="59.0" text="Remove" />

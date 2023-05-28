@@ -81,13 +81,11 @@ public class StageController implements Initializable {
 
     private Dao dao = new DBConnection();
     private List<Double> weights = new ArrayList<>();
+    private MockRepository mockRepository = new MockRepository();
     private SingleSubjectLinguisticSummary<PolicyEntity> linguisticSummary;
 
     @SneakyThrows
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-
-        MockRepository mockRepository = new MockRepository();
+    public void initializeView(MockRepository mockRepository) {
         List<LinguisticVariable<PolicyEntity>> linguisticVariablesList = mockRepository.findAllLinguisticVariables();
         List<Quantifier> quantifiersList = mockRepository.findAllQuantifiers();
 
@@ -223,6 +221,8 @@ public class StageController implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/components/advanced.fxml"));
             Parent advancedRoot = loader.load();
             AdvancedController advancedController = loader.getController();
+            advancedController.setStageController(this);
+            advancedController.inititalizeSummarizersAndQuantifiers();
 
             Scene currentScene = ((Node) event.getSource()).getScene();
 
@@ -271,6 +271,20 @@ public class StageController implements Initializable {
 
     public void setWeights(List<Double> weights) {
         this.weights = weights;
+    }
+
+    public void setMockRepository(MockRepository mockRepository) {
+        this.mockRepository = mockRepository;
+        initializeView(mockRepository);
+    }
+
+    public MockRepository getMockRepository() {
+        return mockRepository;
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        initializeView(new MockRepository());
     }
 
 }
