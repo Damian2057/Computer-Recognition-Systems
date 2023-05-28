@@ -42,6 +42,7 @@
                      <children>
                         <TableView fx:id="summaryTableView" prefHeight="245.0" prefWidth="1487.0">
                           <columns>
+                              <TableColumn fx:id="checkBoxColumn" prefWidth="50.0" text="Save" />
                               <TableColumn fx:id="formColumn" prefWidth="50.0" text="Form" />
                             <TableColumn fx:id="summaryColumn" prefWidth="715.0" text="Summary" />
                               <TableColumn fx:id="averageQMColumn" prefWidth="60.0" text="S" />
