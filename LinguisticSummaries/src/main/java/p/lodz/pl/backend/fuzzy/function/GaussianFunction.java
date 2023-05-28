@@ -1,5 +1,8 @@
 package p.lodz.pl.backend.fuzzy.function;
 
+import org.apache.commons.math3.analysis.integration.SimpsonIntegrator;
+import p.lodz.pl.backend.fuzzy.function.domain.ContinuousDomain;
+import p.lodz.pl.backend.fuzzy.function.domain.DiscreteDomain;
 import p.lodz.pl.backend.fuzzy.function.domain.Domain;
 
 import java.util.function.Function;
@@ -29,6 +32,14 @@ public class GaussianFunction extends BasicFunction implements MembershipFunctio
 
     @Override
     public double cardinality() {
+        SimpsonIntegrator simpsonIntegrator = new SimpsonIntegrator();
+        if (getDomain() instanceof ContinuousDomain continuousDomain) {
+            return simpsonIntegrator.integrate(Integer.MAX_VALUE,
+                    function::apply, continuousDomain.getMinDomain(), continuousDomain.getMaxDomain());
+        } else if (getDomain() instanceof DiscreteDomain discreteDomain) {
+            return discreteDomain.getPoints().stream().mapToDouble(function::apply).sum()
+                    / discreteDomain.getPoints().size();
+        }
         return 0;
     }
 
