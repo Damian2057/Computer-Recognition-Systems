@@ -1,6 +1,7 @@
 package p.lodz.pl.frontend.components;
 
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
@@ -12,6 +13,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Label;
+import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import lombok.SneakyThrows;
@@ -31,6 +33,8 @@ import java.util.*;
 
 public class StageController implements Initializable {
 
+//    @FXML
+//    private TableColumn<Summary, Boolean> checkBoxColumn;
     @FXML
     private Button generateButton;
     @FXML
@@ -75,6 +79,8 @@ public class StageController implements Initializable {
     private AnchorPane scrollQuantifiers;
 
     private Scene previousScene;
+
+    private List<Summary> savedSummaries;
 
     private  List<LinguisticLabel<PolicyEntity>> selectedSummarizers = new ArrayList();
     private List<Quantifier> selectedQuantifiers = new ArrayList();
@@ -181,6 +187,8 @@ public class StageController implements Initializable {
 
     public void generateSummaries(ActionEvent event) {
 
+//        checkBoxColumn.setCellValueFactory(cellData -> new SimpleBooleanProperty(cellData.getValue().selected()));
+//        checkBoxColumn.setCellFactory(CheckBoxTableCell.forTableColumn(checkBoxColumn));
         formColumn.setCellValueFactory(cellData -> Bindings.createObjectBinding(() -> cellData.getValue().form()));
         summaryColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().summary()));
         averageQMColumn.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().quality().get(0)).asObject());
@@ -213,6 +221,7 @@ public class StageController implements Initializable {
                 Summary summary = new Summary(s.form(), s.summary(), s.quality());
                 summaryTableView.getItems().add(summary);
             }
+            savedSummaries = summaries;
         }
     }
 
@@ -287,4 +296,7 @@ public class StageController implements Initializable {
         initializeView(new MockRepository());
     }
 
+    public void saveSummariesToFile(ActionEvent event) {
+        System.out.println(savedSummaries);
+    }
 }
