@@ -24,6 +24,7 @@ import p.lodz.pl.backend.fuzzy.summary.Summary;
 import p.lodz.pl.backend.model.PolicyEntity;
 import p.lodz.pl.backend.repository.DBConnection;
 import p.lodz.pl.backend.repository.Dao;
+import p.lodz.pl.backend.repository.FileOperator;
 import p.lodz.pl.backend.repository.MockRepository;
 import p.lodz.pl.backend.fuzzy.linguistic.LinguisticLabel;
 
@@ -297,6 +298,7 @@ public class StageController implements Initializable {
     }
 
     public void saveSummariesToFile(ActionEvent event) {
-        System.out.println(savedSummaries);
+        FileOperator fileOperator = new FileOperator();
+        fileOperator.writeToFile(savedSummaries);
     }
 }
