@@ -9,7 +9,7 @@ public class GraphicalApplication extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         FXMLLoader fxmlLoader = new FXMLLoader(GraphicalApplication.class.getResource("/components/view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 1000, 750);
+        Scene scene = new Scene(fxmlLoader.load(), 1515, 750);
         stage.setTitle("Linguistic Summaries");
         stage.setScene(scene);
         stage.show();

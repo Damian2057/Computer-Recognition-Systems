@@ -3,24 +3,19 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="anchorPane" prefHeight="750.0" prefWidth="1000.0" stylesheets="/style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="p.lodz.pl.frontend.components.AdvancedController">
    <children>
       <Button fx:id="goBackButton" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#goToPreviousView" text="Go back" />
-      <TitledPane animated="false" layoutX="176.0" layoutY="27.0" prefHeight="250.0" prefWidth="300.0" text="Summarizers">
+      <ScrollPane layoutX="163.0" layoutY="39.0" prefHeight="250.0" prefWidth="300.0">
         <content>
-          <AnchorPane fx:id="summarizerLabelsPane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: #83c5be;" />
+          <AnchorPane fx:id="summarizerLabelsPane" minHeight="0.0" minWidth="0.0" prefHeight="245.0" prefWidth="290.0" style="-fx-background-color: #83c5be;" />
         </content>
-      </TitledPane>
-      <TitledPane fx:id="quantifierLabelsPane" animated="false" layoutX="525.0" layoutY="27.0" prefHeight="250.0" prefWidth="300.0" text="Quantifiers">
-         <content>
-            <AnchorPane fx:id="quantifierLabels" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: #83c5be;" />
-         </content>
-      </TitledPane>
+      </ScrollPane>
       <AnchorPane fx:id="addAnchorPane" layoutX="15.0" layoutY="300.0" prefHeight="430.0" prefWidth="315.0" style="-fx-background-color: #83c5be; -fx-background-radius: 15;">
          <children>
             <Label layoutX="15.0" layoutY="159.0" text="Etiquette name" />
@@ -36,7 +31,7 @@
             <ChoiceBox fx:id="addAttributeNameChoiceBox" layoutX="116.0" layoutY="105.0" prefHeight="25.0" prefWidth="184.0" />
             <Label layoutX="15.0" layoutY="209.0" text="Function type" />
             <ChoiceBox fx:id="addFunctionTypeChoiceBox" layoutX="116.0" layoutY="205.0" prefHeight="25.0" prefWidth="184.0" />
-            <Button fx:id="addButton" layoutX="123.0" layoutY="391.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="59.0" text="Add" />
+            <Button fx:id="addButton" layoutX="123.0" layoutY="391.0" mnemonicParsing="false" onAction="#addLingusticLabel" prefHeight="25.0" prefWidth="59.0" text="Add" />
          </children>
       </AnchorPane>
       <AnchorPane fx:id="editAnchorPane" layoutX="343.0" layoutY="300.0" prefHeight="430.0" prefWidth="315.0" style="-fx-background-color: #83c5be; -fx-background-radius: 15;">
@@ -53,7 +48,7 @@
             <ChoiceBox fx:id="editAttributeNameChoiceBox" layoutX="122.0" layoutY="105.0" prefHeight="25.0" prefWidth="184.0" />
             <Label layoutX="21.0" layoutY="209.0" text="Function type" />
             <ChoiceBox fx:id="editFunctionTypeChoiceBox" layoutX="122.0" layoutY="205.0" prefHeight="25.0" prefWidth="184.0" />
-            <Button fx:id="editButton" layoutX="125.0" layoutY="397.0" mnemonicParsing="false" text="Edit" />
+            <Button fx:id="editButton" layoutX="125.0" layoutY="397.0" mnemonicParsing="false" onAction="#editLingusticLabel" text="Edit" />
             <ChoiceBox fx:id="editEtiquetteNameChoiceBox" layoutX="121.0" layoutY="155.0" prefHeight="25.0" prefWidth="184.0" />
          </children>
       </AnchorPane>
@@ -70,8 +65,23 @@
             <Label layoutX="15.0" layoutY="109.0" text="Attribute name" />
             <ChoiceBox fx:id="removeAttributeNameChoiceBox" layoutX="116.0" layoutY="105.0" prefHeight="25.0" prefWidth="184.0" />
             <ChoiceBox fx:id="removeEtiquetteNameChoiceBox" layoutX="115.0" layoutY="155.0" prefHeight="25.0" prefWidth="184.0" />
-            <Button fx:id="removeButton" layoutX="125.0" layoutY="390.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="59.0" text="Remove" />
+            <Button fx:id="removeButton" layoutX="125.0" layoutY="390.0" mnemonicParsing="false" onAction="#removeLingusticLabel" prefHeight="25.0" prefWidth="59.0" text="Remove" />
          </children>
       </AnchorPane>
+      <Label layoutX="646.0" layoutY="14.0" text="Quantifiers" textFill="#006d77">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="264.0" layoutY="14.0" text="Summarizers" textFill="#006d77">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Label>
+      <ScrollPane layoutX="538.0" layoutY="39.0" prefHeight="250.0" prefWidth="300.0">
+        <content>
+          <AnchorPane fx:id="quantifierLabelsPane" minHeight="0.0" minWidth="0.0" prefHeight="245.0" prefWidth="290.0" style="-fx-background-color: #83c5be;" />
+        </content>
+      </ScrollPane>
    </children>
 </AnchorPane>

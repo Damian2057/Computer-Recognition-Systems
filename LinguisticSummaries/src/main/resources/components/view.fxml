@@ -11,29 +11,29 @@
 
 <AnchorPane fx:id="anchorPane" prefHeight="750.0" prefWidth="1550.0" stylesheets="/style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="p.lodz.pl.frontend.components.StageController">
    <children>
-      <Label layoutX="426.0" layoutY="385.0" text="Linguistic summaries" textFill="#006d77">
+      <Label layoutX="701.0" layoutY="382.0" text="Linguistic summaries" textFill="#006d77">
          <font>
             <Font name="System Bold" size="15.0" />
          </font>
       </Label>
-      <Label layoutX="356.0" layoutY="22.0" text="Car Insurance Claim Prediction" textFill="#006d77">
+      <Label layoutX="631.0" layoutY="14.0" text="Car Insurance Claim Prediction" textFill="#006d77">
          <font>
             <Font name="System Bold" size="20.0" />
          </font>
       </Label>
-      <Pane layoutX="822.0" layoutY="92.0" prefHeight="235.0" prefWidth="170.0" style="-fx-background-color: #83c5be; -fx-background-radius: 15;">
+      <Pane layoutX="1300.0" layoutY="93.0" prefHeight="235.0" prefWidth="170.0" style="-fx-background-color: #83c5be; -fx-background-radius: 15;">
          <children>
             <Button fx:id="AdvancedSettingsButton" layoutX="29.0" layoutY="55.0" mnemonicParsing="false" onAction="#goToAdvancedSettings" text="Advanced settings" />
             <Button fx:id="multiSubjectButton" layoutX="29.0" layoutY="104.0" mnemonicParsing="false" onAction="#goToMultiSubject" prefHeight="25.0" prefWidth="113.0" text="Multi-subject" />
             <Button fx:id="modifyWeightsButton" layoutX="29.0" layoutY="156.0" mnemonicParsing="false" onAction="#openWeightsWindow" prefHeight="25.0" prefWidth="113.0" text="Modify weights" />
          </children>
       </Pane>
-      <ScrollPane layoutX="35.0" layoutY="92.0" prefHeight="235.0" prefWidth="368.0" style="-fx-background-radius: 15; -fx-border-radius: 15;">
+      <ScrollPane layoutX="333.0" layoutY="93.0" prefHeight="235.0" prefWidth="368.0" style="-fx-background-radius: 15; -fx-border-radius: 15;">
         <content>
           <AnchorPane fx:id="scrollAttributes" minHeight="0.0" minWidth="0.0" prefHeight="231.0" prefWidth="352.0" style="-fx-background-color: #83c5be; -fx-border-color: #006d77; -fx-background-radius: 15; -fx-border-radius: 15;" />
         </content>
       </ScrollPane>
-      <Button fx:id="generateButton" layoutX="468.0" layoutY="350.0" mnemonicParsing="false" onAction="#generateSummaries" text="Generate" />
+      <Button fx:id="generateButton" layoutX="743.0" layoutY="347.0" mnemonicParsing="false" onAction="#generateSummaries" text="Generate" />
       <Pane layoutY="420.0" prefHeight="330.0" prefWidth="1550.0" style="-fx-background-color: #83c5be;">
          <children>
             <ScrollPane layoutX="13.0" layoutY="43.0" prefHeight="245.0" prefWidth="1487.0">
@@ -64,7 +64,7 @@
             </ScrollPane>
          </children>
       </Pane>
-      <ScrollPane layoutX="426.0" layoutY="93.0" prefHeight="235.0" prefWidth="368.0" style="-fx-background-radius: 15; -fx-border-radius: 15;">
+      <ScrollPane layoutX="842.0" layoutY="93.0" prefHeight="235.0" prefWidth="368.0" style="-fx-background-radius: 15; -fx-border-radius: 15;">
          <content>
             <AnchorPane fx:id="scrollQuantifiers" minHeight="0.0" minWidth="0.0" prefHeight="231.0" prefWidth="352.0" style="-fx-background-color: #83c5be; -fx-border-color: #006d77; -fx-background-radius: 15; -fx-border-radius: 15;" />
          </content>
