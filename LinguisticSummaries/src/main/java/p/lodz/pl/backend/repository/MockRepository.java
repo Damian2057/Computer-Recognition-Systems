@@ -15,7 +15,7 @@ import java.util.List;
 public class MockRepository {
 
     private static final String  POLICY_TENURE = "policy tenure";
-    private static final String  AGE_OF_CAR = "age of Car";
+    private static final String  AGE_OF_CAR = "age of car";
     private static final String  AGE_OF_POLICYHOLDER = "age of policyholder";
     private static final String  POPULATION_DENSITY = "population density";
     private static final String  DISPLACEMENT = "engine displacement";
