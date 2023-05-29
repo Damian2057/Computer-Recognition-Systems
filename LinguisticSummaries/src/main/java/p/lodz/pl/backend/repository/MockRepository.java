@@ -46,7 +46,6 @@ public class MockRepository {
         if (linguisticVariables.stream()
                 .noneMatch(lv -> lv.getLinguisticVariableName().equals(linguisticVariable.getLinguisticVariableName()))) {
             linguisticVariables.add(linguisticVariable);
-            System.out.println("xd");
         } else {
             for (int i = 0; i < linguisticVariables.size(); i++) {
                 if (linguisticVariables.get(i).getLinguisticVariableName().equals(linguisticVariable.getLinguisticVariableName())) {
@@ -86,7 +85,7 @@ public class MockRepository {
     public void deleteByLabelName(String labelName) {
         var linguisticLabel = findLinguisticLabelByNames(labelName);
         linguisticLabel.getLabels().removeIf(ll -> ll.getLabelName().equals(labelName));
-//        linguisticVariables.remove(linguisticLabel);
+        linguisticVariables.remove(linguisticLabel);
     }
 
     public LinguisticVariable<PolicyEntity> findLinguisticLabelByNames(String labelName) {
@@ -96,7 +95,6 @@ public class MockRepository {
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("Linguistic variable not found"));
     }
-
     public LinguisticLabel<PolicyEntity> findLinguisticLabelByName(String name) {
         return linguisticVariables.stream()
                 .flatMap(linguisticVariable -> linguisticVariable.getLabels().stream())

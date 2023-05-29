@@ -135,6 +135,10 @@ public class AdvancedController  {
     @FXML
     private Label lowerDomainLabel = new Label("Lower domain");
 
+    private Label quantifierTypeLabel = new Label("Quantifier type");
+
+    private ChoiceBox<String> isAbsoluteChoiceBox = new ChoiceBox<String>();
+
     private static final String CONTINUOUS_DOMAIN = "continuous";
     private static final String DISCRETE_DOMAIN = "discrete";
     private static final String SUMMARIZER = "summarizer";
@@ -233,7 +237,7 @@ public class AdvancedController  {
             i++;
             quantifierOffsetY += 15;
         }
-        quantifierLabelsPane.setPrefHeight((quantifierOffsetY) * 2);
+        quantifierLabelsPane.setPrefHeight((quantifierOffsetY) * 2 + 30);
 
         //Initialize ChoiceBoxes
         addAttributeTypeChoiceBox.getItems().addAll(SUMMARIZER, QUANTIFIER);
@@ -292,6 +296,13 @@ public class AdvancedController  {
         else if (addAttributeTypeChoiceBox.getSelectionModel().getSelectedItem().equals(QUANTIFIER)) {
             addAnchorPane.getChildren().remove(addAttributeNameChoiceBox);
             addAnchorPane.getChildren().remove(addAttributeName);
+
+            quantifierTypeLabel.setLayoutX(5);
+            quantifierTypeLabel.setLayoutY(105);
+            isAbsoluteChoiceBox.getItems().addAll("absolute", "relative");
+            isAbsoluteChoiceBox.setLayoutX(115);
+            isAbsoluteChoiceBox.setLayoutY(105);
+            addAnchorPane.getChildren().addAll(quantifierTypeLabel, isAbsoluteChoiceBox);
         }
     }
 
@@ -483,45 +494,71 @@ public class AdvancedController  {
 
         } else if (addAttributeTypeChoiceBox.getSelectionModel().getSelectedItem().equals(QUANTIFIER)) {
 
-//            String variableName = addAttributeNameChoiceBox.getSelectionModel().getSelectedItem();
-//            LinguisticVariable<PolicyEntity> variableByName = mockRepository.findLinguisticVariableByName(variableName);
-//            String newLabelName = addEtiquetteNameTextField.getText();
-//            System.out.println(newLabelName);
-//            MembershipFunction function = getAddFunction(addFunctionTypeChoiceBox.getSelectionModel().getSelectedItem());
-//
-//            LinguisticLabel<PolicyEntity> label = new LinguisticLabel<>(variableName,
-//                    newLabelName,
-//                    variableByName.getLabels().get(0).getExtractor(),
-//                    function);
-//
-//            variableByName.addLabel(label);
-//            mockRepository.save(variableByName);
-//            stageController.setMockRepository(mockRepository);
+            String newLabelName = addEtiquetteNameTextField.getText();
+            MembershipFunction function = getAddFunction(addFunctionTypeChoiceBox.getSelectionModel().getSelectedItem());
+
+            //TODO: add is absolute or relative choiceBox
+            Quantifier newQuantifier = new Quantifier(newLabelName, x -> x, function, false);
+
+            mockRepository.save(newQuantifier);
+            stageController.setMockRepository(mockRepository);
         }
     }
 
     public void editLingusticLabel(ActionEvent event) {
         if (editAttributeTypeChoiceBox.getSelectionModel().getSelectedItem().equals(SUMMARIZER)) {
 
-        } else if (editAttributeTypeChoiceBox.getSelectionModel().getSelectedItem().equals(QUANTIFIER)) {
+            String selectedSummarizer = editAttributeNameChoiceBox.getSelectionModel().getSelectedItem();
+            String selectedEtiquette = editEtiquetteNameChoiceBox.getSelectionModel().getSelectedItem();
+            LinguisticVariable<PolicyEntity> linguisticVariable = mockRepository.findLinguisticVariableByName(selectedSummarizer);
 
+            mockRepository.delete(linguisticVariable);
+            LinguisticLabel<PolicyEntity> linguisticLabel = mockRepository.findLinguisticLabelByName(selectedEtiquette);
+            linguisticVariable.deleteLabel(linguisticLabel);
+
+            MembershipFunction function = getEditFunction(editFunctionTypeChoiceBox.getSelectionModel().getSelectedItem());
+
+            LinguisticLabel<PolicyEntity> label = new LinguisticLabel<>(selectedSummarizer,
+                    selectedEtiquette,
+                    linguisticVariable.getLabels().get(0).getExtractor(),
+                    function);
+
+            linguisticVariable.addLabel(label);
+            mockRepository.save(linguisticVariable);
+            stageController.setMockRepository(mockRepository);
+
+        } else if (editAttributeTypeChoiceBox.getSelectionModel().getSelectedItem().equals(QUANTIFIER)) {
+            String selectedQuantifier =  editEtiquetteNameChoiceBox.getSelectionModel().getSelectedItem();
+
+            Quantifier oldQuantifier = mockRepository.findQuantifierByName(selectedQuantifier);
+            mockRepository.delete(oldQuantifier);
+
+            MembershipFunction function = getEditFunction(editFunctionTypeChoiceBox.getSelectionModel().getSelectedItem());
+            //TODO: add is absolute or relative choiceBox
+            Quantifier newQuantifier = new Quantifier(selectedQuantifier, x -> x, function, false);
+
+            mockRepository.save(newQuantifier);
+            stageController.setMockRepository(mockRepository);
         }
     }
 
     public void removeLingusticLabel(ActionEvent event) {
-//        if (removeAttributeTypeChoiceBox.getSelectionModel().getSelectedItem().equals(SUMMARIZER)) {
-//            String selectedItem = removeEtiquetteNameChoiceBox.getSelectionModel().getSelectedItem().toString();
-//
-//            mockRepository.deleteByLabelName(selectedItem);
-//
-//        } else if (removeAttributeTypeChoiceBox.getSelectionModel().getSelectedItem().equals(QUANTIFIER)) {
-//            String selectedItem = removeEtiquetteNameChoiceBox.getSelectionModel().getSelectedItem().toString();
-//
-//            mockRepository.deleteByLabelName(selectedItem);
-//        }
-        String selectedItem = removeEtiquetteNameChoiceBox.getSelectionModel().getSelectedItem().toString();
+        if (removeAttributeTypeChoiceBox.getSelectionModel().getSelectedItem().equals(SUMMARIZER)) {
+            String selectedItem = removeEtiquetteNameChoiceBox.getSelectionModel().getSelectedItem().toString();
+            LinguisticVariable<PolicyEntity> linguisticVariable = mockRepository.findLinguisticVariableByName(selectedItem);
+            mockRepository.delete(linguisticVariable);
 
-        mockRepository.deleteByLabelName(selectedItem);
+            LinguisticLabel<PolicyEntity> label = mockRepository.findLinguisticLabelByName(selectedItem);
+            linguisticVariable.deleteLabel(label);
+            stageController.setMockRepository(mockRepository);
+
+        } else if (removeAttributeTypeChoiceBox.getSelectionModel().getSelectedItem().equals(QUANTIFIER)) {
+            String selectedItem = removeEtiquetteNameChoiceBox.getSelectionModel().getSelectedItem().toString();
+            Quantifier quantifier = mockRepository.findQuantifierByName(selectedItem);
+
+            mockRepository.delete(quantifier);
+            stageController.setMockRepository(mockRepository);
+        }
     }
 
     public void handleAddFunctionSelection() {
@@ -859,9 +896,9 @@ public class AdvancedController  {
     private MembershipFunction getEditFunction(String name) {
         Domain domain;
         if (editDomainTypeChoiceBox.getSelectionModel().getSelectedItem().equals(CONTINUOUS_DOMAIN)) {
-            domain = getAddDomain(CONTINUOUS_DOMAIN);
+            domain = getEditDomain(CONTINUOUS_DOMAIN);
         } else {
-            domain = getAddDomain(DISCRETE_DOMAIN);
+            domain = getEditDomain(DISCRETE_DOMAIN);
         }
         switch (name) {
             case TRAPEZOIDAL -> {
