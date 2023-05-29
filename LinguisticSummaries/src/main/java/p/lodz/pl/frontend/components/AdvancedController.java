@@ -302,6 +302,8 @@ public class AdvancedController  {
             isAbsoluteChoiceBox.getItems().addAll("absolute", "relative");
             isAbsoluteChoiceBox.setLayoutX(115);
             isAbsoluteChoiceBox.setLayoutY(105);
+
+            addAnchorPane.getChildren().removeAll(quantifierTypeLabel, isAbsoluteChoiceBox);
             addAnchorPane.getChildren().addAll(quantifierTypeLabel, isAbsoluteChoiceBox);
         }
     }
@@ -497,8 +499,8 @@ public class AdvancedController  {
             String newLabelName = addEtiquetteNameTextField.getText();
             MembershipFunction function = getAddFunction(addFunctionTypeChoiceBox.getSelectionModel().getSelectedItem());
 
-            //TODO: add is absolute or relative choiceBox
-            Quantifier newQuantifier = new Quantifier(newLabelName, x -> x, function, false);
+            boolean isAbsolute =  isAbsoluteChoiceBox.getSelectionModel().getSelectedItem().equals("absolute");
+            Quantifier newQuantifier = new Quantifier(newLabelName, x -> x, function, isAbsolute);
 
             mockRepository.save(newQuantifier);
             stageController.setMockRepository(mockRepository);
@@ -534,8 +536,9 @@ public class AdvancedController  {
             mockRepository.delete(oldQuantifier);
 
             MembershipFunction function = getEditFunction(editFunctionTypeChoiceBox.getSelectionModel().getSelectedItem());
-            //TODO: add is absolute or relative choiceBox
-            Quantifier newQuantifier = new Quantifier(selectedQuantifier, x -> x, function, false);
+
+            boolean isAbsolute =  isAbsoluteChoiceBox.getSelectionModel().getSelectedItem().equals("absolute");
+            Quantifier newQuantifier = new Quantifier(selectedQuantifier, x -> x, function, isAbsolute);
 
             mockRepository.save(newQuantifier);
             stageController.setMockRepository(mockRepository);
