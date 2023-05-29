@@ -29,9 +29,9 @@
             <Button fx:id="saveToFileButton" layoutX="29.0" layoutY="181.0" mnemonicParsing="false" onAction="#saveSummariesToFile" prefHeight="25.0" prefWidth="113.0" text="Save to file" />
          </children>
       </Pane>
-      <ScrollPane layoutX="333.0" layoutY="93.0" prefHeight="235.0" prefWidth="368.0" style="-fx-background-radius: 15; -fx-border-radius: 15;">
+      <ScrollPane layoutX="527.0" layoutY="83.0" prefHeight="255.0" prefWidth="497.0" style="-fx-background-radius: 15; -fx-border-radius: 15;">
         <content>
-          <AnchorPane fx:id="scrollAttributes" minHeight="0.0" minWidth="0.0" prefHeight="231.0" prefWidth="352.0" style="-fx-background-color: #83c5be; -fx-border-color: #006d77; -fx-background-radius: 15; -fx-border-radius: 15;" />
+          <AnchorPane fx:id="scrollAttributes" minHeight="0.0" minWidth="0.0" prefHeight="250.0" prefWidth="480.0" style="-fx-background-color: #83c5be; -fx-border-color: #006d77; -fx-background-radius: 15; -fx-border-radius: 15;" />
         </content>
       </ScrollPane>
       <Button fx:id="generateButton" layoutX="743.0" layoutY="347.0" mnemonicParsing="false" onAction="#generateSummaries" text="Generate" />
@@ -66,10 +66,5 @@
             </ScrollPane>
          </children>
       </Pane>
-      <ScrollPane layoutX="842.0" layoutY="93.0" prefHeight="235.0" prefWidth="368.0" style="-fx-background-radius: 15; -fx-border-radius: 15;">
-         <content>
-            <AnchorPane fx:id="scrollQuantifiers" minHeight="0.0" minWidth="0.0" prefHeight="231.0" prefWidth="352.0" style="-fx-background-color: #83c5be; -fx-border-color: #006d77; -fx-background-radius: 15; -fx-border-radius: 15;" />
-         </content>
-      </ScrollPane>
    </children>
 </AnchorPane>

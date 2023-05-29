@@ -1,7 +1,6 @@
 package p.lodz.pl.frontend.components;
 
 import javafx.beans.binding.Bindings;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
@@ -13,10 +12,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Label;
-import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import lombok.SneakyThrows;
+import lombok.extern.java.Log;
 import p.lodz.pl.backend.fuzzy.linguistic.LinguisticVariable;
 import p.lodz.pl.backend.fuzzy.quantifier.Quantifier;
 import p.lodz.pl.backend.fuzzy.summary.SingleSubjectLinguisticSummary;
@@ -76,27 +75,19 @@ public class StageController implements Initializable {
     private TableColumn<Summary, Double> lengthOfQualifierColumn;
     @FXML
     private AnchorPane scrollAttributes;
-    @FXML
-    private AnchorPane scrollQuantifiers;
-
-    private Scene previousScene;
 
     private List<Summary> savedSummaries;
-
-    private  List<LinguisticLabel<PolicyEntity>> selectedSummarizers = new ArrayList();
-    private List<Quantifier> selectedQuantifiers = new ArrayList();
-
-    private Dao dao = new DBConnection();
+    private final List<LinguisticLabel<PolicyEntity>> selectedQualifiers = new ArrayList<>();
+    private final Dao dao = new DBConnection();
     private List<Double> weights = new ArrayList<>();
     private MockRepository mockRepository = new MockRepository();
     private SingleSubjectLinguisticSummary<PolicyEntity> linguisticSummary;
+    private final List<Quantifier> allQuantifiers = mockRepository.findAllQuantifiers();
 
     @SneakyThrows
     public void initializeView(MockRepository mockRepository) {
-        selectedQuantifiers.clear();
-        selectedSummarizers.clear();
+        selectedQualifiers.clear();
         List<LinguisticVariable<PolicyEntity>> linguisticVariablesList = mockRepository.findAllLinguisticVariables();
-        List<Quantifier> quantifiersList = mockRepository.findAllQuantifiers();
 
         int linguisticOffsetY = 10;
 
@@ -126,11 +117,9 @@ public class StageController implements Initializable {
 
                 checkBox.setOnAction(event -> {
                     if (checkBox.isSelected()) {
-                        LinguisticLabel<PolicyEntity> selectedEtiquette = etiquetteLabelName;
-                        selectedSummarizers.add(selectedEtiquette);
+                        selectedQualifiers.add(etiquetteLabelName);
                     } else {
-                        LinguisticLabel<PolicyEntity> unselectedEtiquette = etiquetteLabelName;
-                        selectedSummarizers.remove(unselectedEtiquette);
+                        selectedQualifiers.remove(etiquetteLabelName);
                     }
                 });
 
@@ -139,37 +128,6 @@ public class StageController implements Initializable {
             linguisticOffsetY += (linguisticVariablesList.size() + 1) * 12;
         }
         scrollAttributes.setPrefHeight(linguisticOffsetY + 10);
-
-        int quantifierOffsetY = 10;
-
-        int i = 0;
-        for (Quantifier quantifier : quantifiersList) {
-
-            Label quantifierLabel = new Label(quantifier.getLabelName());
-            quantifierLabel.setLayoutX(40);
-            quantifierLabel.setLayoutY(quantifierOffsetY + i * 30);
-
-            CheckBox checkBox = new CheckBox();
-
-            checkBox.setLayoutX(15);
-            checkBox.setLayoutY(quantifierOffsetY + i * 30);
-
-            scrollQuantifiers.getChildren().addAll(quantifierLabel, checkBox);
-
-            checkBox.setOnAction(event -> {
-                if (checkBox.isSelected()) {
-                    Quantifier selectedQuantifier = quantifier;
-                    selectedQuantifiers.add(selectedQuantifier);
-                } else {
-                    Quantifier unselectedQuantifier = quantifier;
-                    selectedQuantifiers.remove(unselectedQuantifier);
-                }
-            });
-
-            i++;
-            quantifierOffsetY += 15;
-        }
-        scrollQuantifiers.setPrefHeight((quantifierOffsetY) * 3);
 
         List<Double> defaultWeights = new ArrayList<>();
 
@@ -188,7 +146,7 @@ public class StageController implements Initializable {
         setWeights(defaultWeights);
     }
 
-    public void generateSummaries(ActionEvent event) {
+    public void generateSummaries() {
 
 //        checkBoxColumn.setCellValueFactory(cellData -> new SimpleBooleanProperty(cellData.getValue().selected()));
 //        checkBoxColumn.setCellFactory(CheckBoxTableCell.forTableColumn(checkBoxColumn));
@@ -209,10 +167,10 @@ public class StageController implements Initializable {
 
         summaryTableView.getItems().clear();
 
-        for (int i=0; i< selectedQuantifiers.size(); i++) {
+        for (int i=0; i< allQuantifiers.size(); i++) {
 
-            linguisticSummary = new SingleSubjectLinguisticSummary<>(selectedQuantifiers.get(i),
-                    selectedSummarizers,
+            linguisticSummary = new SingleSubjectLinguisticSummary<>(allQuantifiers.get(i),
+                    selectedQualifiers,
                     "cars",
                     dao.getPolicies(),
                     weights);
@@ -234,16 +192,12 @@ public class StageController implements Initializable {
             Parent advancedRoot = loader.load();
             AdvancedController advancedController = loader.getController();
             advancedController.setStageController(this);
-            advancedController.inititalizeSummarizersAndQuantifiers();
+            advancedController.inititalizeQualifiersAndQuantifiers();
 
             Scene currentScene = ((Node) event.getSource()).getScene();
-
             advancedController.setPreviousScene(currentScene);
-
             Scene advancedScene = new Scene(advancedRoot);
-
             Stage currentStage = (Stage) currentScene.getWindow();
-
             currentStage.setScene(advancedScene);
 
             currentStage.show();
@@ -254,17 +208,25 @@ public class StageController implements Initializable {
 
     public void goToMultiSubject(ActionEvent event) {
         try {
-            Parent advancedRoot = FXMLLoader.load(getClass().getResource("/components/multiSubject.fxml"));
-            Scene advancedScene = new Scene(advancedRoot);
-            Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/components/multiSubject.fxml"));
+            Parent multiSubjectRoot = loader.load();
+            MultiSubjectController multiSubjectController = loader.getController();
+            multiSubjectController.setStageController(this);
+            multiSubjectController.initializeMultiSubjectView();
+
+            Scene currentScene = ((Node) event.getSource()).getScene();
+            multiSubjectController.setPreviousScene(currentScene);
+            Scene advancedScene = new Scene(multiSubjectRoot);
+            Stage currentStage = (Stage) currentScene.getWindow();
             currentStage.setScene(advancedScene);
+
             currentStage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void openWeightsWindow(ActionEvent event) throws IOException {
+    public void openWeightsWindow() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/components/weightedQM.fxml"));
         Parent fileRoot = loader.load();
 
@@ -299,7 +261,7 @@ public class StageController implements Initializable {
         initializeView(new MockRepository());
     }
 
-    public void saveSummariesToFile(ActionEvent event) {
+    public void saveSummariesToFile() {
         FileOperator fileOperator = new FileOperator();
         fileOperator.writeToFile(savedSummaries);
     }
