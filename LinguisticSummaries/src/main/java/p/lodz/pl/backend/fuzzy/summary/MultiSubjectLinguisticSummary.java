@@ -12,9 +12,9 @@ public class MultiSubjectLinguisticSummary<R> extends AbstractLinguisticSummary 
     private final String subject2;
     private final List<R> policies;
 
-    protected MultiSubjectLinguisticSummary(Quantifier quantifier,
-                                            List<LinguisticLabel<R>> qualifiers,
-                                            String subject1, String subject2, List<R> policies) {
+    public MultiSubjectLinguisticSummary(Quantifier quantifier,
+                                         List<LinguisticLabel<R>> qualifiers,
+                                         String subject1, String subject2, List<R> policies) {
         super(quantifier);
         this.qualifiers = qualifiers;
         this.subject1 = subject1;

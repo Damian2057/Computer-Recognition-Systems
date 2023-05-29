@@ -39,13 +39,13 @@ public class AdvancedController  {
     @FXML
     private Pane addFunctionPointsPane;
     @FXML
-    private ChoiceBox editDomainTypeChoiceBox;
+    private ChoiceBox<String> editDomainTypeChoiceBox;
     @FXML
-    private ChoiceBox addDomainTypeChoiceBox;
+    private ChoiceBox<String> addDomainTypeChoiceBox;
     @FXML
     private Button goBackButton;
     @FXML
-    private AnchorPane summarizerLabelsPane;
+    private AnchorPane qualifierLabelsPane;
     @FXML
     private AnchorPane quantifierLabelsPane;
     @FXML
@@ -72,16 +72,7 @@ public class AdvancedController  {
     private Button editButton;
     @FXML
     private ChoiceBox<String> editEtiquetteNameChoiceBox;
-    @FXML
-    private AnchorPane removeAnchorPane;
-    @FXML
-    private ChoiceBox<String> removeAttributeTypeChoiceBox;
-    @FXML
-    private ChoiceBox<String> removeAttributeNameChoiceBox;
-    @FXML
-    private ChoiceBox removeEtiquetteNameChoiceBox;
-    @FXML
-    private Button removeButton;
+
     @FXML
     private TextField addAValueTextField = new TextField();
     @FXML
@@ -94,8 +85,6 @@ public class AdvancedController  {
     private TextField addLowerBoundTextField = new TextField();
     @FXML
     private TextField addUpperBoundTextField = new TextField();
-//    @FXML
-//    private TextField addValuesTextField = new TextField();
     @FXML
     private TextField addDomainTextField = new TextField();
 
@@ -111,8 +100,6 @@ public class AdvancedController  {
     private TextField editLowerBoundTextField = new TextField();
     @FXML
     private TextField editUpperBoundTextField = new TextField();
-//    @FXML
-//    private TextField editValuesTextField = new TextField();
     @FXML
     private TextField editDomainTextField = new TextField();
 
@@ -127,7 +114,7 @@ public class AdvancedController  {
     @FXML
     private Label meanLabel = new Label("Mean");
     @FXML
-    private Label SDLabel = new Label("SD");
+    private Label StandardDeviationLabel = new Label("SD");
     @FXML
     private Label domainLabel = new Label("Domain");
     @FXML
@@ -137,8 +124,10 @@ public class AdvancedController  {
 
     private Label quantifierTypeLabel = new Label("Quantifier type");
 
-    private ChoiceBox<String> isAbsoluteChoiceBox = new ChoiceBox<String>();
+    private ChoiceBox<String> isAbsoluteChoiceBox = new ChoiceBox<>();
 
+    private static final String ABSOLUTE = "absolute";
+    private static final String RELATIVE = "relative";
     private static final String CONTINUOUS_DOMAIN = "continuous";
     private static final String DISCRETE_DOMAIN = "discrete";
     private static final String SUMMARIZER = "summarizer";
@@ -156,6 +145,8 @@ public class AdvancedController  {
     private static final String  LENGTH = "length";
     private static final String  WIDTH = "width";
     private static final String  HEIGHT = "height";
+    private static final String STYLE = "-fx-max-width: 70";
+    private static final String POINTS_STYLE = "-fx-max-width: 60";
 
     private Scene previousScene;
 
@@ -192,7 +183,7 @@ public class AdvancedController  {
         currentStage.show();
     }
 
-    public void inititalizeSummarizersAndQuantifiers() {
+    public void inititalizeQualifiersAndQuantifiers() {
 
         int linguisticOffsetY = 10;
 
@@ -202,7 +193,7 @@ public class AdvancedController  {
             attributeLabel.setLayoutX(10);
             attributeLabel.setLayoutY(linguisticOffsetY);
 
-            summarizerLabelsPane.getChildren().add(attributeLabel);
+            qualifierLabelsPane.getChildren().add(attributeLabel);
             linguisticOffsetY += 30;
 
             int i=0;
@@ -214,13 +205,13 @@ public class AdvancedController  {
                 etiquetteLabel.setLayoutX(30);
                 etiquetteLabel.setLayoutY(linguisticOffsetY + i * 25);
 
-                summarizerLabelsPane.getChildren().addAll(etiquetteLabel);
+                qualifierLabelsPane.getChildren().addAll(etiquetteLabel);
 
                 i++;
             }
             linguisticOffsetY += (linguisticVariablesList.size() + 1) * 11;
         }
-        summarizerLabelsPane.setPrefHeight(linguisticOffsetY + 10);
+        qualifierLabelsPane.setPrefHeight(linguisticOffsetY + 10);
 
 
         int quantifierOffsetY = 10;
@@ -242,14 +233,11 @@ public class AdvancedController  {
         //Initialize ChoiceBoxes
         addAttributeTypeChoiceBox.getItems().addAll(SUMMARIZER, QUANTIFIER);
         editAttributeTypeChoiceBox.getItems().addAll(SUMMARIZER, QUANTIFIER);
-        removeAttributeTypeChoiceBox.getItems().addAll(SUMMARIZER, QUANTIFIER);
 
         addAttributeTypeChoiceBox.setOnAction(event -> handleAddChoiceBoxes());
         editAttributeTypeChoiceBox.setOnAction(event -> handleEditChoiceBoxes());
-        removeAttributeTypeChoiceBox.setOnAction(event -> handleRemoveChoiceBoxes());
 
         editAttributeNameChoiceBox.setOnAction(event -> handleEditEtiquetteSelection());
-        removeAttributeNameChoiceBox.setOnAction(event -> handleRemoveEtiquetteSelection());
 
         addFunctionTypeChoiceBox.getItems().addAll(TRAPEZOIDAL, TRIANGULAR, GAUSSIAN);
         editFunctionTypeChoiceBox.getItems().addAll(TRAPEZOIDAL, TRIANGULAR, GAUSSIAN);
@@ -262,36 +250,11 @@ public class AdvancedController  {
     }
 
     public void handleAddChoiceBoxes() {
-//        if (addAttributeTypeChoiceBox.getSelectionModel().getSelectedItem().equals(SUMMARIZER) ||
-//                editAttributeTypeChoiceBox.getSelectionModel().getSelectedItem().equals(SUMMARIZER) ||
-//                removeAttributeTypeChoiceBox.getSelectionModel().getSelectedItem().equals(SUMMARIZER)) {
-//            for (LinguisticVariable<PolicyEntity> linguisticVariable : linguisticVariablesList) {
-//                addAttributeNameChoiceBox.getItems().add(linguisticVariable.getLinguisticVariableName());
-//                editAttributeNameChoiceBox.getItems().add(linguisticVariable.getLinguisticVariableName());
-//                removeAttributeNameChoiceBox.getItems().add(linguisticVariable.getLinguisticVariableName());
-//            }
-//        } else if (addAttributeTypeChoiceBox.getSelectionModel().getSelectedItem().equals(QUANTIFIER) ||
-//                editAttributeTypeChoiceBox.getSelectionModel().getSelectedItem().equals(QUANTIFIER) ||
-//                removeAttributeTypeChoiceBox.getSelectionModel().getSelectedItem().equals(QUANTIFIER)) {
-//            for (Quantifier quantifier : quantifiersList) {
-//                addAttributeNameChoiceBox.getItems().add(quantifier.getLinguisticVariableName());
-//                editAttributeNameChoiceBox.getItems().add(quantifier.getLinguisticVariableName());
-//                removeAttributeNameChoiceBox.getItems().add(quantifier.getLinguisticVariableName());
-//            }
-//        }
-
         addAttributeNameChoiceBox.getItems().clear();
         if (addAttributeTypeChoiceBox.getSelectionModel().getSelectedItem().equals(SUMMARIZER)) {
-//            if (addAttributeNameChoiceBox.isShowing()) {
                 for (LinguisticVariable<PolicyEntity> linguisticVariable : linguisticVariablesList) {
                     addAttributeNameChoiceBox.getItems().add(linguisticVariable.getLinguisticVariableName());
                 }
-//            } else if (!addAttributeNameChoiceBox.isShowing()){
-//                addAnchorPane.getChildren().add(addAttributeNameChoiceBox);
-//                for (LinguisticVariable<PolicyEntity> linguisticVariable : linguisticVariablesList) {
-//                    addAttributeNameChoiceBox.getItems().add(linguisticVariable.getLinguisticVariableName());
-//                }
-//            }
         }
         else if (addAttributeTypeChoiceBox.getSelectionModel().getSelectedItem().equals(QUANTIFIER)) {
             addAnchorPane.getChildren().remove(addAttributeNameChoiceBox);
@@ -299,7 +262,7 @@ public class AdvancedController  {
 
             quantifierTypeLabel.setLayoutX(5);
             quantifierTypeLabel.setLayoutY(105);
-            isAbsoluteChoiceBox.getItems().addAll("absolute", "relative");
+            isAbsoluteChoiceBox.getItems().addAll(ABSOLUTE, RELATIVE);
             isAbsoluteChoiceBox.setLayoutX(115);
             isAbsoluteChoiceBox.setLayoutY(105);
 
@@ -319,21 +282,6 @@ public class AdvancedController  {
             editAnchorPane.getChildren().remove(editAttributeName);
             for (Quantifier quantifier : quantifiersList) {
                 editEtiquetteNameChoiceBox.getItems().add(quantifier.getLabelName());
-            }
-        }
-    }
-
-    public void handleRemoveChoiceBoxes() {
-        removeEtiquetteNameChoiceBox.getItems().clear();
-        if (removeAttributeTypeChoiceBox.getSelectionModel().getSelectedItem().equals(SUMMARIZER)) {
-            for (LinguisticVariable<PolicyEntity> linguisticVariable : linguisticVariablesList) {
-                removeAttributeNameChoiceBox.getItems().add(linguisticVariable.getLinguisticVariableName());
-            }
-        } else if (removeAttributeTypeChoiceBox.getSelectionModel().getSelectedItem().equals(QUANTIFIER)) {
-            removeAnchorPane.getChildren().remove(removeAttributeNameChoiceBox);
-            removeAnchorPane.getChildren().remove(removeAttributeName);
-            for (Quantifier quantifier : quantifiersList) {
-                removeEtiquetteNameChoiceBox.getItems().add(quantifier.getLabelName());
             }
         }
     }
@@ -402,81 +350,11 @@ public class AdvancedController  {
                     editEtiquetteNameChoiceBox.getItems().add(e.getLabelName());
                 }
             }
-            default -> {
-            }
+            default -> throw new UnsupportedOperationException("There is no such linguistic variable");
         }
     }
 
-    public void handleRemoveEtiquetteSelection() {
-        String selectedLinguisticVariable = removeAttributeNameChoiceBox.getValue();
-        removeEtiquetteNameChoiceBox.getItems().clear();
-
-        switch (selectedLinguisticVariable) {
-            case POLICY_TENURE -> {
-                List<LinguisticLabel<PolicyEntity>> etiquettesPT = mockRepository.findLinguisticVariableByName(POLICY_TENURE).getLabels();
-                for (LinguisticLabel<PolicyEntity> e : etiquettesPT)
-                    removeEtiquetteNameChoiceBox.getItems().add(e.getLabelName());
-            }
-            case AGE_OF_CAR -> {
-                List<LinguisticLabel<PolicyEntity>> etiquettesAOC = mockRepository.findLinguisticVariableByName(AGE_OF_CAR).getLabels();
-                for (LinguisticLabel<PolicyEntity> e : etiquettesAOC) {
-                    removeEtiquetteNameChoiceBox.getItems().add(e.getLabelName());
-                }
-            }
-            case AGE_OF_POLICYHOLDER -> {
-                List<LinguisticLabel<PolicyEntity>> etiquettesAOP = mockRepository.findLinguisticVariableByName(AGE_OF_POLICYHOLDER).getLabels();
-                for (LinguisticLabel<PolicyEntity> e : etiquettesAOP) {
-                    removeEtiquetteNameChoiceBox.getItems().add(e.getLabelName());
-                }
-            }
-            case POPULATION_DENSITY -> {
-                List<LinguisticLabel<PolicyEntity>> etiquettesPD = mockRepository.findLinguisticVariableByName(POPULATION_DENSITY).getLabels();
-                for (LinguisticLabel<PolicyEntity> e : etiquettesPD) {
-                    removeEtiquetteNameChoiceBox.getItems().add(e.getLabelName());
-                }
-            }
-            case DISPLACEMENT -> {
-                List<LinguisticLabel<PolicyEntity>> etiquettesD = mockRepository.findLinguisticVariableByName(DISPLACEMENT).getLabels();
-                for (LinguisticLabel<PolicyEntity> e : etiquettesD) {
-                    removeEtiquetteNameChoiceBox.getItems().add(e.getLabelName());
-                }
-            }
-            case TURNING_RADIUS -> {
-                List<LinguisticLabel<PolicyEntity>> etiquettesTR = mockRepository.findLinguisticVariableByName(TURNING_RADIUS).getLabels();
-                for (LinguisticLabel<PolicyEntity> e : etiquettesTR) {
-                    removeEtiquetteNameChoiceBox.getItems().add(e.getLabelName());
-                }
-            }
-            case GROSS_WEIGHT -> {
-                List<LinguisticLabel<PolicyEntity>> etiquettesGW = mockRepository.findLinguisticVariableByName(GROSS_WEIGHT).getLabels();
-                for (LinguisticLabel<PolicyEntity> e : etiquettesGW) {
-                    removeEtiquetteNameChoiceBox.getItems().add(e.getLabelName());
-                }
-            }
-            case LENGTH -> {
-                List<LinguisticLabel<PolicyEntity>> etiquettesL = mockRepository.findLinguisticVariableByName(LENGTH).getLabels();
-                for (LinguisticLabel<PolicyEntity> e : etiquettesL) {
-                    removeEtiquetteNameChoiceBox.getItems().add(e.getLabelName());
-                }
-            }
-            case WIDTH -> {
-                List<LinguisticLabel<PolicyEntity>> etiquettesW = mockRepository.findLinguisticVariableByName(WIDTH).getLabels();
-                for (LinguisticLabel<PolicyEntity> e : etiquettesW) {
-                    removeEtiquetteNameChoiceBox.getItems().add(e.getLabelName());
-                }
-            }
-            case HEIGHT -> {
-                List<LinguisticLabel<PolicyEntity>> etiquettesH = mockRepository.findLinguisticVariableByName(HEIGHT).getLabels();
-                for (LinguisticLabel<PolicyEntity> e : etiquettesH) {
-                    removeEtiquetteNameChoiceBox.getItems().add(e.getLabelName());
-                }
-            }
-            default -> {
-            }
-        }
-    }
-
-    public void addLingusticLabel(ActionEvent event) {
+    public void addLingusticLabel() {
         if (addAttributeTypeChoiceBox.getSelectionModel().getSelectedItem().equals(SUMMARIZER)) {
 
             String variableName = addAttributeNameChoiceBox.getSelectionModel().getSelectedItem();
@@ -499,7 +377,7 @@ public class AdvancedController  {
             String newLabelName = addEtiquetteNameTextField.getText();
             MembershipFunction function = getAddFunction(addFunctionTypeChoiceBox.getSelectionModel().getSelectedItem());
 
-            boolean isAbsolute =  isAbsoluteChoiceBox.getSelectionModel().getSelectedItem().equals("absolute");
+            boolean isAbsolute =  isAbsoluteChoiceBox.getSelectionModel().getSelectedItem().equals(ABSOLUTE);
             Quantifier newQuantifier = new Quantifier(newLabelName, x -> x, function, isAbsolute);
 
             mockRepository.save(newQuantifier);
@@ -507,7 +385,7 @@ public class AdvancedController  {
         }
     }
 
-    public void editLingusticLabel(ActionEvent event) {
+    public void editLingusticLabel() {
         if (editAttributeTypeChoiceBox.getSelectionModel().getSelectedItem().equals(SUMMARIZER)) {
 
             String selectedSummarizer = editAttributeNameChoiceBox.getSelectionModel().getSelectedItem();
@@ -537,29 +415,10 @@ public class AdvancedController  {
 
             MembershipFunction function = getEditFunction(editFunctionTypeChoiceBox.getSelectionModel().getSelectedItem());
 
-            boolean isAbsolute =  isAbsoluteChoiceBox.getSelectionModel().getSelectedItem().equals("absolute");
+            boolean isAbsolute =  isAbsoluteChoiceBox.getSelectionModel().getSelectedItem().equals(ABSOLUTE);
             Quantifier newQuantifier = new Quantifier(selectedQuantifier, x -> x, function, isAbsolute);
 
             mockRepository.save(newQuantifier);
-            stageController.setMockRepository(mockRepository);
-        }
-    }
-
-    public void removeLingusticLabel(ActionEvent event) {
-        if (removeAttributeTypeChoiceBox.getSelectionModel().getSelectedItem().equals(SUMMARIZER)) {
-            String selectedItem = removeEtiquetteNameChoiceBox.getSelectionModel().getSelectedItem().toString();
-            LinguisticVariable<PolicyEntity> linguisticVariable = mockRepository.findLinguisticVariableByName(selectedItem);
-            mockRepository.delete(linguisticVariable);
-
-            LinguisticLabel<PolicyEntity> label = mockRepository.findLinguisticLabelByName(selectedItem);
-            linguisticVariable.deleteLabel(label);
-            stageController.setMockRepository(mockRepository);
-
-        } else if (removeAttributeTypeChoiceBox.getSelectionModel().getSelectedItem().equals(QUANTIFIER)) {
-            String selectedItem = removeEtiquetteNameChoiceBox.getSelectionModel().getSelectedItem().toString();
-            Quantifier quantifier = mockRepository.findQuantifierByName(selectedItem);
-
-            mockRepository.delete(quantifier);
             stageController.setMockRepository(mockRepository);
         }
     }
@@ -583,16 +442,16 @@ public class AdvancedController  {
 
                 addAValueTextField.setLayoutX(25);
                 addAValueTextField.setLayoutY(5);
-                addAValueTextField.setStyle("-fx-max-width: 60");
+                addAValueTextField.setStyle(POINTS_STYLE);
                 addBValueTextField.setLayoutX(25);
                 addBValueTextField.setLayoutY(50);
-                addBValueTextField.setStyle("-fx-max-width: 60");
+                addBValueTextField.setStyle(POINTS_STYLE);
                 addCValueTextField.setLayoutX(125);
                 addCValueTextField.setLayoutY(5);
-                addCValueTextField.setStyle("-fx-max-width: 60");
+                addCValueTextField.setStyle(POINTS_STYLE);
                 addDValueTextField.setLayoutX(125);
                 addDValueTextField.setLayoutY(50);
-                addDValueTextField.setStyle("-fx-max-width: 60");
+                addDValueTextField.setStyle(POINTS_STYLE);
 
                 if (addDomainTypeChoiceBox.getSelectionModel().getSelectedItem().equals(DISCRETE_DOMAIN)) {
                     domainLabel.setLayoutX(220);
@@ -600,7 +459,7 @@ public class AdvancedController  {
 
                     addDomainTextField.setLayoutX(205);
                     addDomainTextField.setLayoutY(30);
-                    addDomainTextField.setStyle("-fx-max-width: 70");
+                    addDomainTextField.setStyle(STYLE);
 
                     addFunctionPointsPane.getChildren().addAll(domainLabel, addDomainTextField);
 
@@ -612,10 +471,10 @@ public class AdvancedController  {
 
                     addLowerBoundTextField.setLayoutX(205);
                     addLowerBoundTextField.setLayoutY(25);
-                    addLowerBoundTextField.setStyle("-fx-max-width: 70");
+                    addLowerBoundTextField.setStyle(STYLE);
                     addUpperBoundTextField.setLayoutX(205);
                     addUpperBoundTextField.setLayoutY(70);
-                    addUpperBoundTextField.setStyle("-fx-max-width: 70");
+                    addUpperBoundTextField.setStyle(STYLE);
 
                     addFunctionPointsPane.getChildren().addAll(lowerDomainLabel, upperDomainLabel, addLowerBoundTextField, addUpperBoundTextField);
                 }
@@ -633,13 +492,13 @@ public class AdvancedController  {
 
                 addAValueTextField.setLayoutX(25);
                 addAValueTextField.setLayoutY(5);
-                addAValueTextField.setStyle("-fx-max-width: 60");
+                addAValueTextField.setStyle(POINTS_STYLE);
                 addBValueTextField.setLayoutX(25);
                 addBValueTextField.setLayoutY(50);
-                addBValueTextField.setStyle("-fx-max-width: 60");
+                addBValueTextField.setStyle(POINTS_STYLE);
                 addCValueTextField.setLayoutX(125);
                 addCValueTextField.setLayoutY(5);
-                addCValueTextField.setStyle("-fx-max-width: 60");
+                addCValueTextField.setStyle(POINTS_STYLE);
 
                 if (addDomainTypeChoiceBox.getSelectionModel().getSelectedItem().equals(DISCRETE_DOMAIN)) {
                     domainLabel.setLayoutX(220);
@@ -647,7 +506,7 @@ public class AdvancedController  {
 
                     addDomainTextField.setLayoutX(205);
                     addDomainTextField.setLayoutY(30);
-                    addDomainTextField.setStyle("-fx-max-width: 70");
+                    addDomainTextField.setStyle(STYLE);
 
                     addFunctionPointsPane.getChildren().addAll(domainLabel, addDomainTextField);
 
@@ -659,10 +518,10 @@ public class AdvancedController  {
 
                     addLowerBoundTextField.setLayoutX(205);
                     addLowerBoundTextField.setLayoutY(25);
-                    addLowerBoundTextField.setStyle("-fx-max-width: 70");
+                    addLowerBoundTextField.setStyle(STYLE);
                     addUpperBoundTextField.setLayoutX(205);
                     addUpperBoundTextField.setLayoutY(70);
-                    addUpperBoundTextField.setStyle("-fx-max-width: 70");
+                    addUpperBoundTextField.setStyle(STYLE);
 
                     addFunctionPointsPane.getChildren().addAll(lowerDomainLabel, upperDomainLabel, addLowerBoundTextField, addUpperBoundTextField);
                 }
@@ -673,15 +532,15 @@ public class AdvancedController  {
 
                 meanLabel.setLayoutX(5);
                 meanLabel.setLayoutY(5);
-                SDLabel.setLayoutX(5);
-                SDLabel.setLayoutY(50);
+                StandardDeviationLabel.setLayoutX(5);
+                StandardDeviationLabel.setLayoutY(50);
 
                 addAValueTextField.setLayoutX(40);
                 addAValueTextField.setLayoutY(5);
-                addAValueTextField.setStyle("-fx-max-width: 60");
+                addAValueTextField.setStyle(POINTS_STYLE);
                 addBValueTextField.setLayoutX(40);
                 addBValueTextField.setLayoutY(50);
-                addBValueTextField.setStyle("-fx-max-width: 60");
+                addBValueTextField.setStyle(POINTS_STYLE);
 
                 if (addDomainTypeChoiceBox.getSelectionModel().getSelectedItem().equals(DISCRETE_DOMAIN)) {
                     domainLabel.setLayoutX(220);
@@ -689,7 +548,7 @@ public class AdvancedController  {
 
                     addDomainTextField.setLayoutX(205);
                     addDomainTextField.setLayoutY(30);
-                    addDomainTextField.setStyle("-fx-max-width: 70");
+                    addDomainTextField.setStyle(STYLE);
 
                     addFunctionPointsPane.getChildren().addAll(domainLabel, addDomainTextField);
 
@@ -701,16 +560,17 @@ public class AdvancedController  {
 
                     addLowerBoundTextField.setLayoutX(205);
                     addLowerBoundTextField.setLayoutY(25);
-                    addLowerBoundTextField.setStyle("-fx-max-width: 70");
+                    addLowerBoundTextField.setStyle(STYLE);
                     addUpperBoundTextField.setLayoutX(205);
                     addUpperBoundTextField.setLayoutY(70);
-                    addUpperBoundTextField.setStyle("-fx-max-width: 70");
+                    addUpperBoundTextField.setStyle(STYLE);
 
                     addFunctionPointsPane.getChildren().addAll(lowerDomainLabel, upperDomainLabel, addLowerBoundTextField, addUpperBoundTextField);
                 }
 
-                addFunctionPointsPane.getChildren().addAll(meanLabel, SDLabel, addAValueTextField, addBValueTextField);
+                addFunctionPointsPane.getChildren().addAll(meanLabel, StandardDeviationLabel, addAValueTextField, addBValueTextField);
             }
+            default -> throw new UnsupportedOperationException("There is no such function");
         }
     }
 
@@ -733,16 +593,16 @@ public class AdvancedController  {
 
                 editAValueTextField.setLayoutX(25);
                 editAValueTextField.setLayoutY(5);
-                editAValueTextField.setStyle("-fx-max-width: 60");
+                editAValueTextField.setStyle(POINTS_STYLE);
                 editBValueTextField.setLayoutX(25);
                 editBValueTextField.setLayoutY(50);
-                editBValueTextField.setStyle("-fx-max-width: 60");
+                editBValueTextField.setStyle(POINTS_STYLE);
                 editCValueTextField.setLayoutX(125);
                 editCValueTextField.setLayoutY(5);
-                editCValueTextField.setStyle("-fx-max-width: 60");
+                editCValueTextField.setStyle(POINTS_STYLE);
                 editDValueTextField.setLayoutX(125);
                 editDValueTextField.setLayoutY(50);
-                editDValueTextField.setStyle("-fx-max-width: 60");
+                editDValueTextField.setStyle(POINTS_STYLE);
 
                 if (editDomainTypeChoiceBox.getSelectionModel().getSelectedItem().equals(DISCRETE_DOMAIN)) {
                     domainLabel.setLayoutX(220);
@@ -750,7 +610,7 @@ public class AdvancedController  {
 
                     editDomainTextField.setLayoutX(205);
                     editDomainTextField.setLayoutY(30);
-                    editDomainTextField.setStyle("-fx-max-width: 70");
+                    editDomainTextField.setStyle(STYLE);
 
                     editFunctionPointsPane.getChildren().addAll(domainLabel, editDomainTextField);
 
@@ -762,10 +622,10 @@ public class AdvancedController  {
 
                     editLowerBoundTextField.setLayoutX(205);
                     editLowerBoundTextField.setLayoutY(25);
-                    editLowerBoundTextField.setStyle("-fx-max-width: 70");
+                    editLowerBoundTextField.setStyle(STYLE);
                     editUpperBoundTextField.setLayoutX(205);
                     editUpperBoundTextField.setLayoutY(70);
-                    editUpperBoundTextField.setStyle("-fx-max-width: 70");
+                    editUpperBoundTextField.setStyle(STYLE);
 
                     editFunctionPointsPane.getChildren().addAll(lowerDomainLabel, upperDomainLabel, editLowerBoundTextField, editUpperBoundTextField);
                 }
@@ -783,13 +643,13 @@ public class AdvancedController  {
 
                 editAValueTextField.setLayoutX(25);
                 editAValueTextField.setLayoutY(5);
-                editAValueTextField.setStyle("-fx-max-width: 60");
+                editAValueTextField.setStyle(POINTS_STYLE);
                 editBValueTextField.setLayoutX(25);
                 editBValueTextField.setLayoutY(50);
-                editBValueTextField.setStyle("-fx-max-width: 60");
+                editBValueTextField.setStyle(POINTS_STYLE);
                 editCValueTextField.setLayoutX(125);
                 editCValueTextField.setLayoutY(5);
-                editCValueTextField.setStyle("-fx-max-width: 60");
+                editCValueTextField.setStyle(POINTS_STYLE);
 
                 if (editDomainTypeChoiceBox.getSelectionModel().getSelectedItem().equals(DISCRETE_DOMAIN)) {
                     domainLabel.setLayoutX(220);
@@ -797,7 +657,7 @@ public class AdvancedController  {
 
                     editDomainTextField.setLayoutX(205);
                     editDomainTextField.setLayoutY(30);
-                    editDomainTextField.setStyle("-fx-max-width: 70");
+                    editDomainTextField.setStyle(STYLE);
 
                     editFunctionPointsPane.getChildren().addAll(domainLabel, editDomainTextField);
 
@@ -809,10 +669,10 @@ public class AdvancedController  {
 
                     editLowerBoundTextField.setLayoutX(205);
                     editLowerBoundTextField.setLayoutY(25);
-                    editLowerBoundTextField.setStyle("-fx-max-width: 70");
+                    editLowerBoundTextField.setStyle(STYLE);
                     editUpperBoundTextField.setLayoutX(205);
                     editUpperBoundTextField.setLayoutY(70);
-                    editUpperBoundTextField.setStyle("-fx-max-width: 70");
+                    editUpperBoundTextField.setStyle(STYLE);
 
                     editFunctionPointsPane.getChildren().addAll(lowerDomainLabel, upperDomainLabel, editLowerBoundTextField, editUpperBoundTextField);
                 }
@@ -823,15 +683,15 @@ public class AdvancedController  {
 
                 meanLabel.setLayoutX(5);
                 meanLabel.setLayoutY(5);
-                SDLabel.setLayoutX(5);
-                SDLabel.setLayoutY(50);
+                StandardDeviationLabel.setLayoutX(5);
+                StandardDeviationLabel.setLayoutY(50);
 
                 editAValueTextField.setLayoutX(40);
                 editAValueTextField.setLayoutY(5);
-                editAValueTextField.setStyle("-fx-max-width: 60");
+                editAValueTextField.setStyle(POINTS_STYLE);
                 editBValueTextField.setLayoutX(40);
                 editBValueTextField.setLayoutY(50);
-                editBValueTextField.setStyle("-fx-max-width: 60");
+                editBValueTextField.setStyle(POINTS_STYLE);
 
                 if (editDomainTypeChoiceBox.getSelectionModel().getSelectedItem().equals(DISCRETE_DOMAIN)) {
                     domainLabel.setLayoutX(220);
@@ -839,7 +699,7 @@ public class AdvancedController  {
 
                     editDomainTextField.setLayoutX(205);
                     editDomainTextField.setLayoutY(30);
-                    editDomainTextField.setStyle("-fx-max-width: 70");
+                    editDomainTextField.setStyle(STYLE);
 
                     editFunctionPointsPane.getChildren().addAll(domainLabel, editDomainTextField);
 
@@ -851,16 +711,17 @@ public class AdvancedController  {
 
                     editLowerBoundTextField.setLayoutX(205);
                     editLowerBoundTextField.setLayoutY(25);
-                    editLowerBoundTextField.setStyle("-fx-max-width: 70");
+                    editLowerBoundTextField.setStyle(STYLE);
                     editUpperBoundTextField.setLayoutX(205);
                     editUpperBoundTextField.setLayoutY(70);
-                    editUpperBoundTextField.setStyle("-fx-max-width: 70");
+                    editUpperBoundTextField.setStyle(STYLE);
 
                     editFunctionPointsPane.getChildren().addAll(lowerDomainLabel, upperDomainLabel, editLowerBoundTextField, editUpperBoundTextField);
                 }
 
-                editFunctionPointsPane.getChildren().addAll(meanLabel, SDLabel, editAValueTextField, editBValueTextField);
+                editFunctionPointsPane.getChildren().addAll(meanLabel, StandardDeviationLabel, editAValueTextField, editBValueTextField);
             }
+            default -> throw new UnsupportedOperationException("There is no such function");
         }
     }
 
