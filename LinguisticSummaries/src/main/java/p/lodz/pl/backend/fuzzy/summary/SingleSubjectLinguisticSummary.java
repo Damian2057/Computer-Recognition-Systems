@@ -212,9 +212,9 @@ public class SingleSubjectLinguisticSummary<R> extends AbstractLinguisticSummary
      * T4
      */
     private double degreeOfAppropriateness(List<FuzzySet<R>> qualifiers, List<FuzzySet<R>> summarizers) {
-        if (qualifiers.isEmpty()) {
-            return 0.0;
-        }
+//        if (qualifiers.isEmpty()) {
+//            return 0.0;
+//        }
         return Math.abs(summarizers.stream().mapToDouble(x -> 1.0 * x.support(policies).size() / policies.size())
                 .reduce(1.0, (a, b) -> a * b) - degreeOfCovering(qualifiers, summarizers));
     }
@@ -263,7 +263,7 @@ public class SingleSubjectLinguisticSummary<R> extends AbstractLinguisticSummary
             return 0.0;
         }
         return 1.0 - Math.pow(qualifier.stream()
-                .mapToDouble(FuzzySet::support)
+                .mapToDouble(x -> x.supportCardinality())
                 .reduce(1.0, (a, b) -> a * b) , 1.0 / qualifier.size());
     }
 
