@@ -23,4 +23,8 @@ public class LinguisticVariable<R> {
     public void addLabel(LinguisticLabel<R> label) {
         labels.add(label);
     }
+
+    public void deleteLabel(LinguisticLabel<R> label) {
+        labels.remove(label);
+    }
 }

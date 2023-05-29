@@ -93,6 +93,8 @@ public class StageController implements Initializable {
 
     @SneakyThrows
     public void initializeView(MockRepository mockRepository) {
+        selectedQuantifiers.clear();
+        selectedSummarizers.clear();
         List<LinguisticVariable<PolicyEntity>> linguisticVariablesList = mockRepository.findAllLinguisticVariables();
         List<Quantifier> quantifiersList = mockRepository.findAllQuantifiers();
 
