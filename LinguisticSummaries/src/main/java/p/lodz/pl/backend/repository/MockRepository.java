@@ -1,6 +1,5 @@
 package p.lodz.pl.backend.repository;
 
-import p.lodz.pl.backend.fuzzy.function.MembershipFunction;
 import p.lodz.pl.backend.fuzzy.function.TrapezoidalFunction;
 import p.lodz.pl.backend.fuzzy.function.TriangularFunction;
 import p.lodz.pl.backend.fuzzy.function.domain.ContinuousDomain;
@@ -82,19 +81,7 @@ public class MockRepository {
                 .orElse(null);
     }
 
-    public void deleteByLabelName(String labelName) {
-        var linguisticLabel = findLinguisticLabelByNames(labelName);
-        linguisticLabel.getLabels().removeIf(ll -> ll.getLabelName().equals(labelName));
-        linguisticVariables.remove(linguisticLabel);
-    }
 
-    public LinguisticVariable<PolicyEntity> findLinguisticLabelByNames(String labelName) {
-        return linguisticVariables.stream()
-                .filter(lv -> lv.getLabels().stream()
-                        .anyMatch(ll -> ll.getLabelName().equals(labelName)))
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException("Linguistic variable not found"));
-    }
     public LinguisticLabel<PolicyEntity> findLinguisticLabelByName(String name) {
         return linguisticVariables.stream()
                 .flatMap(linguisticVariable -> linguisticVariable.getLabels().stream())
@@ -108,29 +95,29 @@ public class MockRepository {
 
         Domain domain = new ContinuousDomain(0, 1);
         quantifierList.add(new Quantifier("Almost none", x -> x,
-                new TrapezoidalFunction(domain, 0, 0, 0.12, 0.2), false));
+                new TriangularFunction(domain, 0, 0, 0.2), false));
         quantifierList.add(new Quantifier("Some", x -> x,
-                new TrapezoidalFunction(domain, 0.16, 0.2, 0.4, 0.44), false));
+                new TrapezoidalFunction(domain, 0, 0.12, 0.28, 0.48), false));
         quantifierList.add(new Quantifier("About half", x -> x,
-                new TrapezoidalFunction(domain, 0.4, 0.44, 0.6, 0.64), false));
+                new TrapezoidalFunction(domain, 0.24, 0.44, 0.56, 0.76), false));
         quantifierList.add(new Quantifier("Many", x -> x,
-                new TrapezoidalFunction(domain, 0.6, 0.64, 0.88, 0.92), false));
+                new TrapezoidalFunction(domain, 0.56, 0.76, 0.84, 0.96), false));
         quantifierList.add(new Quantifier("Almost all", x -> x,
-                new TrapezoidalFunction(domain, 0.88, 0.92, 1.0, 1.0), false));
+                new TrapezoidalFunction(domain, 0.76, 0.96, 1.0, 1.0), false));
 
         Domain domain2 = new ContinuousDomain(0, 39063);
         quantifierList.add(new Quantifier("Less than 9000", x -> x,
-                new TrapezoidalFunction(domain2, 0, 0, 4000, 9000), true));
+                new TrapezoidalFunction(domain2, 0, 0, 8000, 9000), true));
         quantifierList.add(new Quantifier("About 1/4", x -> x,
-                new TriangularFunction(domain2, 5000, 10000, 15000), true));
+                new TrapezoidalFunction(domain2, 5000, 10000, 13000, 18000), true));
         quantifierList.add(new Quantifier("About half", x -> x,
-                new TrapezoidalFunction(domain2, 14000, 19000, 20000, 22000), true));
+                new TrapezoidalFunction(domain2, 12000, 17000, 20000, 23000), true));
         quantifierList.add(new Quantifier("Over 20000", x -> x,
-                new TriangularFunction(domain2, 20000, 25000, 27000), true));
+                new TrapezoidalFunction(domain2, 19000, 22000, 25000, 28000), true));
         quantifierList.add(new Quantifier("About 3/4", x -> x,
-                new TrapezoidalFunction(domain2, 26000, 28000, 30000, 35000), true));
+                new TrapezoidalFunction(domain2, 25000, 27000, 29000, 34000), true));
         quantifierList.add(new Quantifier("More than 3/4", x -> x,
-                new TrapezoidalFunction(domain2, 34000, 36000, 39064, 39063), true));
+                new TrapezoidalFunction(domain2, 30000, 31000, 39064, 39064), true));
 
         return quantifierList;
     }
