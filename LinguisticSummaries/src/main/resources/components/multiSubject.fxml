@@ -40,12 +40,10 @@
          </children>
       </Pane>
       <ChoiceBox fx:id="firstSubjectChoiceBox" layoutX="76.0" layoutY="153.0" prefHeight="25.0" prefWidth="200.0" />
-      <ChoiceBox fx:id="secondSubjectChoiceBox" layoutX="75.0" layoutY="277.0" prefWidth="200.0" />
       <Label layoutX="143.0" layoutY="119.0" text="First subject" textFill="#006d77">
          <font>
             <Font name="System Bold" size="12.0" />
          </font></Label>
-      <Label layoutX="135.0" layoutY="242.0" style="-fx-font-weight: bold;" text="Second subject" textFill="#006d77" />
       <Pane layoutX="1032.0" layoutY="93.0" prefHeight="235.0" prefWidth="170.0" style="-fx-background-color: #83c5be; -fx-background-radius: 15;">
          <children>
             <Button fx:id="advancedSettingsButton" layoutX="29.0" layoutY="56.0" mnemonicParsing="false" onAction="#goToAdvancedSettings" text="Advanced settings" />

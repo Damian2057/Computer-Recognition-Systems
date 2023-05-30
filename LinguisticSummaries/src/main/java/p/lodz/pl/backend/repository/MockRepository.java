@@ -25,12 +25,24 @@ public class MockRepository {
     private static final String  WIDTH = "width";
     private static final String  HEIGHT = "height";
 
+    private static final String POLICY_TENURE_TO_3_MONTHS = "policy tenure to 3 months";
+    private static final String  POLICY_TENURE_HALF_YEAR = "policy tenure of around half of the year";
+    private static final String POLICY_TENURE_4th_QUARTER_YEAR = "policy tenure of 4th quarter of the year";
+    private static final String POLICY_TENURE_OVER_YEAR = "policy tenure of over a year";
+    private static final String AGE_OF_CAR_NEW = "new car";
+    private static final String AGE_OF_CAR_USED = "used car";
+    private static final String AGE_OF_CAR_OLD = "old car";
+    private static final String AGE_OF_CAR_VINTAGE = "vintage car";
+
+
     private final List<LinguisticVariable<PolicyEntity>> linguisticVariables;
     private final List<Quantifier> quantifiers;
+    private final List<String> subjects;
 
     public MockRepository() {
         this.linguisticVariables = getLinguisticVariables();
         this.quantifiers = getQuantifiers();
+        this.subjects = getSubjects();
     }
 
     public List<LinguisticVariable<PolicyEntity>> findAllLinguisticVariables() {
@@ -39,6 +51,10 @@ public class MockRepository {
 
     public List<Quantifier> findAllQuantifiers() {
         return quantifiers;
+    }
+
+    public List<String> findAllSubjects() {
+        return subjects;
     }
 
     public void save(LinguisticVariable<PolicyEntity> linguisticVariable) {
@@ -88,6 +104,22 @@ public class MockRepository {
                 .filter(label -> label.getLabelName().equals(name))
                 .findFirst()
                 .orElse(null);
+    }
+
+    private List<String> getSubjects() {
+        List<String> subjectList = new ArrayList<>();
+
+        subjectList.add(POLICY_TENURE_TO_3_MONTHS);
+        subjectList.add(POLICY_TENURE_HALF_YEAR);
+        subjectList.add(POLICY_TENURE_4th_QUARTER_YEAR);
+        subjectList.add(POLICY_TENURE_OVER_YEAR);
+        subjectList.add(AGE_OF_CAR_NEW);
+        subjectList.add(AGE_OF_CAR_USED);
+        subjectList.add(AGE_OF_CAR_OLD);
+        subjectList.add(AGE_OF_CAR_VINTAGE);
+
+
+        return subjectList;
     }
 
     private List<Quantifier> getQuantifiers() {
