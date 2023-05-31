@@ -46,8 +46,6 @@ public class MultiSubjectController {
     @FXML
     private ChoiceBox<String> firstSubjectChoiceBox;
     @FXML
-    private ChoiceBox<String> secondSubjectChoiceBox;
-    @FXML
     private Button advancedSettingsButton;
     @FXML
     private Button singleSubjectButton;
