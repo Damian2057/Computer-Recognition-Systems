@@ -2,7 +2,6 @@ package p.lodz.pl.backend.fuzzy.summary;
 
 import p.lodz.pl.backend.fuzzy.linguistic.LinguisticLabel;
 import p.lodz.pl.backend.fuzzy.quantifier.Quantifier;
-import p.lodz.pl.backend.fuzzy.set.FuzzySet;
 import p.lodz.pl.backend.fuzzy.util.Combiner;
 import p.lodz.pl.backend.fuzzy.util.Pair;
 
