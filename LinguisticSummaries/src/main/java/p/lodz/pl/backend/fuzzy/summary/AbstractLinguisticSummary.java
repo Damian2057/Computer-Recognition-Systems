@@ -11,6 +11,9 @@ public abstract class AbstractLinguisticSummary {
     protected static final String HAVE = " have ";
     protected static final String THAT = " that are ";
     protected static final String ALSO = " are also ";
+    protected static final String COMPARED = " compared to ";
+    protected static final String THERE = "There are more ";
+    protected static final String THAN = " than ";
     protected final Quantifier quantifier;
 
     protected AbstractLinguisticSummary(Quantifier quantifier) {
