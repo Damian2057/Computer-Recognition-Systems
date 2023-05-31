@@ -27,6 +27,7 @@ import p.lodz.pl.backend.repository.MockRepository;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Predicate;
@@ -121,8 +122,7 @@ public class MultiSubjectController {
     public void generateMultiSubjectSummaries() {
         formColumn.setCellValueFactory(cellData -> Bindings.createObjectBinding(() -> cellData.getValue().form()));
         summaryColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().summary()));
-        degreeOfTruthColumn.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().quality().get(1)).asObject());
-
+//        degreeOfTruthColumn.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().quality().get(0)).asObject());
         summaryTableView.getItems().clear();
 
         String selectedSubject = firstSubjectChoiceBox.getSelectionModel().getSelectedItem();
@@ -141,9 +141,9 @@ public class MultiSubjectController {
 
             List<Summary> summaries = linguisticSummary.generateSummary();
             for (Summary s : summaries) {
-                String result = s.summary() + " " + s.quality().get(0);
+                String result = s.summary() + " " + s.quality();
                 System.out.println(result);
-                Summary summary = new Summary(s.form(), s.summary(), s.quality());
+                Summary summary = new Summary(s.form(), s.summary(), Collections.singletonList(0.0));
                 summaryTableView.getItems().add(summary);
             }
             savedSummaries = summaries;
