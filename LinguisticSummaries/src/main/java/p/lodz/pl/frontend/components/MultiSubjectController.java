@@ -17,6 +17,8 @@ import p.lodz.pl.backend.fuzzy.linguistic.LinguisticVariable;
 import p.lodz.pl.backend.fuzzy.quantifier.Quantifier;
 import p.lodz.pl.backend.fuzzy.summary.MultiSubjectLinguisticSummary;
 import p.lodz.pl.backend.fuzzy.summary.Summary;
+import p.lodz.pl.backend.fuzzy.util.Pair;
+import p.lodz.pl.backend.fuzzy.util.SubjectExtractor;
 import p.lodz.pl.backend.model.PolicyEntity;
 import p.lodz.pl.backend.repository.DBConnection;
 import p.lodz.pl.backend.repository.Dao;
@@ -26,6 +28,7 @@ import p.lodz.pl.backend.repository.MockRepository;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 public class MultiSubjectController {
     @FXML
@@ -123,11 +126,19 @@ public class MultiSubjectController {
 
         summaryTableView.getItems().clear();
 
+        String selectedSubject = "policyholders who are young";
+
+        Pair<List<PolicyEntity>, List<PolicyEntity>> pair =
+                SubjectExtractor.extract(dao.getPolicies(), getPredicateBySubject(selectedSubject));
+
         for (int i=0; i< allQuantifiers.size(); i++) {
-            MultiSubjectLinguisticSummary<PolicyEntity> linguisticSummary = new MultiSubjectLinguisticSummary<>(allQuantifiers.get(i),
+            MultiSubjectLinguisticSummary<PolicyEntity> linguisticSummary
+                    = new MultiSubjectLinguisticSummary<>(allQuantifiers.get(i),
                     selectedQualifiers,
-                    "cars", "policyholders",
-                    dao.getPolicies());
+                    "cars",
+                    "policyholders",
+                    pair.getFirst(),
+                    pair.getSecond());
 
             List<Summary> summaries = linguisticSummary.generateSummary();
             for (Summary s : summaries) {
@@ -138,6 +149,16 @@ public class MultiSubjectController {
             }
             savedSummaries = summaries;
         }
+    }
+
+    private Predicate<PolicyEntity> getPredicateBySubject(String subject) {
+        String name = "";
+        if ("policyholders who are young".equals(subject)) {
+            name = "young adult";
+        }
+        LinguisticLabel<PolicyEntity> filter = mockRepository.findLinguisticLabelByName(name);
+
+        return p -> filter.getMemberShip(p) > 0.0;
     }
 
     public void goToAdvancedSettings(ActionEvent event) {
