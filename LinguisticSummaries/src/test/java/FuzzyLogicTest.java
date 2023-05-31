@@ -103,8 +103,8 @@ public class FuzzyLogicTest {
         MultiSubjectLinguisticSummary<PolicyEntity> linguisticSummary =
                 new MultiSubjectLinguisticSummary<>(quantifier,
                         labels,
-                        "test1",
-                        "test",
+                        "policies for a hatchback car",
+                        "rest",
                         pair.getFirst(),
                         pair.getSecond());
 
@@ -115,7 +115,6 @@ public class FuzzyLogicTest {
             System.out.println(result);
         }
 
-        Assert.assertEquals(summaries.size(), 19);
+        Assert.assertEquals(summaries.size(), 48);
     }
-
 }
