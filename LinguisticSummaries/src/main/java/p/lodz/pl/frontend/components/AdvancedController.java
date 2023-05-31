@@ -130,7 +130,7 @@ public class AdvancedController  {
     private static final String RELATIVE = "relative";
     private static final String CONTINUOUS_DOMAIN = "continuous";
     private static final String DISCRETE_DOMAIN = "discrete";
-    private static final String SUMMARIZER = "summarizer";
+    private static final String QUALIFIER = "qualifier";
     private static final String QUANTIFIER = "quantifier";
     private static final String TRAPEZOIDAL = "trapezoidal";
     private static final String TRIANGULAR = "triangular";
@@ -231,8 +231,8 @@ public class AdvancedController  {
         quantifierLabelsPane.setPrefHeight((quantifierOffsetY) * 2 + 30);
 
         //Initialize ChoiceBoxes
-        addAttributeTypeChoiceBox.getItems().addAll(SUMMARIZER, QUANTIFIER);
-        editAttributeTypeChoiceBox.getItems().addAll(SUMMARIZER, QUANTIFIER);
+        addAttributeTypeChoiceBox.getItems().addAll(QUALIFIER, QUANTIFIER);
+        editAttributeTypeChoiceBox.getItems().addAll(QUALIFIER, QUANTIFIER);
 
         addAttributeTypeChoiceBox.setOnAction(event -> handleAddChoiceBoxes());
         editAttributeTypeChoiceBox.setOnAction(event -> handleEditChoiceBoxes());
@@ -251,7 +251,7 @@ public class AdvancedController  {
 
     public void handleAddChoiceBoxes() {
         addAttributeNameChoiceBox.getItems().clear();
-        if (addAttributeTypeChoiceBox.getSelectionModel().getSelectedItem().equals(SUMMARIZER)) {
+        if (addAttributeTypeChoiceBox.getSelectionModel().getSelectedItem().equals(QUALIFIER)) {
                 for (LinguisticVariable<PolicyEntity> linguisticVariable : linguisticVariablesList) {
                     addAttributeNameChoiceBox.getItems().add(linguisticVariable.getLinguisticVariableName());
                 }
@@ -273,7 +273,7 @@ public class AdvancedController  {
 
     public void handleEditChoiceBoxes() {
         editEtiquetteNameChoiceBox.getItems().clear();
-        if (editAttributeTypeChoiceBox.getSelectionModel().getSelectedItem().equals(SUMMARIZER)) {
+        if (editAttributeTypeChoiceBox.getSelectionModel().getSelectedItem().equals(QUALIFIER)) {
             for (LinguisticVariable<PolicyEntity> linguisticVariable : linguisticVariablesList) {
                 editAttributeNameChoiceBox.getItems().add(linguisticVariable.getLinguisticVariableName());
             }
@@ -355,7 +355,7 @@ public class AdvancedController  {
     }
 
     public void addLingusticLabel() {
-        if (addAttributeTypeChoiceBox.getSelectionModel().getSelectedItem().equals(SUMMARIZER)) {
+        if (addAttributeTypeChoiceBox.getSelectionModel().getSelectedItem().equals(QUALIFIER)) {
 
             String variableName = addAttributeNameChoiceBox.getSelectionModel().getSelectedItem();
             LinguisticVariable<PolicyEntity> variableByName = mockRepository.findLinguisticVariableByName(variableName);
@@ -386,11 +386,11 @@ public class AdvancedController  {
     }
 
     public void editLingusticLabel() {
-        if (editAttributeTypeChoiceBox.getSelectionModel().getSelectedItem().equals(SUMMARIZER)) {
+        if (editAttributeTypeChoiceBox.getSelectionModel().getSelectedItem().equals(QUALIFIER)) {
 
-            String selectedSummarizer = editAttributeNameChoiceBox.getSelectionModel().getSelectedItem();
+            String selectedQualifier = editAttributeNameChoiceBox.getSelectionModel().getSelectedItem();
             String selectedEtiquette = editEtiquetteNameChoiceBox.getSelectionModel().getSelectedItem();
-            LinguisticVariable<PolicyEntity> linguisticVariable = mockRepository.findLinguisticVariableByName(selectedSummarizer);
+            LinguisticVariable<PolicyEntity> linguisticVariable = mockRepository.findLinguisticVariableByName(selectedQualifier);
 
             mockRepository.delete(linguisticVariable);
             LinguisticLabel<PolicyEntity> linguisticLabel = mockRepository.findLinguisticLabelByName(selectedEtiquette);
@@ -398,7 +398,7 @@ public class AdvancedController  {
 
             MembershipFunction function = getEditFunction(editFunctionTypeChoiceBox.getSelectionModel().getSelectedItem());
 
-            LinguisticLabel<PolicyEntity> label = new LinguisticLabel<>(selectedSummarizer,
+            LinguisticLabel<PolicyEntity> label = new LinguisticLabel<>(selectedQualifier,
                     selectedEtiquette,
                     linguisticVariable.getLabels().get(0).getExtractor(),
                     function);
