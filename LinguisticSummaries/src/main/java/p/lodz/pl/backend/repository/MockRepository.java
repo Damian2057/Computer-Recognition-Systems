@@ -33,7 +33,47 @@ public class MockRepository {
     private static final String AGE_OF_CAR_USED = "used car";
     private static final String AGE_OF_CAR_OLD = "old car";
     private static final String AGE_OF_CAR_VINTAGE = "vintage car";
+    private static final String AGE_OF_POLICYHOLDER_YOUNG = "young adult policyholder";
+    private static final String AGE_OF_POLICYHOLDER_ADULT = "adult policyholder";
+    private static final String AGE_OF_POLICYHOLDER_MEDIUM = "medium aged policyholder";
+    private static final String AGE_OF_POLICYHOLDER_OLD = "old policyholder";
+    private static final String POPULATION_DENSITY_RURAL = "population density of rural area";
+    private static final String POPULATION_DENSITY_SUBURBIA = "population density of suburbia";
+    private static final String POPULATION_DENSITY_CITY = "population density of a city";
+    private static final String POPULATION_DENSITY_BIG_CITY = "population density of a big city";
+    private static final String POPULATION_DENSITY_METROPOLIS = "population density of a metropolis";
+    private static final String ENGINE_DISPLACEMENT_LESS_900 = "engine displacement less than 900";
+    private static final String ENGINE_DISPLACEMENT_FROM_950 = "engine displacement from 950 to 1100";
+    private static final String ENGINE_DISPLACEMENT_ABOUT_1200 = "engine displacement of about 1200";
+    private static final String ENGINE_DISPLACEMENT_MORE_1300 = "engine displacement more than 1300";
+    private static final String GROSS_WEIGHT_LESS_1150 = "gross weight less than 1150 kg";
+    private static final String GROSS_WEIGHT_UPTO_1300 = "gross weight up to 1300 kg";
+    private static final String GROSS_WEIGHT_AROUND_1475 = "gross weight around 1475 kg";
+    private static final String GROSS_WEIGHT_MORE_1600 = "gross weight more than 1600 kg";
+    private static final String TURNING_RADIUS_VERY_SMALL = "very small turning radius";
+    private static final String TURNING_RADIUS_SMALL = "small turning radius";
+    private static final String TURNING_RADIUS_AVERAGE = "average turning radius";
+    private static final String TURNING_RADIUS_BIG = "big turning radius";
+    private static final String LENGTH_SMALL = "small car length";
+    private static final String LENGTH_HATCHBACK = "hatchback length";
+    private static final String LENGTH_SUV = "small suv length";
+    private static final String LENGTH_COMBI = "combi length";
+    private static final String WIDTH_CITY = "city car width";
+    private static final String WIDTH_COMPACT = "compact car width";
+    private static final String WIDTH_FAMILY = "family car width";
+    private static final String WIDTH_PICKUP = "pick-up car width";
+    private static final String HEIGHT_SPORTY = "sporty height";
+    private static final String HEIGHT_CONVERTIBLE = "convertible height";
+    private static final String HEIGHT_CLASSIC = "classic height";
+    private static final String HEIGHT_CROSSOVER = "crossover height";
 
+
+    private static final String SUBJECT1 = "cars with sporty height";
+    private static final String SUBJECT2 = "cars with around half of the year policy tenure";
+    private static final String SUBJECT3 = "cars with medium aged policyholders";
+    private static final String SUBJECT4 = "policyholders with combi length cars";
+    private static final String SUBJECT5 = "policyholders that have to 3 months policy tenure";
+    private static final String SUBJECT6 = "family car width cars that have adult policyholders";
 
     private final List<LinguisticVariable<PolicyEntity>> linguisticVariables;
     private final List<Quantifier> quantifiers;
