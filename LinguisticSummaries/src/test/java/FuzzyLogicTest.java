@@ -6,10 +6,13 @@ import p.lodz.pl.backend.fuzzy.linguistic.LinguisticLabel;
 import p.lodz.pl.backend.fuzzy.linguistic.LinguisticVariable;
 import p.lodz.pl.backend.fuzzy.quantifier.Quantifier;
 import p.lodz.pl.backend.fuzzy.set.FuzzySet;
+import p.lodz.pl.backend.fuzzy.summary.MultiSubjectLinguisticSummary;
 import p.lodz.pl.backend.fuzzy.util.Combiner;
 import p.lodz.pl.backend.fuzzy.summary.SingleSubjectLinguisticSummary;
 import p.lodz.pl.backend.fuzzy.summary.Summary;
 import p.lodz.pl.backend.fuzzy.util.Operation;
+import p.lodz.pl.backend.fuzzy.util.Pair;
+import p.lodz.pl.backend.fuzzy.util.SubjectExtractor;
 import p.lodz.pl.backend.model.PolicyEntity;
 import p.lodz.pl.backend.repository.DBConnection;
 import p.lodz.pl.backend.repository.Dao;
@@ -43,7 +46,7 @@ public class FuzzyLogicTest {
     }
 
     @Test
-    public void summaryTest() {
+    public void oneSubjectSummaryTest() {
         MockRepository mockRepository = new MockRepository();
         Dao dao = new DBConnection();
 
@@ -64,6 +67,47 @@ public class FuzzyLogicTest {
                 "car",
                 dao.getPolicies(),
                 weights);
+        List<Summary> summaries = linguisticSummary.generateSummary();
+
+        for (Summary s : summaries) {
+            String result = s.form() + " " + s.summary() + " " + s.quality();
+            System.out.println(result);
+        }
+
+        Assert.assertEquals(summaries.size(), 19);
+    }
+
+    @Test
+    public void multiSubjectSummaryTest() {
+        MockRepository mockRepository = new MockRepository();
+        Dao dao = new DBConnection();
+        List<PolicyEntity> policyEntities = dao.getPolicies();
+
+        //Filter
+        LinguisticLabel<PolicyEntity> filter = mockRepository
+                .findLinguisticLabelByName("hatchback");
+
+        //Quantifier and labales
+        Quantifier quantifier = mockRepository.findAllQuantifiers().get(1);
+        LinguisticVariable<PolicyEntity> linguisticVariable = mockRepository.findAllLinguisticVariables().get(0);
+        LinguisticLabel<PolicyEntity> label1 = linguisticVariable.getLabels().get(0);
+        LinguisticLabel<PolicyEntity> label2 = linguisticVariable.getLabels().get(1);
+        LinguisticLabel<PolicyEntity> label3 = linguisticVariable.getLabels().get(2);
+//        LinguisticLabel<PolicyEntity> label4 = linguisticVariable.getLabels().get(3);
+        List<LinguisticLabel<PolicyEntity>> labels = List.of(label1, label2, label3);
+
+        Pair<List<PolicyEntity>, List<PolicyEntity>> pair =
+                SubjectExtractor.extract(policyEntities, p -> filter.getMemberShip(p) > 0.0);
+
+
+        MultiSubjectLinguisticSummary<PolicyEntity> linguisticSummary =
+                new MultiSubjectLinguisticSummary<>(quantifier,
+                        labels,
+                        "test1",
+                        "test",
+                        pair.getFirst(),
+                        pair.getSecond());
+
         List<Summary> summaries = linguisticSummary.generateSummary();
 
         for (Summary s : summaries) {
