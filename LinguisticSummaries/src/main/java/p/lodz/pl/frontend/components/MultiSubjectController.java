@@ -28,15 +28,12 @@ import p.lodz.pl.backend.repository.MockRepository;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Predicate;
 
 public class MultiSubjectController {
     @FXML
     private AnchorPane scrollAttributes;
-    @FXML
-    private Button generateButton;
-    @FXML
-    private AnchorPane scrollQuantifiers;
     @FXML
     private TableView<Summary> summaryTableView;
     @FXML
@@ -46,17 +43,19 @@ public class MultiSubjectController {
     @FXML
     private ChoiceBox<String> firstSubjectChoiceBox;
     @FXML
-    private Button advancedSettingsButton;
-    @FXML
-    private Button singleSubjectButton;
-    @FXML
     private TableColumn<Summary, Double> degreeOfTruthColumn;
-    @FXML
-    private Button saveToFileButton;
 
     private Scene previousScene;
 
     private StageController stageController;
+
+    private static final String SUBJECT1 = "cars with sporty height";
+    private static final String SUBJECT2 = "cars with around half of the year policy tenure";
+    private static final String SUBJECT3 = "cars with medium aged policyholders";
+    private static final String SUBJECT4 = "policyholders with combi length cars";
+    private static final String SUBJECT5 = "policyholders that have to 3 months policy tenure";
+    private static final String SUBJECT6 = "family car width cars that have adult policyholders";
+    private static final String SUBJECT7 = "policyholders who are young";
 
     public void setStageController(StageController stageController) {
         this.stageController = stageController;
@@ -75,6 +74,8 @@ public class MultiSubjectController {
     public void initializeMultiSubjectView() {
         selectedQualifiers.clear();
         linguisticVariablesList = mockRepository.findAllLinguisticVariables();
+
+        firstSubjectChoiceBox.getItems().addAll(mockRepository.findAllSubjects());
 
         int linguisticOffsetY = 10;
 
@@ -124,14 +125,14 @@ public class MultiSubjectController {
 
         summaryTableView.getItems().clear();
 
-        String selectedSubject = "policyholders who are young";
+        String selectedSubject = firstSubjectChoiceBox.getSelectionModel().getSelectedItem();
 
         Pair<List<PolicyEntity>, List<PolicyEntity>> pair =
                 SubjectExtractor.extract(dao.getPolicies(), getPredicateBySubject(selectedSubject));
 
-        for (int i=0; i< allQuantifiers.size(); i++) {
+        for (Quantifier allQuantifier : allQuantifiers) {
             MultiSubjectLinguisticSummary<PolicyEntity> linguisticSummary
-                    = new MultiSubjectLinguisticSummary<>(allQuantifiers.get(i),
+                    = new MultiSubjectLinguisticSummary<>(allQuantifier,
                     selectedQualifiers,
                     "cars",
                     "policyholders",
@@ -150,10 +151,23 @@ public class MultiSubjectController {
     }
 
     private Predicate<PolicyEntity> getPredicateBySubject(String subject) {
-        String name = "";
-        if ("policyholders who are young".equals(subject)) {
+        String name;
+        if (SUBJECT1.equals(subject)) {
+            name = "sporty";
+        } else if (SUBJECT2.equals(subject)) {
+            name = "around half of the year";
+        } else if (SUBJECT3.equals(subject)) {
+            name = "medium age";
+        } else if (SUBJECT4.equals(subject)) {
+            name = "combi";
+        } else if (SUBJECT5.equals(subject)) {
+            name = "to 3 months";
+        } else if (SUBJECT6.equals(subject)) {
+            name = "family car";
+        } else if (SUBJECT7.equals(subject)) {
             name = "young adult";
-        }
+        } else throw new UnsupportedOperationException("No such subject available");
+
         LinguisticLabel<PolicyEntity> filter = mockRepository.findLinguisticLabelByName(name);
 
         return p -> filter.getMemberShip(p) > 0.0;
@@ -183,7 +197,7 @@ public class MultiSubjectController {
 
     public void goToSingleSubject(ActionEvent event) {
         try {
-            Parent advancedRoot = FXMLLoader.load(getClass().getResource("/components/view.fxml"));
+            Parent advancedRoot = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/components/view.fxml")));
             Scene advancedScene = new Scene(advancedRoot);
             Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             currentStage.setScene(advancedScene);

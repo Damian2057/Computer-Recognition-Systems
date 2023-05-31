@@ -67,13 +67,13 @@ public class MockRepository {
     private static final String HEIGHT_CLASSIC = "classic height";
     private static final String HEIGHT_CROSSOVER = "crossover height";
 
-
     private static final String SUBJECT1 = "cars with sporty height";
     private static final String SUBJECT2 = "cars with around half of the year policy tenure";
     private static final String SUBJECT3 = "cars with medium aged policyholders";
     private static final String SUBJECT4 = "policyholders with combi length cars";
     private static final String SUBJECT5 = "policyholders that have to 3 months policy tenure";
     private static final String SUBJECT6 = "family car width cars that have adult policyholders";
+    private static final String SUBJECT7 = "policyholders who are young";
 
     private final List<LinguisticVariable<PolicyEntity>> linguisticVariables;
     private final List<Quantifier> quantifiers;
@@ -149,15 +149,13 @@ public class MockRepository {
     private List<String> getSubjects() {
         List<String> subjectList = new ArrayList<>();
 
-        subjectList.add(POLICY_TENURE_TO_3_MONTHS);
-        subjectList.add(POLICY_TENURE_HALF_YEAR);
-        subjectList.add(POLICY_TENURE_4th_QUARTER_YEAR);
-        subjectList.add(POLICY_TENURE_OVER_YEAR);
-        subjectList.add(AGE_OF_CAR_NEW);
-        subjectList.add(AGE_OF_CAR_USED);
-        subjectList.add(AGE_OF_CAR_OLD);
-        subjectList.add(AGE_OF_CAR_VINTAGE);
-
+        subjectList.add(SUBJECT1);
+        subjectList.add(SUBJECT2);
+        subjectList.add(SUBJECT3);
+        subjectList.add(SUBJECT4);
+        subjectList.add(SUBJECT5);
+        subjectList.add(SUBJECT6);
+        subjectList.add(SUBJECT7);
 
         return subjectList;
     }
