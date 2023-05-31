@@ -178,15 +178,13 @@ public class MultiSubjectController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/components/advanced.fxml"));
             Parent advancedRoot = loader.load();
             AdvancedController advancedController = loader.getController();
+            advancedController.setStageController(stageController);
+            advancedController.inititalizeQualifiersAndQuantifiers();
 
             Scene currentScene = ((Node) event.getSource()).getScene();
-
             advancedController.setPreviousScene(currentScene);
-
             Scene advancedScene = new Scene(advancedRoot);
-
             Stage currentStage = (Stage) currentScene.getWindow();
-
             currentStage.setScene(advancedScene);
 
             currentStage.show();
