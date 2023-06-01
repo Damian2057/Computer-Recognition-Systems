@@ -2,6 +2,7 @@ package p.lodz.pl.backend.fuzzy.summary;
 
 import p.lodz.pl.backend.fuzzy.linguistic.LinguisticLabel;
 import p.lodz.pl.backend.fuzzy.quantifier.Quantifier;
+import p.lodz.pl.backend.fuzzy.set.FuzzySet;
 import p.lodz.pl.backend.fuzzy.util.Combiner;
 import p.lodz.pl.backend.fuzzy.util.Pair;
 
@@ -54,6 +55,7 @@ public class MultiSubjectLinguisticSummary<R> extends AbstractLinguisticSummary 
             stringBuilder.append(quantifier.getLabelName()).append(SPACE)
                     .append(subject1).append(COMPARED).append(subject2).append(HAVE);
             int index = 0;
+            List<FuzzySet<R>> sum = new ArrayList<>();
             for (int i : combination) {
                 stringBuilder.append(qualifiers.get(i).getLabelName()).append(SPACE)
                         .append(qualifiers.get(i).getLinguisticVariableName());
@@ -61,8 +63,9 @@ public class MultiSubjectLinguisticSummary<R> extends AbstractLinguisticSummary 
                 if (index < combination.size()) {
                     stringBuilder.append(AND);
                 }
+                sum.add(qualifiers.get(i));
                 summaries.add(new Summary(form, stringBuilder.toString(),
-                        getQualityForSummary()));
+                        getQualityForSummary(form, Collections.emptyList(), sum)));
             }
         }
     }
@@ -77,6 +80,7 @@ public class MultiSubjectLinguisticSummary<R> extends AbstractLinguisticSummary 
             stringBuilder.append(quantifier.getLabelName()).append(SPACE)
                     .append(subject1).append(COMPARED).append(subject2).append(THAT);
             int index = 0;
+            List<FuzzySet<R>> qua = new ArrayList<>();
             for (int i : combination.getFirst()) {
                 stringBuilder.append(qualifiers.get(i).getLabelName()).append(SPACE)
                         .append(qualifiers.get(i).getLinguisticVariableName());
@@ -84,9 +88,11 @@ public class MultiSubjectLinguisticSummary<R> extends AbstractLinguisticSummary 
                 if (index < combination.getFirst().size()) {
                     stringBuilder.append(AND);
                 }
+                qua.add(qualifiers.get(i));
             }
             stringBuilder.append(ALSO);
             index = 0;
+            List<FuzzySet<R>> sum = new ArrayList<>();
             for (int i : combination.getSecond()) {
                 stringBuilder.append(qualifiers.get(i).getLabelName()).append(SPACE)
                         .append(qualifiers.get(i).getLinguisticVariableName());
@@ -94,10 +100,11 @@ public class MultiSubjectLinguisticSummary<R> extends AbstractLinguisticSummary 
                 if (index < combination.getSecond().size()) {
                     stringBuilder.append(AND);
                 }
+                sum.add(qualifiers.get(i));
             }
 
             summaries.add(new Summary(form, stringBuilder.toString(),
-                    getQualityForSummary()));
+                    getQualityForSummary(form, qua, sum)));
         }
     }
 
@@ -111,6 +118,7 @@ public class MultiSubjectLinguisticSummary<R> extends AbstractLinguisticSummary 
             stringBuilder.append(quantifier.getLabelName()).append(SPACE)
                     .append(subject1).append(THAT);
             int index = 0;
+            List<FuzzySet<R>> qua = new ArrayList<>();
             for (int i : combination.getFirst()) {
                 stringBuilder.append(qualifiers.get(i).getLabelName()).append(SPACE)
                         .append(qualifiers.get(i).getLinguisticVariableName());
@@ -118,9 +126,11 @@ public class MultiSubjectLinguisticSummary<R> extends AbstractLinguisticSummary 
                 if (index < combination.getFirst().size()) {
                     stringBuilder.append(AND);
                 }
+                qua.add(qualifiers.get(i));
             }
             stringBuilder.append(COMPARED).append(subject2).append(ALSO);
             index = 0;
+            List<FuzzySet<R>> sum = new ArrayList<>();
             for (int i : combination.getSecond()) {
                 stringBuilder.append(qualifiers.get(i).getLabelName()).append(SPACE)
                         .append(qualifiers.get(i).getLinguisticVariableName());
@@ -128,10 +138,11 @@ public class MultiSubjectLinguisticSummary<R> extends AbstractLinguisticSummary 
                 if (index < combination.getSecond().size()) {
                     stringBuilder.append(AND);
                 }
+                sum.add(qualifiers.get(i));
             }
 
             summaries.add(new Summary(form, stringBuilder.toString(),
-                    getQualityForSummary()));
+                    getQualityForSummary(form, qua, sum)));
         }
     }
 
@@ -145,6 +156,7 @@ public class MultiSubjectLinguisticSummary<R> extends AbstractLinguisticSummary 
             stringBuilder.append(THERE).append(subject1)
                     .append(THAN).append(subject2).append(THAT);
             int index = 0;
+            List<FuzzySet<R>> sum = new ArrayList<>();
             for (int i : combination) {
                 stringBuilder.append(qualifiers.get(i).getLabelName()).append(SPACE)
                         .append(qualifiers.get(i).getLinguisticVariableName());
@@ -152,13 +164,16 @@ public class MultiSubjectLinguisticSummary<R> extends AbstractLinguisticSummary 
                 if (index < combination.size()) {
                     stringBuilder.append(AND);
                 }
-                summaries.add(new Summary(form, stringBuilder.toString(),
-                        getQualityForSummary()));
+                sum.add(qualifiers.get(i));
             }
+            summaries.add(new Summary(form, stringBuilder.toString(),
+                    getQualityForSummary(form, Collections.emptyList(), sum)));
         }
     }
 
-    private List<Double> getQualityForSummary() {
+    private List<Double> getQualityForSummary(int form,
+                                              List<FuzzySet<R>> qualifierSet,
+                                              List<FuzzySet<R>> summarizerSet) {
         return Collections.emptyList();
     }
 

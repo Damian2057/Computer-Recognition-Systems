@@ -115,6 +115,6 @@ public class FuzzyLogicTest {
             System.out.println(result);
         }
 
-        Assert.assertEquals(summaries.size(), 48);
+        Assert.assertEquals(summaries.size(), 43);
     }
 }
