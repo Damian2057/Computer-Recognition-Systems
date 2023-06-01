@@ -143,7 +143,7 @@ public class MultiSubjectController {
             for (Summary s : summaries) {
                 String result = s.summary() + " " + s.quality();
                 System.out.println(result);
-                Summary summary = new Summary(s.form(), s.summary(), Collections.singletonList(0.0));
+                Summary summary = new Summary(s.form(), s.summary(), s.quality());
                 summaryTableView.getItems().add(summary);
             }
             savedSummaries = summaries;
