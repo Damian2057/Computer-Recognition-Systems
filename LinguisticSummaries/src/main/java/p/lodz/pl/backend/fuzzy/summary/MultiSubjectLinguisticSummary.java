@@ -41,7 +41,6 @@ public class MultiSubjectLinguisticSummary<R> extends AbstractLinguisticSummary 
         generateFirstForm();
         generateSecondForm();
         generateThirdForm();
-        generateFourthForm();
 
         return summaries;
     }
@@ -65,9 +64,9 @@ public class MultiSubjectLinguisticSummary<R> extends AbstractLinguisticSummary 
                     stringBuilder.append(AND);
                 }
                 sum.add(qualifiers.get(i));
-                summaries.add(new Summary(form, stringBuilder.toString(),
-                        getQualityForSummary(form, Collections.emptyList(), sum)));
             }
+            summaries.add(new Summary(form, stringBuilder.toString(),
+                    getQualityForSummary(form, Collections.emptyList(), sum)));
         }
     }
 
@@ -147,7 +146,8 @@ public class MultiSubjectLinguisticSummary<R> extends AbstractLinguisticSummary 
         }
     }
 
-    private void generateFourthForm() {
+    public List<Summary> generateFourthForm() {
+        this.summaries = new ArrayList<>();
         final int form = 4;
         List<List<Integer>> combinations = Combiner
                 .getFirstFormCombinations(1, qualifiers.size());
@@ -170,6 +170,7 @@ public class MultiSubjectLinguisticSummary<R> extends AbstractLinguisticSummary 
             summaries.add(new Summary(form, stringBuilder.toString(),
                     getQualityForSummary(form, Collections.emptyList(), sum)));
         }
+        return summaries;
     }
 
     private List<Double> getQualityForSummary(int form,
@@ -197,29 +198,74 @@ public class MultiSubjectLinguisticSummary<R> extends AbstractLinguisticSummary 
         double nominator = 1.0 / firstGroup.size() * firstGroup.stream()
                 .mapToDouble(s::getMemberShip)
                 .sum();
-        double denominator = 1.0 / firstGroup.size() * firstGroup.stream()
-                .mapToDouble(s::getMemberShip)
-                .sum() + 1.0 / secondGroup.size() * secondGroup.stream()
+        double denominator = nominator +
+                1.0 / secondGroup.size() * secondGroup.stream()
                 .mapToDouble(s::getMemberShip)
                 .sum();
         return quantifier.getMemberShip(nominator / denominator);
     }
 
-    private double degreeOfTruthForSecondForm(List<FuzzySet<R>> qualifierSet,
-                                              List<FuzzySet<R>> summarizerSet) {
-        double nominator = 0.0;
-        double denominator = 0.0;
-        return quantifier.getMemberShip(0);
+    private double degreeOfTruthForSecondForm(List<FuzzySet<R>> qualifiers,
+                                              List<FuzzySet<R>> summarizers) {
+        Operation<FuzzySet<R>> operation = new Operation<>();
+        FuzzySet<R> s = summarizers.get(0);
+        for (FuzzySet<R> qualifier : summarizers) {
+            s = operation.and(s, qualifier);
+        }
+        FuzzySet<R> q = summarizers.get(0);
+        for (FuzzySet<R> qualifier : qualifiers) {
+            q = operation.and(q, qualifier);
+        }
+        double nominator = 1.0 / firstGroup.size() * firstGroup.stream()
+                .mapToDouble(s::getMemberShip)
+                .sum();
+        double denominator = nominator +
+                1.0 / secondGroup.size() * secondGroup.stream().mapToDouble(q::getMemberShip).sum();
+        return quantifier.getMemberShip(nominator / denominator);
     }
 
-    private double degreeOfTruthForThirdForm(List<FuzzySet<R>> qualifierSet,
-                                             List<FuzzySet<R>> summarizerSet) {
-        double nominator = 0.0;
-        double denominator = 0.0;
-        return quantifier.getMemberShip(0);
+    private double degreeOfTruthForThirdForm(List<FuzzySet<R>> qualifiers,
+                                             List<FuzzySet<R>> summarizers) {
+        Operation<FuzzySet<R>> operation = new Operation<>();
+        FuzzySet<R> s = summarizers.get(0);
+        for (FuzzySet<R> qualifier : summarizers) {
+            s = operation.and(s, qualifier);
+        }
+        FuzzySet<R> q = summarizers.get(0);
+        for (FuzzySet<R> qualifier : qualifiers) {
+            q = operation.and(q, qualifier);
+        }
+        double nominator = 1.0 / firstGroup.size() * firstGroup.stream()
+                .mapToDouble(q::getMemberShip)
+                .sum();
+        double denominator = nominator +
+                1.0 / secondGroup.size() * secondGroup.stream().mapToDouble(q::getMemberShip).sum();
+        return quantifier.getMemberShip(nominator / denominator);
     }
 
-    private double degreeOfTruthForFourthForm(List<FuzzySet<R>> summarizerSet) {
-        return 1.0 - 0;
+    private double degreeOfTruthForFourthForm(List<FuzzySet<R>> summarizers) {
+        Operation<FuzzySet<R>> operation = new Operation<>();
+        FuzzySet<R> s = summarizers.get(0);
+        for (FuzzySet<R> qualifier : summarizers) {
+            s = operation.and(s, qualifier);
+        }
+        double value = lukasiewiczImplication(s) / Math.max(firstGroup.size(), secondGroup.size());
+        return 1.0 - value;
+    }
+
+    private double lukasiewiczImplication(FuzzySet<R> summarizer) {
+        double sum = 0.0;
+        for (int i = 0; i < Math.max(firstGroup.size(), secondGroup.size()); i++) {
+            sum += Math.min(1.0, 1.0 - check(summarizer, firstGroup, i) + check(summarizer, secondGroup, i));
+        }
+        return sum;
+    }
+
+    private double check(FuzzySet<R> summarizer, List<R> entities, int index) {
+        try {
+            return summarizer.getMemberShip(entities.get(index));
+        } catch (Exception e) {
+            return 0.0;
+        }
     }
 }

@@ -12,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import lombok.extern.java.Log;
 import p.lodz.pl.backend.fuzzy.linguistic.LinguisticLabel;
 import p.lodz.pl.backend.fuzzy.linguistic.LinguisticVariable;
 import p.lodz.pl.backend.fuzzy.quantifier.Quantifier;
@@ -31,6 +32,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Predicate;
 
+@Log
 public class MultiSubjectController {
     @FXML
     private AnchorPane scrollAttributes;
@@ -69,7 +71,7 @@ public class MultiSubjectController {
     private MockRepository mockRepository = null;
     private List<LinguisticVariable<PolicyEntity>> linguisticVariablesList = null;
     private List<Quantifier> allQuantifiers = null;
-    private List<Summary> savedSummaries = new ArrayList<>();
+    private final List<Summary> savedSummaries = new ArrayList<>();
 
     public void initializeMultiSubjectView() {
         selectedQualifiers.clear();
@@ -119,6 +121,8 @@ public class MultiSubjectController {
     }
 
     public void generateMultiSubjectSummaries() {
+        savedSummaries.clear();
+        summaryTableView.getItems().clear();
         formColumn.setCellValueFactory(cellData -> Bindings.createObjectBinding(() -> cellData.getValue().form()));
         summaryColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().summary()));
         degreeOfTruthColumn.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().quality().get(0)).asObject());
@@ -129,24 +133,33 @@ public class MultiSubjectController {
         Pair<List<PolicyEntity>, List<PolicyEntity>> pair =
                 SubjectExtractor.extract(dao.getPolicies(), getPredicateBySubject(selectedSubject));
 
-        for (Quantifier allQuantifier : allQuantifiers) {
+        for (Quantifier quantifier : allQuantifiers) {
             MultiSubjectLinguisticSummary<PolicyEntity> linguisticSummary
-                    = new MultiSubjectLinguisticSummary<>(allQuantifier,
+                    = new MultiSubjectLinguisticSummary<>(quantifier,
                     selectedQualifiers,
-                    "cars",
-                    "policyholders",
+                    selectedSubject,
+                    "rest",
                     pair.getFirst(),
                     pair.getSecond());
-
             List<Summary> summaries = linguisticSummary.generateSummary();
-            for (Summary s : summaries) {
-                String result = s.summary() + " " + s.quality();
-                System.out.println(result);
-                Summary summary = new Summary(s.form(), s.summary(), s.quality());
-                summaryTableView.getItems().add(summary);
-            }
-            savedSummaries = summaries;
+            log.info("Generated summaries for: " + quantifier.getLabelName());
+
+            summaryTableView.getItems().addAll(summaries);
+            savedSummaries.addAll(summaries);
         }
+
+        MultiSubjectLinguisticSummary<PolicyEntity> linguisticSummary
+                = new MultiSubjectLinguisticSummary<>(null,
+                selectedQualifiers,
+                selectedSubject,
+                "rest",
+                pair.getFirst(),
+                pair.getSecond());
+        List<Summary> summaries = linguisticSummary.generateFourthForm();
+        log.info("Generated summaries for Fourth Form");
+
+        summaryTableView.getItems().addAll(summaries);
+        savedSummaries.addAll(summaries);
     }
 
     private Predicate<PolicyEntity> getPredicateBySubject(String subject) {

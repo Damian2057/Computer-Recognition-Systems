@@ -14,6 +14,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import lombok.SneakyThrows;
+import lombok.extern.java.Log;
 import p.lodz.pl.backend.fuzzy.linguistic.LinguisticLabel;
 import p.lodz.pl.backend.fuzzy.linguistic.LinguisticVariable;
 import p.lodz.pl.backend.fuzzy.quantifier.Quantifier;
@@ -31,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+@Log
 public class StageController implements Initializable {
 
     @FXML
@@ -74,7 +76,7 @@ public class StageController implements Initializable {
     @FXML
     private AnchorPane scrollAttributes;
 
-    private List<Summary> savedSummaries;
+    private final List<Summary> savedSummaries = new ArrayList<>();
     private final List<LinguisticLabel<PolicyEntity>> selectedQualifiers = new ArrayList<>();
     private final Dao dao = new DBConnection();
     private List<Double> weights = new ArrayList<>();
@@ -145,6 +147,8 @@ public class StageController implements Initializable {
     }
 
     public void generateSummaries() {
+        summaryTableView.getItems().clear();
+        savedSummaries.clear();
         formColumn.setCellValueFactory(cellData -> Bindings.createObjectBinding(() -> cellData.getValue().form()));
         summaryColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().summary()));
         averageQMColumn.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().quality().get(0)).asObject());
@@ -163,19 +167,16 @@ public class StageController implements Initializable {
         summaryTableView.getItems().clear();
         List<PolicyEntity> entities = dao.getPolicies();
 
-        for (int i=0; i< allQuantifiers.size(); i++) {
-            linguisticSummary = new SingleSubjectLinguisticSummary<>(allQuantifiers.get(i),
+        for (Quantifier quantifier : allQuantifiers) {
+            linguisticSummary = new SingleSubjectLinguisticSummary<>(quantifier,
                     selectedQualifiers,
                     "cars",
                     entities,
                     weights);
             List<Summary> summaries = linguisticSummary.generateSummary();
-            for (Summary s : summaries) {
-                System.out.println(s.summary() + " " + s.quality().get(0));
-                Summary summary = new Summary(s.form(), s.summary(), s.quality());
-                summaryTableView.getItems().add(summary);
-            }
-            savedSummaries = summaries;
+            log.info("Generated summaries for: " + quantifier.getLabelName());
+            summaryTableView.getItems().addAll(summaries);
+            savedSummaries.addAll(summaries);
         }
     }
 

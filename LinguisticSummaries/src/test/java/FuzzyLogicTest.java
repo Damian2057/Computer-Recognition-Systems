@@ -93,8 +93,8 @@ public class FuzzyLogicTest {
         LinguisticLabel<PolicyEntity> label1 = linguisticVariable.getLabels().get(0);
         LinguisticLabel<PolicyEntity> label2 = linguisticVariable.getLabels().get(1);
         LinguisticLabel<PolicyEntity> label3 = linguisticVariable.getLabels().get(2);
-//        LinguisticLabel<PolicyEntity> label4 = linguisticVariable.getLabels().get(3);
-        List<LinguisticLabel<PolicyEntity>> labels = List.of(label1, label2, label3);
+        LinguisticLabel<PolicyEntity> label4 = linguisticVariable.getLabels().get(3);
+        List<LinguisticLabel<PolicyEntity>> labels = List.of(label1, label2, label3, label4);
 
         Pair<List<PolicyEntity>, List<PolicyEntity>> pair =
                 SubjectExtractor.extract(policyEntities, p -> filter.getMemberShip(p) > 0.0);
@@ -115,6 +115,6 @@ public class FuzzyLogicTest {
             System.out.println(result);
         }
 
-        Assert.assertEquals(summaries.size(), 43);
+        Assert.assertEquals(summaries.size(), 38);
     }
 }

@@ -1,5 +1,6 @@
 package p.lodz.pl.backend.fuzzy.summary;
 
+import lombok.extern.java.Log;
 import p.lodz.pl.backend.fuzzy.linguistic.LinguisticLabel;
 import p.lodz.pl.backend.fuzzy.quantifier.Quantifier;
 import p.lodz.pl.backend.fuzzy.set.FuzzySet;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+@Log
 public class SingleSubjectLinguisticSummary<R> extends AbstractLinguisticSummary {
 
     private final List<LinguisticLabel<R>> qualifiers;
@@ -100,14 +102,6 @@ public class SingleSubjectLinguisticSummary<R> extends AbstractLinguisticSummary
         }
     }
 
-    public List<LinguisticLabel<R>> getQualifiers() {
-        return qualifiers;
-    }
-
-    public List<R> getPolicies() {
-        return policies;
-    }
-
     private List<Double> getQualityForSummary(List<FuzzySet<R>> qualifierSet,
                                               List<FuzzySet<R>> summarizerSet) {
         double T1 = checkNan(degreeOfTruth(qualifierSet, summarizerSet));
@@ -192,8 +186,8 @@ public class SingleSubjectLinguisticSummary<R> extends AbstractLinguisticSummary
     private double degreeOfCovering(List<FuzzySet<R>> qualifiers, List<FuzzySet<R>> summarizers) {
         Operation<FuzzySet<R>> operation = new Operation<>();
         FuzzySet<R> s = summarizers.get(0);
-        for (FuzzySet<R> qualifier : summarizers) {
-            s = operation.and(s, qualifier);
+        for (FuzzySet<R> sum : summarizers) {
+            s = operation.and(s, sum);
         }
         if (qualifiers.isEmpty()) {
             return 1.0 * s.support(policies).size() / policies.size();
@@ -205,7 +199,7 @@ public class SingleSubjectLinguisticSummary<R> extends AbstractLinguisticSummary
         }
         FuzzySet<R> t = operation.and(q, s);
 
-        return 1.0 * t.support(policies).size() / s.support(policies).size();
+        return 1.0 * t.support(policies).size() / q.support(policies).size();
     }
 
     /**
