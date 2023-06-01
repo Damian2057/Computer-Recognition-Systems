@@ -174,10 +174,34 @@ public class MultiSubjectLinguisticSummary<R> extends AbstractLinguisticSummary 
     private List<Double> getQualityForSummary(int form,
                                               List<FuzzySet<R>> qualifierSet,
                                               List<FuzzySet<R>> summarizerSet) {
-        return Collections.emptyList();
+        if (form == 1) {
+            return List.of(degreeOfTruthForFirstForm(summarizerSet));
+        } else if (form == 2) {
+            return List.of(degreeOfTruthForSecondForm(qualifierSet, summarizerSet));
+        } else if (form == 3) {
+            return List.of(degreeOfTruthForThirdForm(qualifierSet, summarizerSet));
+        } else if (form == 4) {
+            return List.of(degreeOfTruthForFourthForm(summarizerSet));
+        } else {
+            throw new IllegalArgumentException("Form " + form + " is not supported");
+        }
     }
 
-    private double degreeOfTruth(int form) {
+    private double degreeOfTruthForFirstForm(List<FuzzySet<R>> summarizerSet) {
+        return 0.0;
+    }
+
+    private double degreeOfTruthForSecondForm(List<FuzzySet<R>> qualifierSet,
+                                              List<FuzzySet<R>> summarizerSet) {
+        return 0.0;
+    }
+
+    private double degreeOfTruthForThirdForm(List<FuzzySet<R>> qualifierSet,
+                                             List<FuzzySet<R>> summarizerSet) {
+        return 0.0;
+    }
+
+    private double degreeOfTruthForFourthForm(List<FuzzySet<R>> summarizerSet) {
         return 0.0;
     }
 }
