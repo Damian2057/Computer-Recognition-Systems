@@ -10,7 +10,9 @@ import p.lodz.pl.backend.fuzzy.set.CrispSet;
 import p.lodz.pl.backend.fuzzy.set.FuzzySet;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Operation<R extends CrispSet> {
 
@@ -76,7 +78,9 @@ public class Operation<R extends CrispSet> {
                 return new DomainWrapper(pairs);
             }
         } else {
-            ((DiscreteDomain) first).getPoints().addAll(((DiscreteDomain) second).getPoints());
+            Set<Double> dom = new HashSet<>(((DiscreteDomain) first).getPoints());
+            dom.addAll(((DiscreteDomain) second).getPoints());
+            ((DiscreteDomain) first).setPoints(dom.stream().toList());
             return first;
         }
     }
