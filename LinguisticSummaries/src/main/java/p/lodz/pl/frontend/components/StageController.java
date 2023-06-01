@@ -11,11 +11,10 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import lombok.SneakyThrows;
-import lombok.extern.java.Log;
+import p.lodz.pl.backend.fuzzy.linguistic.LinguisticLabel;
 import p.lodz.pl.backend.fuzzy.linguistic.LinguisticVariable;
 import p.lodz.pl.backend.fuzzy.quantifier.Quantifier;
 import p.lodz.pl.backend.fuzzy.summary.SingleSubjectLinguisticSummary;
@@ -25,16 +24,15 @@ import p.lodz.pl.backend.repository.DBConnection;
 import p.lodz.pl.backend.repository.Dao;
 import p.lodz.pl.backend.repository.FileOperator;
 import p.lodz.pl.backend.repository.MockRepository;
-import p.lodz.pl.backend.fuzzy.linguistic.LinguisticLabel;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ResourceBundle;
 
 public class StageController implements Initializable {
 
-//    @FXML
-//    private TableColumn<Summary, Boolean> checkBoxColumn;
     @FXML
     private Button generateButton;
     @FXML
@@ -147,9 +145,6 @@ public class StageController implements Initializable {
     }
 
     public void generateSummaries() {
-
-//        checkBoxColumn.setCellValueFactory(cellData -> new SimpleBooleanProperty(cellData.getValue().selected()));
-//        checkBoxColumn.setCellFactory(CheckBoxTableCell.forTableColumn(checkBoxColumn));
         formColumn.setCellValueFactory(cellData -> Bindings.createObjectBinding(() -> cellData.getValue().form()));
         summaryColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().summary()));
         averageQMColumn.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().quality().get(0)).asObject());
@@ -166,19 +161,17 @@ public class StageController implements Initializable {
         lengthOfQualifierColumn.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().quality().get(11)).asObject());
 
         summaryTableView.getItems().clear();
+        List<PolicyEntity> entities = dao.getPolicies();
 
         for (int i=0; i< allQuantifiers.size(); i++) {
-
             linguisticSummary = new SingleSubjectLinguisticSummary<>(allQuantifiers.get(i),
                     selectedQualifiers,
                     "cars",
-                    dao.getPolicies(),
+                    entities,
                     weights);
-//            System.out.println("Wagi w generate summaries" + weights);
             List<Summary> summaries = linguisticSummary.generateSummary();
             for (Summary s : summaries) {
-                String result = s.summary() + " " + s.quality().get(0);
-                System.out.println(result);
+                System.out.println(s.summary() + " " + s.quality().get(0));
                 Summary summary = new Summary(s.form(), s.summary(), s.quality());
                 summaryTableView.getItems().add(summary);
             }

@@ -17,7 +17,7 @@ public class GaussianFunction extends BasicFunction implements MembershipFunctio
         super(domain);
         this.middle = middle;
         this.width = width;
-        this.function = x -> Math.exp(-(middle - x) * (width - x) / (2 * width * width));
+        this.function = x -> Math.exp(-(middle - x) * (middle - x) / (2 * width * width));
     }
 
     @Override

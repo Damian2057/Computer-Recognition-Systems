@@ -1,5 +1,6 @@
 package p.lodz.pl.backend.repository;
 
+import p.lodz.pl.backend.fuzzy.function.GaussianFunction;
 import p.lodz.pl.backend.fuzzy.function.TrapezoidalFunction;
 import p.lodz.pl.backend.fuzzy.function.TriangularFunction;
 import p.lodz.pl.backend.fuzzy.function.domain.ContinuousDomain;
