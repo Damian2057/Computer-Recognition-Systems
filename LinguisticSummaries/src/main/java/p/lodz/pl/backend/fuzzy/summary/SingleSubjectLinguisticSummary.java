@@ -122,6 +122,12 @@ public class SingleSubjectLinguisticSummary<R> extends AbstractLinguisticSummary
         double T10 = checkNan(degreeOfQualifierCardinality(qualifierSet));
         double T11 = checkNan(lengthOfQualifier(qualifierSet.size()));
 
+        if (T3 > 1.0) {
+            System.out.println("xd");
+        }
+        if (T3 * weights.get(3) > 1.0) {
+            System.out.println("xd");
+        }
         double avg = T1 * weights.get(0)
                 + T2 * weights.get(1)
                 + T3 * weights.get(2)
@@ -192,8 +198,8 @@ public class SingleSubjectLinguisticSummary<R> extends AbstractLinguisticSummary
     private double degreeOfCovering(List<FuzzySet<R>> qualifiers, List<FuzzySet<R>> summarizers) {
         Operation<FuzzySet<R>> operation = new Operation<>();
         FuzzySet<R> s = summarizers.get(0);
-        for (FuzzySet<R> qualifier : summarizers) {
-            s = operation.and(s, qualifier);
+        for (FuzzySet<R> sum : summarizers) {
+            s = operation.and(s, sum);
         }
         if (qualifiers.isEmpty()) {
             return 1.0 * s.support(policies).size() / policies.size();
@@ -205,7 +211,7 @@ public class SingleSubjectLinguisticSummary<R> extends AbstractLinguisticSummary
         }
         FuzzySet<R> t = operation.and(q, s);
 
-        return 1.0 * t.support(policies).size() / s.support(policies).size();
+        return 1.0 * t.support(policies).size() / q.support(policies).size();
     }
 
     /**
