@@ -5,6 +5,7 @@ import p.lodz.pl.backend.fuzzy.util.Pair;
 import java.util.List;
 
 public class DomainWrapper extends Domain {
+
     private final List<Pair<Double, Double>> domains;
 
     public DomainWrapper(List<Pair<Double, Double>> domains) {

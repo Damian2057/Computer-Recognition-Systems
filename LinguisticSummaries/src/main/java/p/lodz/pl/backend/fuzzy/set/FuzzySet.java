@@ -17,9 +17,6 @@ public class FuzzySet<R> extends CrispSet<R> {
         super(function, extractor);
     }
 
-    public double support() {
-        return function.width();
-    }
 
     public double getMemberShip(R x) {
         return function.getMemberShip(extractor.apply(x));
@@ -123,16 +120,34 @@ public class FuzzySet<R> extends CrispSet<R> {
         return false;
     }
 
+    public List<R> support(List<R> list) {
+        return alphaCut(list, 0.0);
+    }
+
+    public double support() {
+        return function.width();
+    }
+
+    public List<R> alphaCut(List<R> list, double a) {
+        return list.stream().filter(x -> function.getMemberShip(extractor.apply(x)) > a).toList();
+    }
+
+    public double degreeOfFuzziness(List<R> list) {
+        return 1.0 * support(list).size() / list.size();
+    }
+
     public double degreeOfFuzziness() {
-        return cardinality() / getDomain().width();
+        return support() / getDomain().width();
     }
 
     public double cardinality() {
         return function.integral();
     }
 
-    public double supportCardinality() {
-        return function.width() / getDomain().width();
+    public double cardinality(List<R> list) {
+        return list.stream()
+                .mapToDouble(x -> function.getMemberShip(extractor.apply(x)))
+                .sum();
     }
 
     public Extractor<R> getExtractor() {
