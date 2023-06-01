@@ -199,27 +199,56 @@ public class MultiSubjectLinguisticSummary<R> extends AbstractLinguisticSummary 
                 .sum();
         double denominator = 1.0 / firstGroup.size() * firstGroup.stream()
                 .mapToDouble(s::getMemberShip)
-                .sum() + 1.0 / secondGroup.size() * secondGroup.stream()
+                .sum() +
+                1.0 / secondGroup.size() * secondGroup.stream()
                 .mapToDouble(s::getMemberShip)
                 .sum();
         return quantifier.getMemberShip(nominator / denominator);
     }
 
-    private double degreeOfTruthForSecondForm(List<FuzzySet<R>> qualifierSet,
-                                              List<FuzzySet<R>> summarizerSet) {
-        double nominator = 0.0;
-        double denominator = 0.0;
-        return quantifier.getMemberShip(0);
+    private double degreeOfTruthForSecondForm(List<FuzzySet<R>> qualifiers,
+                                              List<FuzzySet<R>> summarizers) {
+        Operation<FuzzySet<R>> operation = new Operation<>();
+        FuzzySet<R> s = summarizers.get(0);
+        for (FuzzySet<R> qualifier : summarizers) {
+            s = operation.and(s, qualifier);
+        }
+        FuzzySet<R> q = summarizers.get(0);
+        for (FuzzySet<R> qualifier : qualifiers) {
+            q = operation.and(q, qualifier);
+        }
+        double nominator = 1.0 / firstGroup.size() * firstGroup.stream()
+                .mapToDouble(s::getMemberShip)
+                .sum();
+        double denominator = 1.0 / firstGroup.size() * firstGroup.stream()
+                .mapToDouble(s::getMemberShip)
+                .sum() +
+                1.0 / secondGroup.size() * secondGroup.stream().mapToDouble(q::getMemberShip).sum();
+        return quantifier.getMemberShip(nominator / denominator);
     }
 
-    private double degreeOfTruthForThirdForm(List<FuzzySet<R>> qualifierSet,
-                                             List<FuzzySet<R>> summarizerSet) {
-        double nominator = 0.0;
-        double denominator = 0.0;
-        return quantifier.getMemberShip(0);
+    private double degreeOfTruthForThirdForm(List<FuzzySet<R>> qualifiers,
+                                             List<FuzzySet<R>> summarizers) {
+        Operation<FuzzySet<R>> operation = new Operation<>();
+        FuzzySet<R> s = summarizers.get(0);
+        for (FuzzySet<R> qualifier : summarizers) {
+            s = operation.and(s, qualifier);
+        }
+        FuzzySet<R> q = summarizers.get(0);
+        for (FuzzySet<R> qualifier : qualifiers) {
+            q = operation.and(q, qualifier);
+        }
+        double nominator = 1.0 / firstGroup.size() * firstGroup.stream()
+                .mapToDouble(q::getMemberShip)
+                .sum();
+        double denominator = 1.0 / firstGroup.size() * firstGroup.stream()
+                .mapToDouble(q::getMemberShip)
+                .sum() +
+                1.0 / secondGroup.size() * secondGroup.stream().mapToDouble(q::getMemberShip).sum();
+        return quantifier.getMemberShip(nominator / denominator);
     }
 
     private double degreeOfTruthForFourthForm(List<FuzzySet<R>> summarizerSet) {
-        return 1.0 - 0;
+        return 0.0;
     }
 }
