@@ -1,5 +1,6 @@
 package p.lodz.pl.backend.fuzzy.summary;
 
+import lombok.extern.java.Log;
 import p.lodz.pl.backend.fuzzy.linguistic.LinguisticLabel;
 import p.lodz.pl.backend.fuzzy.quantifier.Quantifier;
 import p.lodz.pl.backend.fuzzy.set.FuzzySet;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+@Log
 public class SingleSubjectLinguisticSummary<R> extends AbstractLinguisticSummary {
 
     private final List<LinguisticLabel<R>> qualifiers;
@@ -100,14 +102,6 @@ public class SingleSubjectLinguisticSummary<R> extends AbstractLinguisticSummary
         }
     }
 
-    public List<LinguisticLabel<R>> getQualifiers() {
-        return qualifiers;
-    }
-
-    public List<R> getPolicies() {
-        return policies;
-    }
-
     private List<Double> getQualityForSummary(List<FuzzySet<R>> qualifierSet,
                                               List<FuzzySet<R>> summarizerSet) {
         double T1 = checkNan(degreeOfTruth(qualifierSet, summarizerSet));
@@ -122,12 +116,6 @@ public class SingleSubjectLinguisticSummary<R> extends AbstractLinguisticSummary
         double T10 = checkNan(degreeOfQualifierCardinality(qualifierSet));
         double T11 = checkNan(lengthOfQualifier(qualifierSet.size()));
 
-        if (T3 > 1.0) {
-            System.out.println("xd");
-        }
-        if (T3 * weights.get(3) > 1.0) {
-            System.out.println("xd");
-        }
         double avg = T1 * weights.get(0)
                 + T2 * weights.get(1)
                 + T3 * weights.get(2)
