@@ -1,3 +1,5 @@
+package p.lodz.pl;
+
 import p.lodz.pl.frontend.GraphicalApplication;
 
 public class Main {
