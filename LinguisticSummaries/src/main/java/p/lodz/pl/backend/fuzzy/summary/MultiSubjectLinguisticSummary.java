@@ -65,9 +65,9 @@ public class MultiSubjectLinguisticSummary<R> extends AbstractLinguisticSummary 
                     stringBuilder.append(AND);
                 }
                 sum.add(qualifiers.get(i));
-                summaries.add(new Summary(form, stringBuilder.toString(),
-                        getQualityForSummary(form, Collections.emptyList(), sum)));
             }
+            summaries.add(new Summary(form, stringBuilder.toString(),
+                    getQualityForSummary(form, Collections.emptyList(), sum)));
         }
     }
 
