@@ -197,9 +197,7 @@ public class MultiSubjectLinguisticSummary<R> extends AbstractLinguisticSummary 
         double nominator = 1.0 / firstGroup.size() * firstGroup.stream()
                 .mapToDouble(s::getMemberShip)
                 .sum();
-        double denominator = 1.0 / firstGroup.size() * firstGroup.stream()
-                .mapToDouble(s::getMemberShip)
-                .sum() +
+        double denominator = nominator +
                 1.0 / secondGroup.size() * secondGroup.stream()
                 .mapToDouble(s::getMemberShip)
                 .sum();
@@ -220,9 +218,7 @@ public class MultiSubjectLinguisticSummary<R> extends AbstractLinguisticSummary 
         double nominator = 1.0 / firstGroup.size() * firstGroup.stream()
                 .mapToDouble(s::getMemberShip)
                 .sum();
-        double denominator = 1.0 / firstGroup.size() * firstGroup.stream()
-                .mapToDouble(s::getMemberShip)
-                .sum() +
+        double denominator = nominator +
                 1.0 / secondGroup.size() * secondGroup.stream().mapToDouble(q::getMemberShip).sum();
         return quantifier.getMemberShip(nominator / denominator);
     }
@@ -241,14 +237,12 @@ public class MultiSubjectLinguisticSummary<R> extends AbstractLinguisticSummary 
         double nominator = 1.0 / firstGroup.size() * firstGroup.stream()
                 .mapToDouble(q::getMemberShip)
                 .sum();
-        double denominator = 1.0 / firstGroup.size() * firstGroup.stream()
-                .mapToDouble(q::getMemberShip)
-                .sum() +
+        double denominator = nominator +
                 1.0 / secondGroup.size() * secondGroup.stream().mapToDouble(q::getMemberShip).sum();
         return quantifier.getMemberShip(nominator / denominator);
     }
 
-    private double degreeOfTruthForFourthForm(List<FuzzySet<R>> summarizerSet) {
+    private double degreeOfTruthForFourthForm(List<FuzzySet<R>> summarizers) {
         return 0.0;
     }
 }
