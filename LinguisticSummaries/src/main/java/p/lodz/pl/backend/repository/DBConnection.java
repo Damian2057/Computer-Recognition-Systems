@@ -3,7 +3,9 @@ package p.lodz.pl.backend.repository;
 import io.github.cdimascio.dotenv.Dotenv;
 import lombok.extern.java.Log;
 import p.lodz.pl.backend.model.PolicyEntity;
+import p.lodz.pl.backend.model.Serialize;
 
+import java.io.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -14,22 +16,20 @@ import java.util.List;
 @Log
 public class DBConnection implements Dao {
 
-    private final String url;
-    private final String user;
-    private final String password;
+    private static final String FILE = "src/main/resources/serialize/data.raw";
+    private String url;
+    private String user;
+    private String password;
     private Connection c = null;
     private Statement stmt = null;
 
-    public DBConnection() {
-        Dotenv dotenv = Dotenv.load();
-        this.url = dotenv.get("POSTGRES_URL");
-        this.user = dotenv.get("POSTGRES_USER");
-        this.password = dotenv.get("POSTGRES_PASSWORD");
-    }
-
     @Override
     public List<PolicyEntity> getPolicies() {
+        if (checkIfFileExist()) {
+            return read();
+        }
         try {
+            readDotEnv();
             List<PolicyEntity> policies = new ArrayList<>();
             c = DriverManager
                     .getConnection(url,
@@ -59,9 +59,51 @@ public class DBConnection implements Dao {
             stmt.close();
             c.close();
             log.info("Closed database successfully");
+            savePolicies(policies);
             return policies;
         } catch (Exception e) {
             log.warning("Error while connecting to database");
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void savePolicies(List<PolicyEntity> policies) {
+        try {
+            Serialize<PolicyEntity> serialize = new Serialize<>(policies);
+            FileOutputStream f = new FileOutputStream(FILE);
+            ObjectOutputStream o = new ObjectOutputStream(f);
+            o.writeObject(serialize);
+
+            o.close();
+            f.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private boolean checkIfFileExist() {
+        File file = new File(FILE);
+        return file.exists();
+    }
+
+    private void readDotEnv() {
+        Dotenv dotenv = Dotenv.load();
+        this.url = dotenv.get("POSTGRES_URL");
+        this.user = dotenv.get("POSTGRES_USER");
+        this.password = dotenv.get("POSTGRES_PASSWORD");
+    }
+
+    public List<PolicyEntity> read() {
+        try {
+            FileInputStream fi = new FileInputStream(FILE);
+            ObjectInputStream oi = new ObjectInputStream(fi);
+
+            Serialize<PolicyEntity> serialize = (Serialize<PolicyEntity>) oi.readObject();
+
+            return serialize.getList();
+
+        } catch (IOException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }

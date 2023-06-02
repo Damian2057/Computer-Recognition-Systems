@@ -2,6 +2,8 @@ package p.lodz.pl.backend.model;
 
 import lombok.Builder;
 
+import java.io.Serializable;
+
 @Builder
 public record PolicyEntity(
         String policyId,
@@ -15,5 +17,5 @@ public record PolicyEntity(
         double width,
         double height,
         double grossWeight
-) {
+) implements Serializable {
 }

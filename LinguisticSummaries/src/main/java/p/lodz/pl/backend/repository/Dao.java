@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface Dao {
     List<PolicyEntity> getPolicies();
+
+    void savePolicies(List<PolicyEntity> policies);
 }
