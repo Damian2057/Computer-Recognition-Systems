@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @Log
 public class MultiSubjectController {
@@ -128,12 +129,14 @@ public class MultiSubjectController {
         degreeOfTruthColumn.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().quality().get(0)).asObject());
         summaryTableView.getItems().clear();
 
+        List<Quantifier> filteredQuantifiers = allQuantifiers.stream().filter(quantifier -> !quantifier.isAbsolute()).collect(Collectors.toList());
+
         String selectedSubject = firstSubjectChoiceBox.getSelectionModel().getSelectedItem();
 
         Pair<List<PolicyEntity>, List<PolicyEntity>> pair =
                 SubjectExtractor.extract(dao.getPolicies(), getPredicateBySubject(selectedSubject));
 
-        for (Quantifier quantifier : allQuantifiers) {
+        for (Quantifier quantifier : filteredQuantifiers) {
             MultiSubjectLinguisticSummary<PolicyEntity> linguisticSummary
                     = new MultiSubjectLinguisticSummary<>(quantifier,
                     selectedQualifiers,
