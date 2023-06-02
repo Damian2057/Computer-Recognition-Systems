@@ -77,11 +77,29 @@ public class Operation<R extends CrispSet> {
                 pairs.add(new Pair<>(continuousDomain1.getMinDomain(), continuousDomain1.getMaxDomain()));
                 return new DomainWrapper(pairs);
             }
+        } else if (first instanceof DiscreteDomain discreteDomain && second instanceof DiscreteDomain discreteDomain1) {
+            Set<Double> dom = new HashSet<>(discreteDomain.getPoints());
+            dom.addAll(discreteDomain1.getPoints());
+            discreteDomain.setPoints(dom.stream().toList());
+            return discreteDomain;
         } else {
-            Set<Double> dom = new HashSet<>(((DiscreteDomain) first).getPoints());
-            dom.addAll(((DiscreteDomain) second).getPoints());
-            ((DiscreteDomain) first).setPoints(dom.stream().toList());
-            return first;
+            double min = 0.0;
+            double max = 0.0;
+            if (first instanceof ContinuousDomain continuousDomain) {
+                min = continuousDomain.getMinDomain();
+                max = continuousDomain.getMaxDomain();
+            } else if (first instanceof DiscreteDomain discreteDomain) {
+                min = discreteDomain.getPoints().stream().min(Double::compareTo).orElseThrow();
+                max = discreteDomain.getPoints().stream().max(Double::compareTo).orElseThrow();
+            }
+            if (second instanceof ContinuousDomain continuousDomain) {
+                min = Math.min(min, continuousDomain.getMinDomain());
+                max = Math.max(max, continuousDomain.getMaxDomain());
+            } else if (second instanceof DiscreteDomain discreteDomain) {
+                min = Math.min(min, discreteDomain.getPoints().stream().min(Double::compareTo).orElseThrow());
+                max = Math.max(max, discreteDomain.getPoints().stream().max(Double::compareTo).orElseThrow());
+            }
+            return new ContinuousDomain(min, max);
         }
     }
 }

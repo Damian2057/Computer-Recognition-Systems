@@ -17,13 +17,16 @@ public class FuzzySet<R> extends CrispSet<R> {
         super(function, extractor);
     }
 
-
     public double getMemberShip(R x) {
         return function.getMemberShip(extractor.apply(x));
     }
 
     public Domain getDomain() {
         return function.getDomain();
+    }
+
+    public <T> T getDomainCast() {
+        return (T) function.getDomain();
     }
 
     public boolean isEmpty(List<R> list) {
@@ -33,7 +36,7 @@ public class FuzzySet<R> extends CrispSet<R> {
     public boolean isNormal() {
         if (function.getDomain() instanceof ContinuousDomain continuousDomain) {
             double step = 0.01;
-            for (double i = continuousDomain.getMinDomain(); i <= continuousDomain.getMaxDomain(); i+= step) {
+            for (double i = continuousDomain.getMinDomain(); i <= continuousDomain.getMaxDomain(); i = Math.round((i + step) * 100.0) / 100.0) {
                 if (function.getMemberShip(i) == 1.0) {
                     return true;
                 }
@@ -48,7 +51,7 @@ public class FuzzySet<R> extends CrispSet<R> {
         } else if (function.getDomain() instanceof DomainWrapper wrapper) {
             double step = 0.01;
             for (Pair<Double, Double> pair: wrapper.getDomains()) {
-                for (double i = pair.getFirst(); i <= pair.getSecond(); i+= step) {
+                for (double i = pair.getFirst(); i <= pair.getSecond(); i = Math.round((i + step) * 100.0) / 100.0) {
                     if (function.getMemberShip(i) == 1.0) {
                         return true;
                     }
@@ -63,7 +66,7 @@ public class FuzzySet<R> extends CrispSet<R> {
         double max = Double.MIN_VALUE;
         if (function.getDomain() instanceof ContinuousDomain continuousDomain) {
             double step = 0.01;
-            for (double i = continuousDomain.getMinDomain(); i <= continuousDomain.getMaxDomain(); i+= step) {
+            for (double i = continuousDomain.getMinDomain(); i <= continuousDomain.getMaxDomain(); i = Math.round((i + step) * 100.0) / 100.0) {
                 max = Math.max(max, function.getMemberShip(i));
             }
         } else if (function.getDomain() instanceof DiscreteDomain discreteDomain) {
@@ -73,7 +76,7 @@ public class FuzzySet<R> extends CrispSet<R> {
         } else if (function.getDomain() instanceof DomainWrapper wrapper) {
             double step = 0.01;
             for (Pair<Double, Double> pair: wrapper.getDomains()) {
-                for (double i = pair.getFirst(); i <= pair.getSecond(); i+= step) {
+                for (double i = pair.getFirst(); i <= pair.getSecond(); i = Math.round((i + step) * 100.0) / 100.0) {
                     max = Math.max(max, function.getMemberShip(i));
                 }
             }
@@ -83,8 +86,8 @@ public class FuzzySet<R> extends CrispSet<R> {
 
     public boolean isConvex() {
         if (function.getDomain() instanceof ContinuousDomain continuousDomain) {
-            double step = 0.001;
-            for (double i = continuousDomain.getMinDomain(); i < continuousDomain.getMaxDomain(); i += step) {
+            double step = 0.01;
+            for (double i = continuousDomain.getMinDomain(); i < continuousDomain.getMaxDomain(); i = Math.round((i + step) * 100.0) / 100.0) {
                 double x = function.getMemberShip(i);
                 double y = function.getMemberShip(i + step);
                 double z = function.getMemberShip(i + 2 * step);
@@ -104,9 +107,9 @@ public class FuzzySet<R> extends CrispSet<R> {
             }
             return true;
         } else if (function.getDomain() instanceof DomainWrapper wrapper) {
-            double step = 0.001;
+            double step = 0.01;
             for (Pair<Double, Double> pair: wrapper.getDomains()) {
-                for (double i = pair.getFirst(); i < pair.getSecond(); i += step) {
+                for (double i = pair.getFirst(); i < pair.getSecond(); i = Math.round((i + step) * 100.0) / 100.0) {
                     double x = function.getMemberShip(i);
                     double y = function.getMemberShip(i + step);
                     double z = function.getMemberShip(i + 2 * step);
