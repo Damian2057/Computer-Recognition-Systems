@@ -16,7 +16,7 @@ import java.util.List;
 @Log
 public class DBConnection implements Dao {
 
-    private static final String FILE = "src/main/resources/serialize/data.raw";
+    private static final String FILE = "data.raw";
     private String url;
     private String user;
     private String password;
