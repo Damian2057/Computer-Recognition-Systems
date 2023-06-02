@@ -222,7 +222,7 @@ public class SingleSubjectLinguisticSummary<R> extends AbstractLinguisticSummary
      */
     private double degreeOfQuantifierImprecision() {
         if (!quantifier.isAbsolute()) {
-            return 1.0 - quantifier.support() / quantifier.getDomain().width();
+            return 1.0 - quantifier.degreeOfFuzziness();
         }
         return 1.0 - quantifier.support() / policies.size();
     }

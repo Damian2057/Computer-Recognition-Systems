@@ -87,34 +87,37 @@ public class FuzzySet<R> extends CrispSet<R> {
     public boolean isConvex() {
         if (function.getDomain() instanceof ContinuousDomain continuousDomain) {
             double step = 0.01;
-            for (double i = continuousDomain.getMinDomain(); i < continuousDomain.getMaxDomain(); i = Math.round((i + step) * 100.0) / 100.0) {
-                double x = function.getMemberShip(i);
-                double y = function.getMemberShip(i + step);
-                double z = function.getMemberShip(i + 2 * step);
-                if (x > y && y > z) {
-                    return false;
+            for (double i = continuousDomain.getMinDomain(); i <= continuousDomain.getMaxDomain(); i = Math.round((i + step) * 100.0) / 100.0) {
+                for (double j = i; j <= continuousDomain.getMaxDomain(); j = Math.round((j + step) * 100.0) / 100.0) {
+                    for (double k = j; k <= continuousDomain.getMaxDomain(); k = Math.round((k + step) * 100.0) / 100.0) {
+                        if (i > j && j > k) {
+                            return false;
+                        }
+                    }
                 }
             }
             return true;
         } else if (function.getDomain() instanceof DiscreteDomain discreteDomain) {
-            for (int i = 0; i < discreteDomain.getPoints().size() - 2; i++) {
-                double x = function.getMemberShip(discreteDomain.getPoints().get(i));
-                double y = function.getMemberShip(discreteDomain.getPoints().get(i + 1));
-                double z = function.getMemberShip(discreteDomain.getPoints().get(i + 2));
-                if (x > y && y > z) {
-                    return false;
+            for (int i = 0; i < discreteDomain.getPoints().size(); i++) {
+                for (int j = i; j < discreteDomain.getPoints().size(); j++) {
+                    for (int k = j; k < discreteDomain.getPoints().size(); k++) {
+                        if (i > j && j > k) {
+                            return false;
+                        }
+                    }
                 }
             }
             return true;
         } else if (function.getDomain() instanceof DomainWrapper wrapper) {
             double step = 0.01;
             for (Pair<Double, Double> pair: wrapper.getDomains()) {
-                for (double i = pair.getFirst(); i < pair.getSecond(); i = Math.round((i + step) * 100.0) / 100.0) {
-                    double x = function.getMemberShip(i);
-                    double y = function.getMemberShip(i + step);
-                    double z = function.getMemberShip(i + 2 * step);
-                    if (x > y && y > z) {
-                        return false;
+                for (double i = pair.getFirst(); i <= pair.getSecond(); i = Math.round((i + step) * 100.0) / 100.0) {
+                    for (double j = i; j <= pair.getSecond(); j = Math.round((j + step) * 100.0) / 100.0) {
+                        for (double k = j; k <= pair.getSecond(); k = Math.round((k + step) * 100.0) / 100.0) {
+                            if (i > j && j > k) {
+                                return false;
+                            }
+                        }
                     }
                 }
             }
