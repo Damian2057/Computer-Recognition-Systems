@@ -280,6 +280,12 @@ public class AdvancedController  {
         } else if (editAttributeTypeChoiceBox.getSelectionModel().getSelectedItem().equals(QUANTIFIER)) {
             editAnchorPane.getChildren().remove(editAttributeNameChoiceBox);
             editAnchorPane.getChildren().remove(editAttributeName);
+            quantifierTypeLabel.setLayoutX(5);
+            quantifierTypeLabel.setLayoutY(105);
+            isAbsoluteChoiceBox.getItems().addAll(ABSOLUTE, RELATIVE);
+            isAbsoluteChoiceBox.setLayoutX(115);
+            isAbsoluteChoiceBox.setLayoutY(105);
+            editAnchorPane.getChildren().addAll(quantifierTypeLabel, isAbsoluteChoiceBox);
             for (Quantifier quantifier : quantifiersList) {
                 editEtiquetteNameChoiceBox.getItems().add(quantifier.getLabelName());
             }
