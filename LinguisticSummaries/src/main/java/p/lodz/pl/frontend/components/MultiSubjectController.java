@@ -134,13 +134,13 @@ public class MultiSubjectController {
                     setText(null);
                 } else {
                     String formattedValue;
-                    if (item == 0.9) {
-                        formattedValue = "~" + "1.00";
+                    if (item == 1.0) {
+                        formattedValue = "1.00";
                     } else if (item > 0.99) {
-                        formattedValue = ">" + String.format("%.2f", item);
-                    } else {
-                        formattedValue = "~" + String.format("%.2f", item);
-                    }
+                        formattedValue = ">" + "0.99";
+                    } else if (item < 0.01){
+                        formattedValue = "~" + "0.00";
+                    } else formattedValue = String.format("%.2f", item);
                     setText(formattedValue);
                 }
             }
