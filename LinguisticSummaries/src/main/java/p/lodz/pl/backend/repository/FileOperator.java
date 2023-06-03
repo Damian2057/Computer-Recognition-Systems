@@ -32,19 +32,22 @@ public class FileOperator {
     private String toString(List<Summary> savedSummaries) {
         StringBuilder stringBuilder = new StringBuilder();
         for (Summary summary : savedSummaries) {
-            stringBuilder.append(summary.form() + "," ).append(summary.summary()).append("\n");
-            stringBuilder.append("S: " + summary.quality().get(0) + "\n");
-            stringBuilder.append("T1: " + summary.quality().get(1) + "\n");
-            stringBuilder.append("T2: " + summary.quality().get(2) + "\n");
-            stringBuilder.append("T3: " + summary.quality().get(3) + "\n");
-            stringBuilder.append("T4: " + summary.quality().get(4) + "\n");
-            stringBuilder.append("T5: " + summary.quality().get(5) + "\n");
-            stringBuilder.append("T6: " + summary.quality().get(6) + "\n");
-            stringBuilder.append("T7: " + summary.quality().get(7) + "\n");
-            stringBuilder.append("T8: " + summary.quality().get(8) + "\n");
-            stringBuilder.append("T9: " + summary.quality().get(9) + "\n");
-            stringBuilder.append("T10: " + summary.quality().get(10) + "\n");
-            stringBuilder.append("T11: " + summary.quality().get(11) + "\n");
+            try {
+                stringBuilder.append(summary.form() + ", " ).append(summary.summary()).append("\n");
+                stringBuilder.append("S: " + summary.quality().get(0) + "\n");
+                stringBuilder.append("T1: " + summary.quality().get(1) + "\n");
+                stringBuilder.append("T2: " + summary.quality().get(2) + "\n");
+                stringBuilder.append("T3: " + summary.quality().get(3) + "\n");
+                stringBuilder.append("T4: " + summary.quality().get(4) + "\n");
+                stringBuilder.append("T5: " + summary.quality().get(5) + "\n");
+                stringBuilder.append("T6: " + summary.quality().get(6) + "\n");
+                stringBuilder.append("T7: " + summary.quality().get(7) + "\n");
+                stringBuilder.append("T8: " + summary.quality().get(8) + "\n");
+                stringBuilder.append("T9: " + summary.quality().get(9) + "\n");
+                stringBuilder.append("T10: " + summary.quality().get(10) + "\n");
+                stringBuilder.append("T11: " + summary.quality().get(11) + "\n");
+            } catch (Exception ignored) {
+            }
         }
         return stringBuilder.toString();
     }
