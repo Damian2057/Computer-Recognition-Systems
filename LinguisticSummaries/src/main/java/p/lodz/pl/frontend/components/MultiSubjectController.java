@@ -127,6 +127,25 @@ public class MultiSubjectController {
         formColumn.setCellValueFactory(cellData -> Bindings.createObjectBinding(() -> cellData.getValue().form()));
         summaryColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().summary()));
         degreeOfTruthColumn.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().quality().get(0)).asObject());
+        degreeOfTruthColumn.setCellFactory(column -> new TableCell<>() {
+            @Override
+            protected void updateItem(Double item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    String formattedValue;
+                    if (item == 0.9) {
+                        formattedValue = "~" + "1.00";
+                    } else if (item > 0.99) {
+                        formattedValue = ">" + String.format("%.2f", item);
+                    } else {
+                        formattedValue = "~" + String.format("%.2f", item);
+                    }
+                    setText(formattedValue);
+                }
+            }
+        });
         summaryTableView.getItems().clear();
 
         List<Quantifier> filteredQuantifiers = allQuantifiers.stream().filter(quantifier -> !quantifier.isAbsolute()).collect(Collectors.toList());
