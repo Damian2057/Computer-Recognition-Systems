@@ -16,7 +16,14 @@ public class CustomCellFactory<Summary> implements Callback<TableColumn<Summary,
                 if (empty || item == null) {
                     setText(null);
                 } else {
-                    String formattedValue = formatValue(item);
+                    String formattedValue;
+                    if (item == 1.0) {
+                        formattedValue = "1.00";
+                    } else if (item > 0.99) {
+                        formattedValue = ">" + "0.99";
+                    } else if (item < 0.01){
+                        formattedValue = "~" + "0.00";
+                    } else formattedValue = String.format("%.2f", item);
                     setText(formattedValue);
                 }
             }
