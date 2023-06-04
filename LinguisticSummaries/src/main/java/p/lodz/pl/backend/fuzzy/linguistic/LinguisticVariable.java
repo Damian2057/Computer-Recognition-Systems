@@ -5,7 +5,7 @@ import java.util.List;
 public class LinguisticVariable<R> {
 
     private final String linguisticVariableName;
-    protected final List<LinguisticLabel<R>> labels;
+    protected List<LinguisticLabel<R>> labels;
 
     public LinguisticVariable(String name, List<LinguisticLabel<R>> labels) {
         this.labels = labels;
@@ -26,5 +26,9 @@ public class LinguisticVariable<R> {
 
     public void deleteLabel(LinguisticLabel<R> label) {
         labels.remove(label);
+    }
+
+    public void setLabels(List<LinguisticLabel<R>> labels) {
+        this.labels = labels;
     }
 }

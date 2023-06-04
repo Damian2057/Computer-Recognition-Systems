@@ -14,12 +14,12 @@ import p.lodz.pl.backend.fuzzy.function.GaussianFunction;
 import p.lodz.pl.backend.fuzzy.function.MembershipFunction;
 import p.lodz.pl.backend.fuzzy.function.TrapezoidalFunction;
 import p.lodz.pl.backend.fuzzy.function.TriangularFunction;
-import p.lodz.pl.backend.fuzzy.function.domain.ContinuousDomain;
 import p.lodz.pl.backend.fuzzy.function.domain.DiscreteDomain;
 import p.lodz.pl.backend.fuzzy.function.domain.Domain;
 import p.lodz.pl.backend.fuzzy.linguistic.LinguisticLabel;
 import p.lodz.pl.backend.fuzzy.linguistic.LinguisticVariable;
 import p.lodz.pl.backend.fuzzy.quantifier.Quantifier;
+import p.lodz.pl.backend.fuzzy.set.FuzzySet;
 import p.lodz.pl.backend.model.PolicyEntity;
 import p.lodz.pl.backend.repository.MockRepository;
 
@@ -367,7 +367,7 @@ public class AdvancedController  {
             LinguisticVariable<PolicyEntity> variableByName = mockRepository.findLinguisticVariableByName(variableName);
             String newLabelName = addEtiquetteNameTextField.getText();
 
-            MembershipFunction function = getAddFunction(addFunctionTypeChoiceBox.getSelectionModel().getSelectedItem());
+            MembershipFunction function = getAddFunction(variableByName.getLabels().get(0), addFunctionTypeChoiceBox.getSelectionModel().getSelectedItem());
 
             LinguisticLabel<PolicyEntity> label = new LinguisticLabel<>(variableName,
                     newLabelName,
@@ -381,9 +381,15 @@ public class AdvancedController  {
         } else if (addAttributeTypeChoiceBox.getSelectionModel().getSelectedItem().equals(QUANTIFIER)) {
 
             String newLabelName = addEtiquetteNameTextField.getText();
-            MembershipFunction function = getAddFunction(addFunctionTypeChoiceBox.getSelectionModel().getSelectedItem());
 
             boolean isAbsolute =  isAbsoluteChoiceBox.getSelectionModel().getSelectedItem().equals(ABSOLUTE);
+            Quantifier quantifier;
+            if (isAbsolute) {
+                quantifier = mockRepository.findQuantifierByName("Less than 9000");
+            } else {
+                quantifier = mockRepository.findQuantifierByName("Almost none");
+            }
+            MembershipFunction function = getAddFunction(quantifier.getFuzzySet(), addFunctionTypeChoiceBox.getSelectionModel().getSelectedItem());
             Quantifier newQuantifier = new Quantifier(newLabelName, x -> x, function, isAbsolute);
 
             mockRepository.save(newQuantifier);
@@ -398,18 +404,17 @@ public class AdvancedController  {
             String selectedEtiquette = editEtiquetteNameChoiceBox.getSelectionModel().getSelectedItem();
             LinguisticVariable<PolicyEntity> linguisticVariable = mockRepository.findLinguisticVariableByName(selectedQualifier);
 
-            mockRepository.delete(linguisticVariable);
-            LinguisticLabel<PolicyEntity> linguisticLabel = mockRepository.findLinguisticLabelByName(selectedEtiquette);
-            linguisticVariable.deleteLabel(linguisticLabel);
-
-            MembershipFunction function = getEditFunction(editFunctionTypeChoiceBox.getSelectionModel().getSelectedItem());
+            MembershipFunction function = getEditFunction(linguisticVariable.getLabels().get(0), editFunctionTypeChoiceBox.getSelectionModel().getSelectedItem());
 
             LinguisticLabel<PolicyEntity> label = new LinguisticLabel<>(selectedQualifier,
                     selectedEtiquette,
                     linguisticVariable.getLabels().get(0).getExtractor(),
                     function);
 
-            linguisticVariable.addLabel(label);
+            List<LinguisticLabel<PolicyEntity>> labels = linguisticVariable.getLabels();
+            int index = labels.indexOf(mockRepository.findLinguisticLabelByName(selectedEtiquette));
+            labels.set(index, label);
+            linguisticVariable.setLabels(labels);
             mockRepository.save(linguisticVariable);
             stageController.setMockRepository(mockRepository);
 
@@ -418,10 +423,16 @@ public class AdvancedController  {
 
             Quantifier oldQuantifier = mockRepository.findQuantifierByName(selectedQuantifier);
             mockRepository.delete(oldQuantifier);
-
-            MembershipFunction function = getEditFunction(editFunctionTypeChoiceBox.getSelectionModel().getSelectedItem());
-
             boolean isAbsolute =  isAbsoluteChoiceBox.getSelectionModel().getSelectedItem().equals(ABSOLUTE);
+            Quantifier quantifier;
+            if (isAbsolute) {
+                quantifier = mockRepository.findQuantifierByName("Less than 9000");
+            } else {
+                quantifier = mockRepository.findQuantifierByName("Almost none");
+            }
+
+            MembershipFunction function = getEditFunction(quantifier.getFuzzySet(), editFunctionTypeChoiceBox.getSelectionModel().getSelectedItem());
+
             Quantifier newQuantifier = new Quantifier(selectedQuantifier, x -> x, function, isAbsolute);
 
             mockRepository.save(newQuantifier);
@@ -469,20 +480,6 @@ public class AdvancedController  {
 
                     addFunctionPointsPane.getChildren().addAll(domainLabel, addDomainTextField);
 
-                } else if (addDomainTypeChoiceBox.getSelectionModel().getSelectedItem().equals(CONTINUOUS_DOMAIN)) {
-                    lowerDomainLabel.setLayoutX(205);
-                    lowerDomainLabel.setLayoutY(5);
-                    upperDomainLabel.setLayoutX(205);
-                    upperDomainLabel.setLayoutY(50);
-
-                    addLowerBoundTextField.setLayoutX(205);
-                    addLowerBoundTextField.setLayoutY(25);
-                    addLowerBoundTextField.setStyle(STYLE);
-                    addUpperBoundTextField.setLayoutX(205);
-                    addUpperBoundTextField.setLayoutY(70);
-                    addUpperBoundTextField.setStyle(STYLE);
-
-                    addFunctionPointsPane.getChildren().addAll(lowerDomainLabel, upperDomainLabel, addLowerBoundTextField, addUpperBoundTextField);
                 }
 
                 addFunctionPointsPane.getChildren().addAll(pointALabel, pointBLabel, pointCLabel, pointDLabel, addAValueTextField, addBValueTextField, addCValueTextField, addDValueTextField);
@@ -516,20 +513,6 @@ public class AdvancedController  {
 
                     addFunctionPointsPane.getChildren().addAll(domainLabel, addDomainTextField);
 
-                } else if (addDomainTypeChoiceBox.getSelectionModel().getSelectedItem().equals(CONTINUOUS_DOMAIN)) {
-                    lowerDomainLabel.setLayoutX(205);
-                    lowerDomainLabel.setLayoutY(5);
-                    upperDomainLabel.setLayoutX(205);
-                    upperDomainLabel.setLayoutY(50);
-
-                    addLowerBoundTextField.setLayoutX(205);
-                    addLowerBoundTextField.setLayoutY(25);
-                    addLowerBoundTextField.setStyle(STYLE);
-                    addUpperBoundTextField.setLayoutX(205);
-                    addUpperBoundTextField.setLayoutY(70);
-                    addUpperBoundTextField.setStyle(STYLE);
-
-                    addFunctionPointsPane.getChildren().addAll(lowerDomainLabel, upperDomainLabel, addLowerBoundTextField, addUpperBoundTextField);
                 }
 
                 addFunctionPointsPane.getChildren().addAll(pointALabel, pointBLabel, pointCLabel, addAValueTextField, addBValueTextField, addCValueTextField);
@@ -558,22 +541,7 @@ public class AdvancedController  {
 
                     addFunctionPointsPane.getChildren().addAll(domainLabel, addDomainTextField);
 
-                } else if (addDomainTypeChoiceBox.getSelectionModel().getSelectedItem().equals(CONTINUOUS_DOMAIN)) {
-                    lowerDomainLabel.setLayoutX(205);
-                    lowerDomainLabel.setLayoutY(5);
-                    upperDomainLabel.setLayoutX(205);
-                    upperDomainLabel.setLayoutY(50);
-
-                    addLowerBoundTextField.setLayoutX(205);
-                    addLowerBoundTextField.setLayoutY(25);
-                    addLowerBoundTextField.setStyle(STYLE);
-                    addUpperBoundTextField.setLayoutX(205);
-                    addUpperBoundTextField.setLayoutY(70);
-                    addUpperBoundTextField.setStyle(STYLE);
-
-                    addFunctionPointsPane.getChildren().addAll(lowerDomainLabel, upperDomainLabel, addLowerBoundTextField, addUpperBoundTextField);
                 }
-
                 addFunctionPointsPane.getChildren().addAll(meanLabel, StandardDeviationLabel, addAValueTextField, addBValueTextField);
             }
             default -> throw new UnsupportedOperationException("There is no such function");
@@ -620,22 +588,7 @@ public class AdvancedController  {
 
                     editFunctionPointsPane.getChildren().addAll(domainLabel, editDomainTextField);
 
-                } else if (editDomainTypeChoiceBox.getSelectionModel().getSelectedItem().equals(CONTINUOUS_DOMAIN)) {
-                    lowerDomainLabel.setLayoutX(205);
-                    lowerDomainLabel.setLayoutY(5);
-                    upperDomainLabel.setLayoutX(205);
-                    upperDomainLabel.setLayoutY(50);
-
-                    editLowerBoundTextField.setLayoutX(205);
-                    editLowerBoundTextField.setLayoutY(25);
-                    editLowerBoundTextField.setStyle(STYLE);
-                    editUpperBoundTextField.setLayoutX(205);
-                    editUpperBoundTextField.setLayoutY(70);
-                    editUpperBoundTextField.setStyle(STYLE);
-
-                    editFunctionPointsPane.getChildren().addAll(lowerDomainLabel, upperDomainLabel, editLowerBoundTextField, editUpperBoundTextField);
                 }
-
                 editFunctionPointsPane.getChildren().addAll(pointALabel, pointBLabel, pointCLabel, pointDLabel, editAValueTextField, editBValueTextField, editCValueTextField, editDValueTextField);
             }
             case TRIANGULAR -> {
@@ -667,20 +620,6 @@ public class AdvancedController  {
 
                     editFunctionPointsPane.getChildren().addAll(domainLabel, editDomainTextField);
 
-                } else if (editDomainTypeChoiceBox.getSelectionModel().getSelectedItem().equals(CONTINUOUS_DOMAIN)) {
-                    lowerDomainLabel.setLayoutX(205);
-                    lowerDomainLabel.setLayoutY(5);
-                    upperDomainLabel.setLayoutX(205);
-                    upperDomainLabel.setLayoutY(50);
-
-                    editLowerBoundTextField.setLayoutX(205);
-                    editLowerBoundTextField.setLayoutY(25);
-                    editLowerBoundTextField.setStyle(STYLE);
-                    editUpperBoundTextField.setLayoutX(205);
-                    editUpperBoundTextField.setLayoutY(70);
-                    editUpperBoundTextField.setStyle(STYLE);
-
-                    editFunctionPointsPane.getChildren().addAll(lowerDomainLabel, upperDomainLabel, editLowerBoundTextField, editUpperBoundTextField);
                 }
 
                 editFunctionPointsPane.getChildren().addAll(pointALabel, pointBLabel, pointCLabel, editAValueTextField, editBValueTextField, editCValueTextField);
@@ -709,20 +648,6 @@ public class AdvancedController  {
 
                     editFunctionPointsPane.getChildren().addAll(domainLabel, editDomainTextField);
 
-                } else if (editDomainTypeChoiceBox.getSelectionModel().getSelectedItem().equals(CONTINUOUS_DOMAIN)) {
-                    lowerDomainLabel.setLayoutX(205);
-                    lowerDomainLabel.setLayoutY(5);
-                    upperDomainLabel.setLayoutX(205);
-                    upperDomainLabel.setLayoutY(50);
-
-                    editLowerBoundTextField.setLayoutX(205);
-                    editLowerBoundTextField.setLayoutY(25);
-                    editLowerBoundTextField.setStyle(STYLE);
-                    editUpperBoundTextField.setLayoutX(205);
-                    editUpperBoundTextField.setLayoutY(70);
-                    editUpperBoundTextField.setStyle(STYLE);
-
-                    editFunctionPointsPane.getChildren().addAll(lowerDomainLabel, upperDomainLabel, editLowerBoundTextField, editUpperBoundTextField);
                 }
 
                 editFunctionPointsPane.getChildren().addAll(meanLabel, StandardDeviationLabel, editAValueTextField, editBValueTextField);
@@ -731,10 +656,10 @@ public class AdvancedController  {
         }
     }
 
-    private MembershipFunction getAddFunction(String name) {
+    private MembershipFunction getAddFunction(FuzzySet<?> variable, String name) {
         Domain domain;
         if (addDomainTypeChoiceBox.getSelectionModel().getSelectedItem().equals(CONTINUOUS_DOMAIN)) {
-            domain = getAddDomain(CONTINUOUS_DOMAIN);
+            domain = variable.getDomain();
         } else {
             domain = getAddDomain(DISCRETE_DOMAIN);
         }
@@ -763,10 +688,10 @@ public class AdvancedController  {
         }
     }
 
-    private MembershipFunction getEditFunction(String name) {
+    private MembershipFunction getEditFunction(FuzzySet<?> variable, String name) {
         Domain domain;
         if (editDomainTypeChoiceBox.getSelectionModel().getSelectedItem().equals(CONTINUOUS_DOMAIN)) {
-            domain = getEditDomain(CONTINUOUS_DOMAIN);
+            domain = variable.getDomain();
         } else {
             domain = getEditDomain(DISCRETE_DOMAIN);
         }
@@ -796,11 +721,7 @@ public class AdvancedController  {
     }
 
     private Domain getAddDomain(String domainName) {
-        if (CONTINUOUS_DOMAIN.equals(domainName)) {
-            double lowerBound = Double.parseDouble(addLowerBoundTextField.getText());
-            double upperBound = Double.parseDouble(addUpperBoundTextField.getText());
-            return new ContinuousDomain(lowerBound, upperBound);
-        } else if (DISCRETE_DOMAIN.equals(domainName)) {
+        if (DISCRETE_DOMAIN.equals(domainName)) {
             List<Double> values = new ArrayList<>();
             String[] split = addDomainTextField.getText().split(",");
             for (String s : split) {
@@ -813,11 +734,7 @@ public class AdvancedController  {
     }
 
     private Domain getEditDomain(String domainName) {
-        if (CONTINUOUS_DOMAIN.equals(domainName)) {
-            double lowerBound = Double.parseDouble(editLowerBoundTextField.getText());
-            double upperBound = Double.parseDouble(editUpperBoundTextField.getText());
-            return new ContinuousDomain(lowerBound, upperBound);
-        } else if (DISCRETE_DOMAIN.equals(domainName)) {
+        if (DISCRETE_DOMAIN.equals(domainName)) {
             List<Double> values = new ArrayList<>();
             String[] split = editDomainTextField.getText().split(",");
             for (String s : split) {
