@@ -212,7 +212,7 @@ public class MultiSubjectLinguisticSummary<R> extends AbstractLinguisticSummary 
         for (FuzzySet<R> qualifier : summarizers) {
             s = operation.and(s, qualifier);
         }
-        FuzzySet<R> q = summarizers.get(0);
+        FuzzySet<R> q = s;
         for (FuzzySet<R> qualifier : qualifiers) {
             q = operation.and(q, qualifier);
         }
@@ -231,7 +231,7 @@ public class MultiSubjectLinguisticSummary<R> extends AbstractLinguisticSummary 
         for (FuzzySet<R> qualifier : summarizers) {
             s = operation.and(s, qualifier);
         }
-        FuzzySet<R> q = summarizers.get(0);
+        FuzzySet<R> q = s;
         for (FuzzySet<R> qualifier : qualifiers) {
             q = operation.and(q, qualifier);
         }
