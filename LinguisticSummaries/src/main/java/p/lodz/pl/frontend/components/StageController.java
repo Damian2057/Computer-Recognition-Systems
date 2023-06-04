@@ -90,6 +90,7 @@ public class StageController implements Initializable {
     @SneakyThrows
     public void initializeView(MockRepository mockRepository) {
         selectedQualifiers.clear();
+        scrollAttributes.getChildren().clear();
         List<LinguisticVariable<PolicyEntity>> linguisticVariablesList = mockRepository.findAllLinguisticVariables();
 
         int linguisticOffsetY = 10;

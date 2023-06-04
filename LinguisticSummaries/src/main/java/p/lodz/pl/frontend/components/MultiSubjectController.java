@@ -76,6 +76,7 @@ public class MultiSubjectController {
 
     public void initializeMultiSubjectView() {
         selectedQualifiers.clear();
+        scrollAttributes.getChildren().clear();
         linguisticVariablesList = mockRepository.findAllLinguisticVariables();
 
         firstSubjectChoiceBox.getItems().addAll(mockRepository.findAllSubjects());
