@@ -8,6 +8,9 @@ import java.util.function.Predicate;
 
 public class SubjectExtractor {
 
+    private SubjectExtractor() {
+    }
+
     public static Pair<List<PolicyEntity>, List<PolicyEntity>> extract(
             List<PolicyEntity> entities,
             Predicate<PolicyEntity> predicate) {

@@ -135,17 +135,39 @@ public class MultiSubjectController {
 
         String selectedSubject = firstSubjectChoiceBox.getSelectionModel().getSelectedItem();
 
+        log.info("Data filtering in progress...");
         Pair<List<PolicyEntity>, List<PolicyEntity>> pair =
                 SubjectExtractor.extract(dao.getPolicies(), getPredicateBySubject(selectedSubject));
+        log.info("Completed data filtering");
 
+        log.info("Generated summaries in progress...");
+        generate(pair.getFirst(),
+                pair.getSecond(),
+                filteredQuantifiers,
+                selectedSubject,
+                "rest cars");
+
+        generate(pair.getSecond(),
+                pair.getFirst(),
+                filteredQuantifiers,
+                "rest cars",
+                selectedSubject);
+        log.info("Completed generating summaries");
+    }
+
+    private void generate(List<PolicyEntity> first,
+                          List<PolicyEntity> second,
+                          List<Quantifier> filteredQuantifiers,
+                          String firstSubject,
+                          String secondSubject) {
         for (Quantifier quantifier : filteredQuantifiers) {
             MultiSubjectLinguisticSummary<PolicyEntity> linguisticSummary
                     = new MultiSubjectLinguisticSummary<>(quantifier,
                     selectedQualifiers,
-                    selectedSubject,
-                    "rest",
-                    pair.getFirst(),
-                    pair.getSecond());
+                    firstSubject,
+                    secondSubject,
+                    first,
+                    second);
             List<Summary> summaries = linguisticSummary.generateSummary();
             log.info("Generated summaries for: " + quantifier.getLabelName());
 
@@ -156,10 +178,10 @@ public class MultiSubjectController {
         MultiSubjectLinguisticSummary<PolicyEntity> linguisticSummary
                 = new MultiSubjectLinguisticSummary<>(null,
                 selectedQualifiers,
-                selectedSubject,
-                "rest",
-                pair.getFirst(),
-                pair.getSecond());
+                firstSubject,
+                secondSubject,
+                first,
+                second);
         List<Summary> summaries = linguisticSummary.generateFourthForm();
         log.info("Generated summaries for Fourth Form");
 
